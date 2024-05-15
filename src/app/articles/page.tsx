@@ -4,6 +4,7 @@ import Input from "@/components/common/Input";
 import PaginationArrows from "@/components/common/PaginationArrows";
 import icons from "@/lib/icons";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const article = {
     id: 1,
@@ -49,7 +50,9 @@ export default async function ArticlesPage() {
       </div>
 
       <div className="flex items-center justify-end">
-        <PaginationArrows />
+        <Suspense>
+          <PaginationArrows />
+        </Suspense>
       </div>
     </div>
   );
