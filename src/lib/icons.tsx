@@ -1,4 +1,4 @@
-import { CiSearch, CiWarning } from "react-icons/ci";
+import { CiSearch, CiStickyNote, CiWarning } from "react-icons/ci";
 import { FaEdit, FaHome, FaInfoCircle, FaSignOutAlt } from "react-icons/fa";
 import {
   FaBold,
@@ -28,7 +28,7 @@ import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons
 import { RxDashboard } from "react-icons/rx";
 import { GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
 import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
-import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6 } from "react-icons/lu";
+import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo } from "react-icons/lu";
 import { MdFiberNew } from "react-icons/md";
 import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
 import { FiLogIn } from "react-icons/fi";
@@ -41,6 +41,8 @@ const icons = {
     article: <RiFilePaper2Line />,
     barArrow: <TbArrowBarToLeft />,
     infoCircle: <FaInfoCircle />,
+    note: <CiStickyNote />,
+    todo: <LuListTodo />,
     eye: <FaEye />,
     eyeSlash: <FaEyeSlash />,
     search: <CiSearch />,
