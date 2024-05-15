@@ -1,0 +1,86 @@
+import { CiSearch, CiWarning } from "react-icons/ci";
+import { FaEdit, FaInfoCircle } from "react-icons/fa";
+import {
+  FaBold,
+  FaCode,
+  FaItalic,
+  FaStrikethrough,
+  FaAngleLeft,
+  FaAngleRight,
+  FaAngleUp,
+  FaAnglesLeft,
+  FaAnglesRight,
+  FaBars,
+  FaCircleQuestion,
+  FaEye,
+  FaEyeSlash,
+  FaTrash,
+  FaUser,
+  FaRegStar,
+  FaBan,
+  FaAlignLeft,
+  FaAlignRight,
+  FaPlus,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa6";
+import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
+import { RxDashboard } from "react-icons/rx";
+import { GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
+import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
+import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6 } from "react-icons/lu";
+import { MdFiberNew } from "react-icons/md";
+import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
+import { FiLogIn } from "react-icons/fi";
+
+const icons = {
+    user: <FaUser />,
+    dashboard: <RxDashboard />,
+    question: <FaCircleQuestion />,
+    article: <RiFilePaper2Line />,
+    barArrow: <TbArrowBarToLeft />,
+    infoCircle: <FaInfoCircle />,
+    eye: <FaEye />,
+    eyeSlash: <FaEyeSlash />,
+    search: <CiSearch />,
+    trash: <FaTrash />,
+    edit: <FaEdit />,
+    bars: <FaBars />,
+    angleRight: <FaAngleRight />,
+    angleLeft: <FaAngleLeft />,
+    anglesRight: <FaAnglesRight />,
+    anglesLeft: <FaAnglesLeft />,
+    angleUp: <FaAngleUp />,
+    bold: <FaBold />,
+    italic: <FaItalic />,
+    strikethrough: <FaStrikethrough />,
+    code: <FaCode />,
+    codeBlock: <RiCodeBlock />,
+    horizontalRule: <GoHorizontalRule />,
+    listOrdered: <GoListOrdered />,
+    listUnordered: <GoListUnordered />,
+    pageBreak: <TbPageBreak />,
+    heading1: <LuHeading1 />,
+    heading2: <LuHeading2 />,
+    heading3: <LuHeading3 />,
+    heading4: <LuHeading4 />,
+    heading5: <LuHeading5 />,
+    heading6: <LuHeading6 />,
+    email: <HiOutlineMail />,
+    answers: <RiQuestionAnswerLine />,
+    new: <MdFiberNew />,
+    warning: <CiWarning />,
+    online: <HiOutlineStatusOnline />,
+    star: <FaRegStar />,
+    calendar: <HiOutlineCalendar />,
+    ban: <FaBan />,
+    login: <FiLogIn />,
+    plus: <FaPlus />,
+    arrowLeft: <FaArrowLeft />,
+    arrowRight: <FaArrowRight />,
+    gear: <GoGear />,
+    alignLeft: <FaAlignLeft />,
+    alignRight: <FaAlignRight />,
+}
+
+export default icons;
