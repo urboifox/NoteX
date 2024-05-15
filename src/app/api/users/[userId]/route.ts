@@ -1,9 +1,8 @@
 import dbConnect from "@/config/db";
 import User from "@/models/userModel";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest, { params }: { params: { userId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
     dbConnect();
 
     const user = await User.findById(params.userId);
