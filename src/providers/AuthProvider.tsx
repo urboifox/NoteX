@@ -1,3 +1,4 @@
+'use client';
 import { AuthAtom } from "@/recoil/atoms/AuthAtom";
 import { useEffect } from "react";
 import * as jose from "jose";

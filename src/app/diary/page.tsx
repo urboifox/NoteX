@@ -8,14 +8,14 @@ import { Suspense } from "react";
 
 const diary = {
     id: 1,
-    title: "Article 1",
-    description: "Article 1 description amdoawmoia odiaw mwoa mawod oid ma",
+    title: "Diary 1",
+    description: "Diary 1 description amdoawmoia odiaw mwoa mawod oid ma",
     createdAt: new Date(),
 }
 
 const diaries = Array(12).fill(diary);
 
-export default async function ArticlesPage() {
+export default async function DiaryPage() {
   return (
     <div className="container pb-5 mt-5 space-y-5">
       <div className="flex items-center justify-between gap-4">
@@ -24,7 +24,7 @@ export default async function ArticlesPage() {
           placeholder="Search..."
         />
         <Link
-          href="/articles/create"
+          href="/diary/create"
         >
             <Button className="p-3">
                 {icons.plus}

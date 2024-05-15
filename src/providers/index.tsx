@@ -1,6 +1,5 @@
 'use client';
 
-
 import { Toaster } from "react-hot-toast";
 import { RecoilRoot } from "recoil";
 import AuthProvider from "./AuthProvider";
