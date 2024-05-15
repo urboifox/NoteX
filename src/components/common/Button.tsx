@@ -13,6 +13,7 @@ export default function Button({children, className, type = "button", active = f
     <button
       type={type}
       {...props}
+      disabled={disabled}
       className={cn(
         "border gap-2 bg-white/10 border-white/10 transition-colors duration-200 hover:bg-white/15 p-2 flex items-center justify-center rounded-md",
         active ? "bg-white text-black hover:bg-white/80 hover:text-black/80" : "",

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Button from "./Button";
 
 const links = [
     {
@@ -13,12 +14,12 @@ const links = [
 
 export default function Navbar() {
   return (
-    <header className="container py-6 flex items-center justify-between">
+    <header className="container h-20 flex items-center justify-between">
         <Link href="/" className="font-extrabold flex text-2xl text-transparent w-max bg-clip-text bg-primary">
             NoteX
         </Link>
 
-        <nav>
+        <nav className="flex items-center gap-4">
             <ul className="flex items-center gap-2">
                 {links.map((link) => (
                     <li key={link.label}>
@@ -28,6 +29,12 @@ export default function Navbar() {
                     </li>
                 ))}
             </ul>
+
+            <Link href="/login">
+                <Button>
+                    Get Started
+                </Button>
+            </Link>
         </nav>
     </header>
   )

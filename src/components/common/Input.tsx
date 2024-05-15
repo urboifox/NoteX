@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 type InputProps = {
     label?: string;
     icon?: React.ReactNode;
-    error?: string;
+    error?: string|string[];
     type?: HTMLInputTypeAttribute;
     className?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
