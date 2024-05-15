@@ -3,8 +3,8 @@ import dbConnect from "@/config/db";
 import User from "@/models/userModel";
 import * as zod from "zod";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import * as jose from "jose";
 
 // validation schema
 const registerSchema = zod.object({
@@ -90,10 +90,7 @@ type loginActionType = {
         password?: string[]
     }
     error?: string,
-    data?: {
-        accessToken: string,
-        user: typeof User
-    }
+    data?: typeof User
 }
 
 export async function loginAction(data: loginActionType, formData: FormData): Promise<loginActionType> {
@@ -124,17 +121,17 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
         }
 
         // create token and save it to cookies
-        const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_KEY as string, { expiresIn: '1h' });
-        const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_KEY as string, { expiresIn: '7d' });
+        // const session = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const session = await new jose.SignJWT({ id: user._id })
+            .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+            .setExpirationTime('1h')
+            .sign(new TextEncoder().encode(process.env.JWT_SECRET!))
 
-        cookies().set('refreshToken', refreshToken, { path: '/', httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 });
+        cookies().set('session', session, { path: '/', httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 });
 
         return {
             success: true,
-            data: {
-                accessToken,
-                user
-            }
+            data: user
         };
     }
 
