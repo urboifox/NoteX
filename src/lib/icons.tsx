@@ -1,5 +1,5 @@
 import { CiSearch, CiWarning } from "react-icons/ci";
-import { FaEdit, FaInfoCircle } from "react-icons/fa";
+import { FaEdit, FaHome, FaInfoCircle, FaSignOutAlt } from "react-icons/fa";
 import {
   FaBold,
   FaCode,
@@ -32,6 +32,7 @@ import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6 
 import { MdFiberNew } from "react-icons/md";
 import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
 import { FiLogIn } from "react-icons/fi";
+import { SlNotebook } from "react-icons/sl";
 
 const icons = {
     user: <FaUser />,
@@ -81,6 +82,9 @@ const icons = {
     gear: <GoGear />,
     alignLeft: <FaAlignLeft />,
     alignRight: <FaAlignRight />,
+    logout: <FaSignOutAlt />,
+    home: <FaHome />,
+    diary: <SlNotebook />
 }
 
 export default icons;

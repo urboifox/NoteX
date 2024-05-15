@@ -1,6 +1,5 @@
 'use client';
-
-import { createArticle } from "@/actions/articlesActions";
+import { createDiary } from "@/actions/diaryActions";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Textarea from "@/components/common/Textarea";
@@ -17,20 +16,16 @@ export default function CreateArticlePage({params: {articleId}}: {params: {artic
 
   return (
     <div className="container pb-10">
-      <Link className="mb-5 w-max flex" href="/articles">
-        <Button>{icons.angleLeft} Back to articles</Button>
+      <Link className="mb-5 w-max flex" href="/diary">
+        <Button>{icons.angleLeft} Back to diary</Button>
       </Link>
       <form
-        action={async (formData: FormData) => {
-          formData.set("content", content);
-          const response = await createArticle(formData);
-          console.log(response);
-        }}
+        action={createDiary}
         className="flex flex-col gap-4"
       >
         <Input
           name="title"
-          placeholder="This article is about..."
+          placeholder="This diary is about..."
           label="Title"
           error={errors.title}
         />

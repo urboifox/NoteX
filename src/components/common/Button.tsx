@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { forwardRef } from "react";
 
 type ButtonProps = {
     children: React.ReactNode,
@@ -8,9 +9,10 @@ type ButtonProps = {
     active?: boolean
 } & React.HTMLAttributes<HTMLButtonElement>
 
-export default function Button({children, className, type = "button", active = false, disabled = false, ...props}: ButtonProps) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({children, className, type = "button", active = false, disabled = false, ...props}, ref) => {
   return (
     <button
+      ref={ref}
       type={type}
       {...props}
       disabled={disabled}
@@ -24,4 +26,8 @@ export default function Button({children, className, type = "button", active = f
       {children}
     </button>
   );
-}
+})
+
+Button.displayName = "Button"
+export default Button;
+

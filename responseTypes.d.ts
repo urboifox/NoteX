@@ -1,4 +1,4 @@
-type ArticleResponse = {
+type DiaryResponse = {
     id: string;
     title: string;
     description: string;

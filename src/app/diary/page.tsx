@@ -1,19 +1,19 @@
-import ArticleCard from "@/components/articles/ArticleCard";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import PaginationArrows from "@/components/common/PaginationArrows";
+import DiaryCard from "@/components/diaries/DiaryCard";
 import icons from "@/lib/icons";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const article = {
+const diary = {
     id: 1,
     title: "Article 1",
     description: "Article 1 description amdoawmoia odiaw mwoa mawod oid ma",
     createdAt: new Date(),
 }
 
-const articles = Array(12).fill(article);
+const diaries = Array(12).fill(diary);
 
 export default async function ArticlesPage() {
   return (
@@ -33,16 +33,16 @@ export default async function ArticlesPage() {
       </div>
 
       <div className="gap-4 grid min-h-96 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-        {articles.length > 0 ? (
-          articles.map((article, index) => {
-            return <ArticleCard key={index} article={article} />;
+        {diaries.length > 0 ? (
+          diaries.map((diary, index) => {
+            return <DiaryCard key={index} diary={diary} />;
           })
         ) : (
           <div className="col-span-full flex items-center justify-center flex-col gap-4">
             <p className="text-neutral-400">
               Looks like you haven&apos;t created any articles yet.
             </p>
-            <Link href="/articles/create">
+            <Link href="create">
               <Button>Create {icons.plus}</Button>
             </Link>
           </div>
