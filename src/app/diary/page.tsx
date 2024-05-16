@@ -8,20 +8,12 @@ import Diary from "@/models/diaryModel";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const diary = {
-    _id: 1,
-    brief: "Diary 1 description amdoawmoia odiaw mwoa mawod oid ma",
-    createdAt: new Date(),
-}
-
-const diaries = Array(12).fill(diary);
-
 export default async function DiaryPage() {
 
   await dbConnect();
-  
-  const diaries = await Diary.find();
 
+  const diaries = await Diary.find();
+  
   return (
     <div className="container pb-5 mt-5 space-y-5">
       <div className="flex items-center justify-between gap-4">
@@ -48,7 +40,7 @@ export default async function DiaryPage() {
             <p className="text-neutral-400">
               Looks like you haven&apos;t created any articles yet.
             </p>
-            <Link href="create">
+            <Link href="/diary/create">
               <Button>Create {icons.plus}</Button>
             </Link>
           </div>

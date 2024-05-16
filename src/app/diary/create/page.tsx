@@ -15,4 +15,3 @@ export default async function CreateArticlePage({params: {articleId}}: {params: 
     </div>
   );
 }
-

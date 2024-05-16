@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as zod from 'zod';
 import * as jose from "jose";
+import { revalidatePath } from "next/cache";
 
 const createDiarySchema = zod.object({
     brief: zod.string().min(10, "Brief must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
@@ -38,6 +39,8 @@ export async function createDiary(data: CreateDiaryType, formData: FormData): Pr
 
         const diary = new Diary({ brief, content, creatorId: userId });
         await diary.save();
+
+        revalidatePath('/diary');
 
         return { success: true }
     } else {
