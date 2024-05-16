@@ -1,11 +1,12 @@
 import dbConnect from "@/config/db";
 import Diary from "@/models/diaryModel";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-    dbConnect();
+    await dbConnect();
 
-    const diaries = await Diary.find();
+    // const diaries = await Diary.find();
 
-    return Response.json({ status: 200, data: diaries });
+    return NextResponse.json({ status: 200, data: [] });
 }
 
