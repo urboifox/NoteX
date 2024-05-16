@@ -1,7 +1,7 @@
 'use client';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import icons from '@/lib/icons';
-import { cn } from '@/lib/cn';
+import { cn } from '@/helpers/cn';
 
 type InputProps = {
     label?: string;

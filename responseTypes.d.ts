@@ -1,8 +1,11 @@
+type DataResponse<T> = {
+    status: number;
+    data: T;
+}
+
 type DiaryResponse = {
-    id: string;
-    title: string;
-    description: string;
+    _id: string;
+    brief: string;
     content: string;
     createdAt: string;
 }
-

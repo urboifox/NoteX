@@ -1,11 +1,7 @@
 import mongoose, { models } from "mongoose";
 
 const diarySchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
+    brief: {
         type: String,
         required: true,
     },

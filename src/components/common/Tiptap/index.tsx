@@ -6,7 +6,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from 'lowlight';
 import { useEffect } from "react";
 import TextDirection from "tiptap-text-direction";
-import { cn } from "@/lib/cn";
+import { cn } from "@/helpers/cn";
 
 type TiptapProps = {
     content?: string

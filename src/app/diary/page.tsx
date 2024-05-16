@@ -7,15 +7,18 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 const diary = {
-    id: 1,
-    title: "Diary 1",
-    description: "Diary 1 description amdoawmoia odiaw mwoa mawod oid ma",
+    _id: 1,
+    brief: "Diary 1 description amdoawmoia odiaw mwoa mawod oid ma",
     createdAt: new Date(),
 }
 
 const diaries = Array(12).fill(diary);
 
 export default async function DiaryPage() {
+
+  const res: DataResponse<DiaryResponse[]> = await fetch('http://localhost:3000/api/diary').then(res => res.json());
+  const diaries = res.data;
+
   return (
     <div className="container pb-5 mt-5 space-y-5">
       <div className="flex items-center justify-between gap-4">
