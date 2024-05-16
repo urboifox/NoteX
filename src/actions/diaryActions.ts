@@ -20,7 +20,7 @@ type CreateDiaryType = {
 }
 
 export async function createDiary(data: CreateDiaryType, formData: FormData): Promise<CreateDiaryType> {
-    dbConnect();
+    await dbConnect();
 
     const brief = formData.get('brief');
     const content = formData.get('content');

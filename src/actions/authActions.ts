@@ -45,7 +45,7 @@ export async function registerAction(data: registerActionType, formData: FormDat
     const result = registerSchema.safeParse({ username, password, email });
 
     if (result.success) {
-        dbConnect();
+        await dbConnect();
 
         const existEmail = await User.findOne({ email: email });
         const existUsername = await User.findOne({ username: { $regex: username, $options: 'i' } });
@@ -100,7 +100,7 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
     const result = loginSchema.safeParse({ username, password });
 
     if (result.success) {
-        dbConnect();
+        await dbConnect();
 
         const user = await User.findOne({ username: { $regex: username, $options: 'i' } });
 

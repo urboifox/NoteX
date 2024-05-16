@@ -3,7 +3,7 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
-    dbConnect();
+    await dbConnect();
 
     const user = await User.findById(params.userId);
 
