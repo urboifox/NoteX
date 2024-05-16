@@ -10,9 +10,9 @@ import { Suspense } from "react";
 
 export default async function DiaryPage() {
 
-  await dbConnect();
+  // await dbConnect();
 
-  const diaries = await Diary.find();
+  // const diaries = await Diary.find();
   
   return (
     <div className="container pb-5 mt-5 space-y-5">
@@ -31,7 +31,7 @@ export default async function DiaryPage() {
       </div>
 
       <div className="gap-4 grid min-h-96 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-        {diaries.length > 0 ? (
+        {/* {diaries.length > 0 ? (
           diaries.map((diary, index) => {
             return <DiaryCard key={index} diary={diary} />;
           })
@@ -44,7 +44,7 @@ export default async function DiaryPage() {
               <Button>Create {icons.plus}</Button>
             </Link>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="flex items-center justify-end">
