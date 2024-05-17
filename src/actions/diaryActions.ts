@@ -9,7 +9,7 @@ import * as jose from "jose";
 import { revalidatePath } from "next/cache";
 
 const createDiarySchema = zod.object({
-    brief: zod.string().min(10, "Brief must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
+    brief: zod.string().min(3, "Brief must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
 })
 
 

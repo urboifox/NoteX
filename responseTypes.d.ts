@@ -1,5 +1,6 @@
 type DataResponse<T> = {
     status: number;
+    count: number;
     data: T;
 }
 

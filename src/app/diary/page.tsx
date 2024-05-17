@@ -1,25 +1,21 @@
 import Button from "@/components/common/Button";
-import Input from "@/components/common/Input";
+import NoResult from "@/components/common/NoResult";
 import PaginationArrows from "@/components/common/PaginationArrows";
+import SearchInput from "@/components/common/SearchInput";
 import DiaryCard from "@/components/diaries/DiaryCard";
-import dbConnect from "@/config/db";
+import { getDiaries } from "@/functions/diaries";
 import icons from "@/lib/icons";
-import Diary from "@/models/diaryModel";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default async function DiaryPage() {
+export default async function DiaryPage({searchParams: { page, q }}: {searchParams: {page: string, q: string}}) {
 
-  await dbConnect();
-  const diaries = await Diary.find();
-  
+  const { count, data: diaries } = await getDiaries(parseInt(page), undefined, q);
+
   return (
     <div className="container pb-5 mt-5 space-y-5">
       <div className="flex items-center justify-between gap-4">
-        <Input
-          icon={icons.search}
-          placeholder="Search..."
-        />
+        <SearchInput />
         <Link
           href="/diary/create"
         >
@@ -34,8 +30,8 @@ export default async function DiaryPage() {
           diaries.map((diary, index) => {
             return <DiaryCard key={index} diary={diary} />;
           })
-        ) : (
-          <div className="col-span-full flex items-center justify-center flex-col gap-4">
+        ) : count === 0 ? (
+          <div className="col-span-full w-full flex items-center justify-center flex-col gap-4">
             <p className="text-neutral-400">
               Looks like you haven&apos;t created any articles yet.
             </p>
@@ -43,12 +39,14 @@ export default async function DiaryPage() {
               <Button>Create {icons.plus}</Button>
             </Link>
           </div>
+        ) : (
+          <NoResult />
         )}
       </div>
 
       <div className="flex items-center justify-end">
         <Suspense>
-          <PaginationArrows />
+          <PaginationArrows count={count} />
         </Suspense>
       </div>
     </div>

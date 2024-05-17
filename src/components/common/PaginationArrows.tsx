@@ -2,45 +2,43 @@
 import icons from "@/lib/icons";
 import Button from "./Button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useQueryString } from "@/hooks/useQueryString";
+import { PER_PAGE } from "@/constants";
 
-export default function PaginationArrows() {
+export default function PaginationArrows({ count, perPage = PER_PAGE }: { count: number, perPage?: number }) {
 
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const currentPage = searchParams.get('page');
+  const currentPage = searchParams.get('page') || '1';
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
- 
-      return params.toString()
-    },
-    [searchParams]
-  )
+  const isFirst = parseInt(currentPage) === 1;
+  const isLast = count - perPage * parseInt(currentPage) <= 0;
+
+  const { appendQueryString } = useQueryString();
   
   const handlePrev = () => {
-    if (currentPage && parseInt(currentPage) >= 2) {
+    if (!isFirst) {
       const prevPage = parseInt(currentPage) - 1;
-      const queryString = createQueryString('page', prevPage.toString());
-      router.push(`?${queryString}`);
+      const queryString = appendQueryString('page', prevPage.toString());
+      router.push(`?${queryString}`, { scroll: false });
     }
   }
 
   const handleNext = () => {
-    const nextPage = currentPage ? parseInt(currentPage) + 1 : 2;
-    const queryString = createQueryString('page', nextPage.toString());
-    router.push(`?${queryString}`);
+    if (!isLast) {
+      const nextPage = currentPage ? parseInt(currentPage) + 1 : 2;
+      const queryString = appendQueryString('page', nextPage.toString());
+      router.push(`?${queryString}`, { scroll: false });
+    }
   }
 
   return (
     <div className="flex items-center gap-4">
-      <Button onClick={handlePrev}>
+      <Button disabled={isFirst} onClick={handlePrev}>
         {icons.arrowLeft}
       </Button>
-      <Button onClick={handleNext}>
+      <Button disabled={isLast} onClick={handleNext}>
         {icons.arrowRight}
       </Button>
     </div>
