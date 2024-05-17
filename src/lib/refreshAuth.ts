@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import * as jose from "jose";
 
-export default async function refreshAuth(req: NextRequest) {
-    const oldSession = req.cookies.get('session')?.value;
+export default async function refreshAuth(oldSession: string|undefined) {
     if (!oldSession) return;
 
     const decoded = jose.decodeJwt(oldSession);
     const userId = decoded?.id;
-
 
     const session = await new jose.SignJWT({ id: userId })
         .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
@@ -16,6 +14,7 @@ export default async function refreshAuth(req: NextRequest) {
 
     const res = NextResponse.next();
     res.cookies.set('session', session, { path: '/', httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 });
+    res.headers.set('Authorization', `Bearer ${session}`);
 
     return res;
 }
