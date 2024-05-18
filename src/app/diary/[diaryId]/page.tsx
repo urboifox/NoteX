@@ -38,9 +38,3 @@ export default async function OneDiaryPage({ params: { diaryId } }: { params: { 
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  await dbConnect();
-  const diaries = await Diary.find();
-  return diaries.map((diary) => diary._id);
-}
