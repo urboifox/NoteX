@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/common/Navbar";
 import Providers from "@/providers";
 import { cookies } from "next/headers";
 
-const inter = Inter({ subsets: ["latin"] });
+const main = Inter({ subsets: ["latin"], variable: "--font-main" });
+const number = Roboto_Mono({ subsets: ["latin"], variable: "--font-number" });
 
 export const metadata: Metadata = {
   title: "NoteX | Focus on what matters",
@@ -20,7 +21,7 @@ export default function RootLayout({
   const session = cookies().get('session')?.value;
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${main.variable} ${number.variable}`}>
         <Providers session={session as string}>
           <Navbar />
           {children}

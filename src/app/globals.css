@@ -11,8 +11,19 @@ body {
   display: none;
 }
 
+::selection {
+  background-color: #555;
+  color: #fff;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .font-number {
+    font-family: var(--font-number);
+  }
+  .font-main {
+    font-family: var(--font-main);
   }
 }

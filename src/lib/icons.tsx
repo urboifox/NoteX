@@ -23,16 +23,20 @@ import {
   FaPlus,
   FaArrowLeft,
   FaArrowRight,
+  FaPlay,
+  FaPause,
+  FaStop,
 } from "react-icons/fa6";
 import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
-import { GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
+import { GoClock, GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
 import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
-import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo } from "react-icons/lu";
+import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo, LuRotateCcw } from "react-icons/lu";
 import { MdFiberNew } from "react-icons/md";
 import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
 import { FiLogIn } from "react-icons/fi";
 import { SlNotebook } from "react-icons/sl";
+import { IoClose, IoSave } from "react-icons/io5";
 
 const icons = {
     user: <FaUser />,
@@ -86,7 +90,14 @@ const icons = {
     alignRight: <FaAlignRight />,
     logout: <FaSignOutAlt />,
     home: <FaHome />,
-    diary: <SlNotebook />
+    diary: <SlNotebook />,
+    clock: <GoClock />,
+    play: <FaPlay />,
+    pause: <FaPause />,
+    reset: <LuRotateCcw />,
+    stop: <FaStop />,
+    save: <IoSave />,
+    close: <IoClose />
 }
 
 export default icons;

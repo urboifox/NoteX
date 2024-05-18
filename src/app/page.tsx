@@ -18,6 +18,11 @@ const links = [
     href: "/todos",
     icon: icons.todo,
   },
+  {
+    label: "Session",
+    href: "/session",
+    icon: icons.clock,
+  },
 ];
 
 export default function Home() {
