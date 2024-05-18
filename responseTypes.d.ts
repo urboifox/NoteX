@@ -10,3 +10,12 @@ type DiaryResponse = {
     content: string;
     createdAt: string;
 }
+
+type SessionResponse = {
+    _id: string;
+    time: number;
+    creatorId: string;
+    sessionName: string;
+    createdAt: string;
+}
+

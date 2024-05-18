@@ -5,6 +5,7 @@ import Session from "@/models/sessionModel";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as jose from "jose";
+import { revalidatePath } from "next/cache";
 
 type SaveSessionType = {
     success: boolean;
@@ -29,10 +30,13 @@ export async function saveSession(data: SaveSessionType, formData: FormData): Pr
 
     const newSession = await Session.create({
         time: formData.get('time'),
+        sessionName: formData.get('sessionName'),
         creatorId: userId
     });
 
     await newSession.save();
+
+    revalidatePath('/session/list')
 
     return { success: true }
 }

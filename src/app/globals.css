@@ -28,6 +28,10 @@ body {
   .font-main {
     font-family: var(--font-main);
   }
+
+  .page {
+    min-height: calc(100dvh - 5rem);
+  }
 }
 
 

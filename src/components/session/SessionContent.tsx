@@ -54,17 +54,18 @@ export default function SessionContent() {
   
   function handleCloseModal() {
     setShowModal(false);
-    setTime(0)
+    setTime(0);
+    setSessionName('');
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (!typing) {
+    if (!typing && !showModal) {
       if (e.key === " ") {
         setPlaying(!playing);
       } else if (e.key === "r" || e.key === "R") {
         handleReset();
       } else if (e.key === "s" || e.key === "S") {
-        if (playing) {
+        if (time > 0) {
           handleStop();
         }
       }
@@ -81,7 +82,7 @@ export default function SessionContent() {
         onClose={handleCloseModal}
         visible={showModal}
         />
-      <div className="h-[calc(100vh-10rem)] w-full flex items-center justify-center">
+      <div className="page w-full flex items-center justify-center">
         <div className="h-full flex flex-col gap-5 items-center">
           <div className="flex-1 flex-col gap-10 flex items-center justify-center">
 
@@ -131,7 +132,7 @@ export default function SessionContent() {
               <Button disabled={stopped || time <= 0} onClick={handleReset}>
                 {icons.reset}
               </Button>
-              <Button disabled={!playing} onClick={handleStop}>
+              <Button disabled={time <= 0} onClick={handleStop}>
                 {icons.stop}
               </Button>
             </div>

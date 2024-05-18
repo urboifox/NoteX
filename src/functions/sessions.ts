@@ -4,7 +4,7 @@ import * as jose from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function getSessions() {
+export async function getSessions(page: number = 1, limit: number = 8): Promise<DataResponse<SessionResponse[]>> {
     await dbConnect();
     const authSession = cookies().get("session")?.value;
 
@@ -15,7 +15,7 @@ export async function getSessions() {
     const decoded = jose.decodeJwt(authSession);
     const userId = decoded?.id;
 
-    const sessions = await Session.find({ creatorId: userId });
-    return sessions;
+    const count = await Session.countDocuments({ creatorId: userId });
+    const sessions = await Session.find({ creatorId: userId }).limit(limit).skip((page - 1) * limit);
+    return { data: sessions, count: count, status: 200 };
 }
-
