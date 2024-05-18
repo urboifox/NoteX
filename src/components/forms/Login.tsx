@@ -8,7 +8,6 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useSetRecoilState } from "recoil";
 import { AuthAtom } from "@/recoil/atoms/AuthAtom";
 import { useRouter } from "next/navigation";
-import User from "@/models/userModel";
 
 export default function Login() {
 
@@ -18,7 +17,7 @@ export default function Login() {
 
   useEffect(() => {
     if (state.success) {
-      setAuth(state.data as typeof User)
+      setAuth(state.data as unknown as UserResponse)
       router.push('/')
     }
   }, [state.success, state.data, setAuth, router])

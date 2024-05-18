@@ -1,6 +1,8 @@
 import Button from "@/components/common/Button";
-import { getDiaryById } from "@/functions/diaries";
+import dbConnect from "@/config/db";
+import { getDiaries, getDiaryById } from "@/functions/diaries";
 import icons from "@/lib/icons";
+import Diary from "@/models/diaryModel";
 import Link from "next/link";
 
 export default async function OneDiaryPage({ params: { diaryId } }: { params: { diaryId: string } }) {
@@ -35,4 +37,10 @@ export default async function OneDiaryPage({ params: { diaryId } }: { params: { 
       <h1>404</h1>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  await dbConnect();
+  const diaries = await Diary.find();
+  return diaries.map((diary) => diary._id);
 }
