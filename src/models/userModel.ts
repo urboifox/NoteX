@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    islamicAzkar: {
+        type: Boolean,
+        default: true,
+    },
     password: {
         type: String,
         required: true,

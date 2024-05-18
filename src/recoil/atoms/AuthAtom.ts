@@ -1,7 +1,6 @@
-import User from "@/models/userModel";
 import { atom } from "recoil";
 
-export const AuthAtom = atom<typeof User | null>({
+export const AuthAtom = atom<UserResponse | null>({
     key: "AuthAtom",
     default: null
 })

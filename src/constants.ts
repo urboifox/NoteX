@@ -2,3 +2,12 @@ export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhos
 export const PER_PAGE = 12;
 
 export const PUBLIC_ROUTES = ['/login', '/register'];
+
+export const AZKAR = [
+    'سبحان الله',
+    'الحمد لله',
+    'الله أكبر',
+    'اللهم صلي على محمد',
+    'أستغفر الله'
+]
+
