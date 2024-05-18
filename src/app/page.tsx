@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div className="container flex items-center justify-center h-[calc(100vh-80px)]">
       <div className="flex flex-col items-center gap-8 justify-center">
-        <h1 className="text-4xl font-light">What are you looking for?</h1>
+        <h1 className="text-4xl text-center font-light">What are you looking for?</h1>
 
         <ul className="flex items-center flex-wrap gap-4">
           {links.map((link) => (
