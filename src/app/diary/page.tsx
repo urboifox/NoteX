@@ -17,7 +17,15 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
 
       <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-4">
-        <SearchInput />
+        <div className="flex items-center gap-3">
+          <Link href="/">
+            <Button>
+              {icons.arrowLeft} Back
+            </Button>
+          </Link>
+          
+          <SearchInput />
+        </div>
         <Link
           href="/diary/create"
         >
