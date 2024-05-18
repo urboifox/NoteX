@@ -69,7 +69,7 @@ export default function SessionContent() {
     }
   }
   
-  useEventListener('keydown', handleKeyDown)
+  useEventListener('keypress', handleKeyDown)
 
   return (
     <>
@@ -102,11 +102,12 @@ export default function SessionContent() {
               )
             }
 
-            <motion.button
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handlePlay}
-              className="rounded-full relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
+              onTap={handlePlay}
+              className="rounded-full cursor-pointer relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
             >
               <span
                 className={cn(
@@ -122,7 +123,7 @@ export default function SessionContent() {
               >
                 {playing ? icons.pause : icons.play}
               </span>
-            </motion.button>
+            </motion.div>
 
             <div className="flex items-center gap-5">
               <Button disabled={stopped || time <= 0} onClick={handleReset}>

@@ -31,7 +31,7 @@ export default function Home() {
       <div className="flex flex-col items-center gap-8 justify-center">
         <h1 className="text-4xl text-center font-light">What are you looking for?</h1>
 
-        <ul className="flex items-center flex-wrap gap-4">
+        <ul className="flex justify-center items-center flex-wrap gap-4">
           {links.map((link) => (
             <li key={link.label}>
               <Link className="text-4xl" href={link.href}>
