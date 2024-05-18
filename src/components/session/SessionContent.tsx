@@ -64,7 +64,9 @@ export default function SessionContent() {
       } else if (e.key === "r" || e.key === "R") {
         handleReset();
       } else if (e.key === "s" || e.key === "S") {
-        handleStop();
+        if (playing) {
+          handleStop();
+        }
       }
     }
   }
