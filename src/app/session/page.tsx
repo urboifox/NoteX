@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function SessionPage() {
   return (
-    <div className='container'>
+    <div className='container page flex flex-col'>
         <div className="flex gap-3 items-center">
           <Link href={'/'}>
             <Button>

@@ -11,10 +11,20 @@ const links = [
         icon: icons.home
     },
     {
+        label: "Profile",
+        href: "/profile",
+        icon: icons.user
+    },
+    {
         label: "Diary",
         href: "/diary",
         icon: icons.diary
     },
+    {
+        label: "Session",
+        href: "/session",
+        icon: icons.clock
+    }
 ]
 
 export default function Navbar() {

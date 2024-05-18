@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
-export default function UserProfileMenu({links}: {links: {label: string, href: string, icon: React.ReactNode}[]}) {
+export default function UserProfileMenu({ links }: {links: {label: string, href: string, icon: React.ReactNode}[]}) {
 
     const button = useRef<HTMLButtonElement>(null);
     const [visible, setVisible] = useState(false);

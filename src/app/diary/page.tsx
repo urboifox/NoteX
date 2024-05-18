@@ -13,7 +13,9 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
   const { count, data: diaries } = await getDiaries(parseInt(page), undefined, q);
 
   return (
-    <div className="container pb-5 mt-5 space-y-5">
+    <div className="container flex flex-col page justify-between pb-5">
+
+      <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-4">
         <SearchInput />
         <Link
@@ -25,7 +27,7 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
         </Link>
       </div>
 
-      <div className="gap-4 grid min-h-96 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+      <div className="gap-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {diaries.length > 0 ? (
           diaries.map((diary, index) => {
             return <DiaryCard key={index} diary={diary} />;
@@ -43,6 +45,8 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
           <NoResult />
         )}
       </div>
+      </div>
+
 
       <div className="flex items-center justify-end">
         <Suspense>

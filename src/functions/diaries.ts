@@ -23,3 +23,16 @@ export async function getDiaries(page: number = 1, limit: number = PER_PAGE, que
 
     return { data: diaries, count, status: 200 };
 }
+
+export async function getDiaryById(diaryId: string): Promise<DiaryResponse | null> {
+    await dbConnect();
+
+    const diary = await Diary.findById(diaryId);
+
+    if (!diary) {
+        return null;
+    }
+
+    return diary;
+}
+
