@@ -13,7 +13,7 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
   const { count, data: diaries } = await getDiaries(parseInt(page), undefined, q);
 
   return (
-    <div className="container flex flex-col page justify-between pb-5">
+    <div className="container flex flex-col page gap-5 justify-between pb-5">
 
       <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-4">

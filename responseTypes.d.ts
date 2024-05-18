@@ -19,3 +19,10 @@ type SessionResponse = {
     createdAt: string;
 }
 
+type UserResponse = {
+    _id: string;
+    username: string;
+    email: string;
+    createdAt: string;
+}
+

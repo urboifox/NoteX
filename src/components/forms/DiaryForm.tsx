@@ -1,5 +1,5 @@
 "use client";
-import { createDiary } from "@/actions/diaryActions";
+import { createDiary, updateDiary } from "@/actions/diaryActions";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import Input from "../common/Input";
@@ -8,23 +8,32 @@ import Tiptap from "../common/Tiptap/index";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export default function CreateDiary() {
+export default function DiaryForm({ diary }: { diary?: DiaryResponse | null }) {
   const [content, setContent] = useState("");
 
-  const [state, formAction] = useFormState(createDiary, { success: false });
+  const [state, formAction] = useFormState(diary ? updateDiary : createDiary, { success: false });
   const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Diary created successfully");
-      router.push('/diary')
+      toast.success(`Diary ${!!diary ? "saved" : "created"} successfully`);
+      router.push('/diary' + (diary ? `/${diary._id}` : ""))
     }
-  }, [state.success, router])
+  }, [state.success, router, diary])
+
+  useEffect(() => {
+    if (diary) {
+      setContent(diary.content);
+    }
+  }, [diary])
 
   return (
     <form
       action={(FormData: FormData) => {
         FormData.append("content", content);
+        if (diary) {
+            FormData.append("diaryId", diary._id);
+        }
         formAction(FormData);
       }}
       className="flex flex-col gap-4"
@@ -34,6 +43,7 @@ export default function CreateDiary() {
         placeholder="Today I..."
         label="Brief"
         error={state.errors?.brief}
+        defaultValue={diary?.brief}
       />
 
       <Tiptap
@@ -42,15 +52,15 @@ export default function CreateDiary() {
         label="Content"
       />
 
-      <SubmitButton />
+      <SubmitButton edit={!!diary} />
     </form>
   );
 }
-function SubmitButton() {
+function SubmitButton({edit}: {edit: boolean}) {
   const { pending } = useFormStatus();
   return (
     <Button disabled={pending} type="submit">
-      {pending ? "Loading..." : "Add Diary"}
+      {pending ? "Saving..." : (edit ? "Save" : "Add")}
     </Button>
   );
 }

@@ -13,14 +13,14 @@ const createDiarySchema = zod.object({
 })
 
 
-type CreateDiaryType = {
+type DiaryFormType = {
     success: boolean;
     errors?: {
         brief?: string[],
     }
 }
 
-export async function createDiary(data: CreateDiaryType, formData: FormData): Promise<CreateDiaryType> {
+export async function createDiary(data: DiaryFormType, formData: FormData): Promise<DiaryFormType> {
     await dbConnect();
 
     const brief = formData.get('brief');
@@ -49,4 +49,42 @@ export async function createDiary(data: CreateDiaryType, formData: FormData): Pr
             errors: result.error.flatten().fieldErrors
         }
     }
+}
+
+export async function updateDiary(data: DiaryFormType, formData: FormData): Promise<DiaryFormType> {
+    await dbConnect();
+
+    const brief = formData.get("brief");
+    const content = formData.get("content");
+    const diaryId = formData.get("diaryId");
+    const session = cookies().get("session")?.value;
+
+    if (!session) {
+        redirect("/login");
+    }
+
+    const result = createDiarySchema.safeParse({ brief, content });
+
+    if (result.success) {
+
+        const diary = await Diary.findById(diaryId);
+
+        if (!diary) {
+            redirect("/diary");
+        }
+
+        diary.brief = brief;
+        diary.content = content;
+
+        await diary.save();
+
+        revalidatePath(`/diary/${diaryId}`);
+
+        return { success: true };
+    }
+
+    return {
+        success: false,
+        errors: result.error.flatten().fieldErrors,
+    };
 }
