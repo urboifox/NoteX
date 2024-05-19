@@ -56,7 +56,7 @@ export default function SessionContent() {
     setShowModal(true);
   }
   
-  function handleCloseModal() {
+  async function handleCloseModal(): Promise<void> {
     setShowModal(false);
     setTime(0);
     stopTimer();

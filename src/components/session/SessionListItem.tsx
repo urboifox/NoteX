@@ -6,11 +6,13 @@ import { useState } from "react";
 import Modal from "../common/Modal";
 import { cn } from "@/helpers/cn";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function SessionListItem({session}: {session: SessionResponse}) {
 
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     async function handleDeleteSession() {
       setLoading(true);
@@ -22,6 +24,8 @@ export default function SessionListItem({session}: {session: SessionResponse}) {
         if (res.status !== 200) {
           const data = await res.json();
           toast.error(data.message);
+        } else {
+          router.refresh();
         }
       })
       .finally(() => {

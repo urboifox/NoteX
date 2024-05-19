@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 type SessionModalProps = {
   visible: boolean;
-  onClose: () => void;
+  onClose: () => Promise<void>;
   time: number;
   sessionName?: string;
 };
@@ -26,8 +26,9 @@ export default function SessionModal({ visible, onClose, time, sessionName }: Se
 
   useEffect(() => {
     if (state.success) {
-        onClose();
-        toast.success('Session saved');
+        onClose().then(() => {
+          toast.success('Session saved');
+        });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.success])
