@@ -5,9 +5,14 @@ import { redirect } from "next/navigation";
 import { decodeJwt } from "jose";
 
 export async function getUser(): Promise<UserResponse> {
+    const session = cookies().get('session')?.value;
+
+    if (!session) {
+        return {} as UserResponse;
+    }
+
     dbConnect();
 
-    const session = cookies().get('session')?.value;
 
     if (!session) {
         redirect('/login');

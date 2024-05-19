@@ -1,0 +1,277 @@
+diff --git a/responseTypes.d.ts b/responseTypes.d.ts
+index f6b3d1c..d2e4f12 100644
+--- a/responseTypes.d.ts
++++ b/responseTypes.d.ts
+@@ -23,6 +23,7 @@ type UserResponse = {
+     _id: string;
+     username: string;
+     email: string;
++    islamicAzkar: boolean;
+     createdAt: string;
+ }
+ 
+diff --git a/src/app/diary/[diaryId]/page.tsx b/src/app/diary/[diaryId]/page.tsx
+index 296415c..5759ef5 100644
+--- a/src/app/diary/[diaryId]/page.tsx
++++ b/src/app/diary/[diaryId]/page.tsx
+@@ -1,6 +1,8 @@
+ import Button from "@/components/common/Button";
+-import { getDiaryById } from "@/functions/diaries";
++import dbConnect from "@/config/db";
++import { getDiaries, getDiaryById } from "@/functions/diaries";
+ import icons from "@/lib/icons";
++import Diary from "@/models/diaryModel";
+ import Link from "next/link";
+ 
+ export default async function OneDiaryPage({ params: { diaryId } }: { params: { diaryId: string } }) {
+@@ -36,3 +38,9 @@ export default async function OneDiaryPage({ params: { diaryId } }: { params: {
+     </div>
+   );
+ }
++
++export async function generateStaticParams() {
++  await dbConnect();
++  const diaries = await Diary.find();
++  return diaries.map((diary) => diary._id);
++}
+\ No newline at end of file
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 698fdc6..c22f3c1 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -4,6 +4,8 @@ import "./globals.css";
+ import Navbar from "@/components/common/Navbar";
+ import Providers from "@/providers";
+ import { cookies } from "next/headers";
++import { getUser } from "@/functions/users";
++import IslamicAzkar from "@/components/layout/IslamicAzkar";
+ 
+ const main = Inter({ subsets: ["latin"], variable: "--font-main" });
+ const number = Roboto_Mono({ subsets: ["latin"], variable: "--font-number" });
+@@ -13,17 +15,19 @@ export const metadata: Metadata = {
+   description: "Take care of your notes, articles and more, in one place.",
+ };
+ 
+-export default function RootLayout({
++export default async function RootLayout({
+   children,
+ }: Readonly<{
+   children: React.ReactNode;
+ }>) {
+-  const session = cookies().get('session')?.value;
++  const user = await getUser();
++
+   return (
+     <html lang="en">
+       <body className={`${main.variable} ${number.variable}`}>
+-        <Providers session={session as string}>
++        <Providers user={JSON.parse(JSON.stringify(user))}>
+           <Navbar />
++          <IslamicAzkar visible={user?.islamicAzkar} />
+           {children}
+         </Providers>
+       </body>
+diff --git a/src/components/forms/Login.tsx b/src/components/forms/Login.tsx
+index 16a987c..d95d315 100644
+--- a/src/components/forms/Login.tsx
++++ b/src/components/forms/Login.tsx
+@@ -8,7 +8,6 @@ import { useFormState, useFormStatus } from "react-dom";
+ import { useSetRecoilState } from "recoil";
+ import { AuthAtom } from "@/recoil/atoms/AuthAtom";
+ import { useRouter } from "next/navigation";
+-import User from "@/models/userModel";
+ 
+ export default function Login() {
+ 
+@@ -18,7 +17,7 @@ export default function Login() {
+ 
+   useEffect(() => {
+     if (state.success) {
+-      setAuth(state.data as typeof User)
++      setAuth(state.data as unknown as UserResponse)
+       router.push('/')
+     }
+   }, [state.success, state.data, setAuth, router])
+diff --git a/src/components/layout/IslamicAzkar.tsx b/src/components/layout/IslamicAzkar.tsx
+new file mode 100644
+index 0000000..8932d90
+--- /dev/null
++++ b/src/components/layout/IslamicAzkar.tsx
+@@ -0,0 +1,32 @@
++'use client';
++
++import { AZKAR } from "@/constants";
++import { useState } from "react";
++import { AnimatePresence, motion } from "framer-motion";
++import icons from "@/lib/icons";
++
++export default function IslamicAzkar({ visible = false }: { visible: boolean }) {
++
++    const [index, setIndex] = useState(0);
++
++    return (
++        <AnimatePresence>
++            {visible && (
++                <div className="fixed bottom-5 left-1/2 -translate-x-1/2 container">
++                    <motion.div
++                        initial={{ opacity: 0 }}
++                        animate={{ opacity: visible ? 1 : 0 }}
++                        exit={{ opacity: 0 }}
++                        whileHover={{ scale: 1.05 }}
++                        whileTap={{ scale: 0.98 }}
++                        onClick={() => setIndex((i) => (i + 1) % AZKAR.length)}
++                        className="p-3 flex items-center gap-2 select-none rounded-lg text-sm transition-colors duration-3000 cursor-pointer border border-white/10 backdrop-blur-md w-max"
++                    >
++                        {icons.click}
++                        {AZKAR[index]}
++                    </motion.div>
++                </div>
++            )}
++        </AnimatePresence>
++    );
++}
+diff --git a/src/constants.ts b/src/constants.ts
+index 108b63b..2f5043b 100644
+--- a/src/constants.ts
++++ b/src/constants.ts
+@@ -1,4 +1,13 @@
+ export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api' : 'https://notex.urboifox.dev/api';
+ export const PER_PAGE = 12;
+ 
+-export const PUBLIC_ROUTES = ['/login', '/register'];
+\ No newline at end of file
++export const PUBLIC_ROUTES = ['/login', '/register'];
++
++export const AZKAR = [
++    'سبحان الله',
++    'الحمد لله',
++    'الله أكبر',
++    'اللهم صلي على محمد',
++    'أستغفر الله'
++]
++
+diff --git a/src/lib/icons.tsx b/src/lib/icons.tsx
+index f3994c5..9dba36f 100644
+--- a/src/lib/icons.tsx
++++ b/src/lib/icons.tsx
+@@ -31,7 +31,7 @@ import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons
+ import { RxDashboard } from "react-icons/rx";
+ import { GoClock, GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
+ import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
+-import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo, LuRotateCcw } from "react-icons/lu";
++import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
+ import { MdFiberNew } from "react-icons/md";
+ import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
+ import { FiLogIn } from "react-icons/fi";
+@@ -97,7 +97,8 @@ const icons = {
+     reset: <LuRotateCcw />,
+     stop: <FaStop />,
+     save: <IoSave />,
+-    close: <IoClose />
++    close: <IoClose />,
++    click: <LuMousePointerClick />
+ }
+ 
+ export default icons;
+\ No newline at end of file
+diff --git a/src/models/userModel.ts b/src/models/userModel.ts
+index 3677e9d..2e2927d 100644
+--- a/src/models/userModel.ts
++++ b/src/models/userModel.ts
+@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
+         required: true,
+         unique: true,
+     },
++    islamicAzkar: {
++        type: Boolean,
++        default: true,
++    },
+     password: {
+         type: String,
+         required: true,
+diff --git a/src/providers/AuthProvider.tsx b/src/providers/AuthProvider.tsx
+index 3b07418..753cf91 100644
+--- a/src/providers/AuthProvider.tsx
++++ b/src/providers/AuthProvider.tsx
+@@ -1,32 +1,22 @@
+ 'use client';
+ import { AuthAtom } from "@/recoil/atoms/AuthAtom";
+ import { useEffect } from "react";
+-import * as jose from "jose";
+ import { useSetRecoilState } from "recoil";
+ 
+ export default function AuthProvider({
+   children,
+-  session,
++  user,
+ }: {
+   children: React.ReactNode;
+-  session: string;
++  user: UserResponse;
+ }) {
+   const setAuth = useSetRecoilState(AuthAtom);
+ 
+   useEffect(() => {
+-    async function fetchUser() {
+-      const decoded = jose.decodeJwt(session);
+-      const userId = decoded?.id;
+-
+-      const res = await fetch(`/api/users/${userId}`);
+-      const json = await res.json();
+-      setAuth(json.data);
+-    }
+-
+-    if (session) {
+-      fetchUser();
++    if (user) {
++      setAuth(user);
+     }
+-  }, [session, setAuth]);
++  }, [user, setAuth]);
+ 
+   return children;
+ }
+diff --git a/src/providers/index.tsx b/src/providers/index.tsx
+index a799b85..0040c4a 100644
+--- a/src/providers/index.tsx
++++ b/src/providers/index.tsx
+@@ -4,15 +4,15 @@ import { Toaster } from "react-hot-toast";
+ import { RecoilRoot } from "recoil";
+ import AuthProvider from "./AuthProvider";
+ 
+-export default function Providers({ children, session }: { children: React.ReactNode, session: string }) {
++export default function Providers({ children, user }: { children: React.ReactNode, user: UserResponse }) {
+   return (
+-    <>
+-      <RecoilRoot>
+-        <AuthProvider session={session}>
+-          <Toaster position="bottom-right" />
+-          {children}
+-        </AuthProvider>
+-      </RecoilRoot>
+-    </>
+-  )
++      <>
++          <RecoilRoot>
++              <AuthProvider user={user}>
++                  <Toaster position="bottom-right" />
++                  {children}
++              </AuthProvider>
++          </RecoilRoot>
++      </>
++  );
+ }
+diff --git a/src/recoil/atoms/AuthAtom.ts b/src/recoil/atoms/AuthAtom.ts
+index 3e60f11..fff4ef7 100644
+--- a/src/recoil/atoms/AuthAtom.ts
++++ b/src/recoil/atoms/AuthAtom.ts
+@@ -1,7 +1,6 @@
+-import User from "@/models/userModel";
+ import { atom } from "recoil";
+ 
+-export const AuthAtom = atom<typeof User | null>({
++export const AuthAtom = atom<UserResponse | null>({
+     key: "AuthAtom",
+     default: null
+ })
+\ No newline at end of file

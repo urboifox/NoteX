@@ -27,7 +27,7 @@ export default async function RootLayout({
       <body className={`${main.variable} ${number.variable}`}>
         <Providers user={JSON.parse(JSON.stringify(user))}>
           <Navbar />
-          <IslamicAzkar visible={user?.islamicAzkar} />
+          <IslamicAzkar visible={user?.islamicAzkar || true} />
           {children}
         </Providers>
       </body>
