@@ -89,7 +89,6 @@ export default function SessionContent() {
         if (playing) {
           startTimer();
           setSessionVisibility((prev) => ({ ...prev, return: Date.now() }))
-          console.log('diiffff', (Date.now() - sessionVisibility.leave) / 1000);
         }
       }
       document.addEventListener("visibilitychange", handleVisibilityChange);
