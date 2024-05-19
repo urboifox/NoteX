@@ -7,12 +7,12 @@ import { redirect } from "next/navigation";
 import * as jose from "jose";
 import { revalidatePath } from "next/cache";
 
-type SaveSessionType = {
+type SessionType = {
     success: boolean;
     error?: string;
 }
 
-export async function saveSession(data: SaveSessionType, formData: FormData): Promise<SaveSessionType> {
+export async function saveSession(data: SessionType, formData: FormData): Promise<SessionType> {
     await dbConnect();
 
     const authSession = cookies().get('session')?.value;
@@ -40,4 +40,3 @@ export async function saveSession(data: SaveSessionType, formData: FormData): Pr
 
     return { success: true }
 }
-

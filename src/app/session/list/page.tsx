@@ -1,7 +1,7 @@
 import Button from "@/components/common/Button";
 import PaginationArrows from "@/components/common/PaginationArrows";
+import SessionListItem from "@/components/session/SessionListItem";
 import { getSessions } from "@/functions/sessions";
-import { formatTime } from "@/helpers/formatTime";
 import icons from "@/lib/icons";
 import Link from "next/link";
 
@@ -23,15 +23,7 @@ export default async function SessionListPage({ searchParams: { page } }: { sear
                     </li>
                     {sessions.data.map((session) => {
                         return (
-                            <li
-                                key={session._id}
-                                className="flex items-center justify-between p-2 rounded-md border border-white/10 trasnition-colors duration-200 hover:border-white/50"
-                            >
-                                <p>{session.sessionName}</p>
-                                <time className="font-number">
-                                    {formatTime(session.time)}
-                                </time>
-                            </li>
+                            <SessionListItem key={session._id} session={JSON.parse(JSON.stringify(session))} />
                         );
                     })}
                 </ul>
