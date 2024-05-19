@@ -13,33 +13,33 @@ export default async function SessionListPage({ searchParams: { page } }: { sear
     return (
         <div className="flex flex-col justify-between gap-5 items-end container page pb-5">
             <div className="flex flex-col gap-4 w-full">
-                <Link href={'/session'}>
-                    <Button>
-                        {icons.arrowLeft} Back
-                    </Button>
+                <Link href={"/session"}>
+                    <Button>{icons.arrowLeft} Back</Button>
                 </Link>
                 <ul className="flex flex-col gap-4 w-full">
                     <li className="flex gap-2 text-neutral-500 items-center justify-between">
                         <p>Session Name</p>
                         <p>Session Duration</p>
                     </li>
-                    {
-                        sessions.data.map(session => {
-                            return (
-                                <li
-                                    key={session._id}
-                                    className="flex items-center justify-between p-2 rounded-md border border-white/10 trasnition-colors duration-200 hover:border-white/50"
-                                >
-                                    <p>{session.sessionName}</p>
-                                    <time className="font-number">{formatTime(session.time)}</time>
-                                </li>
-                            );
-                        })
-                    }
+                    {sessions.data.map((session) => {
+                        return (
+                            <li
+                                key={session._id}
+                                className="flex items-center justify-between p-2 rounded-md border border-white/10 trasnition-colors duration-200 hover:border-white/50"
+                            >
+                                <p>{session.sessionName}</p>
+                                <time className="font-number">
+                                    {formatTime(session.time)}
+                                </time>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
 
-            <PaginationArrows perPage={limit} count={sessions.count} />
+            <div className="z-50">
+                <PaginationArrows perPage={limit} count={sessions.count} />
+            </div>
         </div>
-    )
+    );
 }

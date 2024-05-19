@@ -1,8 +1,6 @@
 import Button from "@/components/common/Button";
-import dbConnect from "@/config/db";
-import { getDiaries, getDiaryById } from "@/functions/diaries";
+import { getDiaryById } from "@/functions/diaries";
 import icons from "@/lib/icons";
-import Diary from "@/models/diaryModel";
 import Link from "next/link";
 
 export default async function OneDiaryPage({ params: { diaryId } }: { params: { diaryId: string } }) {

@@ -4,10 +4,10 @@ export const PER_PAGE = 12;
 export const PUBLIC_ROUTES = ['/login', '/register'];
 
 export const AZKAR = [
+    'اللهم صلي على محمد',
     'سبحان الله',
     'الحمد لله',
     'الله أكبر',
-    'اللهم صلي على محمد',
     'أستغفر الله'
 ]
 
