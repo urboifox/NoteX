@@ -1,30 +1,36 @@
 'use client';
 import { cn } from "@/helpers/cn";
 import icons from "@/lib/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Button from "../common/Button";
 import SessionModal from "./SessionModal";
 import { formatTime } from "@/helpers/formatTime";
 import Input from "../common/Input";
 import useEventListener from "@/hooks/useEventListener";
+import { useRecoilState } from "recoil";
+import { SessionPlayingAtom } from "@/recoil/atoms/SessionPlayingAtom";
+import { SessionTimeAtom } from "@/recoil/atoms/SessionTimeAtom";
+import { SessionIntervalAtom } from "@/recoil/atoms/SessionIntervalAtom";
 
 export default function SessionContent() {
-  const [playing, setPlaying] = useState(false);
-  const [time, setTime] = useState(0);
+  const [playing, setPlaying] = useRecoilState(SessionPlayingAtom);
+  const [time, setTime] = useRecoilState(SessionTimeAtom);
   const [stopped, setStopped] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [sessionName, setSessionName] = useState("");
   const [typing, setTyping] = useState(false);
+  const [intervalAtom, setIntervalAtom] = useRecoilState(SessionIntervalAtom);
 
   useEffect(() => {
-    if (playing) {
+    if (playing && !intervalAtom) {
       const interval = setInterval(() => {
         setTime(prev => prev + 1);
       }, 1000);
-      return () => clearInterval(interval);
+
+      setIntervalAtom(interval);
     }
-  }, [playing, time]);
+  }, [playing, time, setTime, intervalAtom, setIntervalAtom]);
 
   useEffect(() => {
     if (stopped) {
@@ -33,9 +39,18 @@ export default function SessionContent() {
   }, [stopped]);
 
   
+  function clearIntervalAtom() {
+      clearInterval(intervalAtom as NodeJS.Timeout);
+      setIntervalAtom(null);
+  }
   
   function handlePlay() {
     setPlaying(!playing);
+
+    if (playing) {
+      clearIntervalAtom();
+    }
+
     if (stopped) {
       setTime(0);
       setStopped(false);
@@ -45,16 +60,19 @@ export default function SessionContent() {
   function handleReset() {
     setTime(0);
     setPlaying(false);
+    clearIntervalAtom();
   }
 
   function handleStop() {
     setPlaying(false);
     setStopped(true);
+    clearIntervalAtom();
   }
   
   function handleCloseModal() {
     setShowModal(false);
     setTime(0);
+    clearIntervalAtom();
     setSessionName('');
   }
 
@@ -105,7 +123,7 @@ export default function SessionContent() {
 
                   <motion.div
                       whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.95, transition: { duration: .1 } }}
                       onClick={handlePlay}
                       onTap={handlePlay}
                       className="rounded-full cursor-pointer relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
@@ -141,7 +159,7 @@ export default function SessionContent() {
 
               <time
                   className={cn(
-                      "font-number text-2xl font-light transition-colors duration-200",
+                      "font-number select-none text-2xl font-light transition-colors duration-200",
                       playing ? "text-white" : "text-white/50"
                   )}
               >

@@ -7,7 +7,6 @@ const sessionSchema = new mongoose.Schema({
     },
     sessionName: {
         type: String,
-        required: true,
         default: "Anonymous"
     },
     creatorId: {

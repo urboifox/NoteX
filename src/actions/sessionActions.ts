@@ -30,7 +30,7 @@ export async function saveSession(data: SaveSessionType, formData: FormData): Pr
 
     const newSession = await Session.create({
         time: formData.get('time'),
-        sessionName: formData.get('sessionName'),
+        sessionName: formData.get('sessionName') || "Anonymous",
         creatorId: userId
     });
 
