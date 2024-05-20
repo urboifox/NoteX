@@ -22,6 +22,9 @@ export default function Tooltip({ children, title }: TooltipProps) {
 
         timeout.current = setTimeout(() => {
             setVisible(true);
+            setTimeout(() => {
+                setVisible(false);
+            }, 2000);
         }, 500);
     }
 
