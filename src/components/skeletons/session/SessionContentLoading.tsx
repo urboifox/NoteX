@@ -32,7 +32,7 @@ export default function SessionContentLoading() {
               </div>
 
               <time
-                  className={"font-number select-none text-2xl font-light transition-colors duration-200"}
+                  className={"font-number text-white/50 select-none text-2xl font-light transition-colors duration-200"}
               >
                   {'00:00:00'}
               </time>

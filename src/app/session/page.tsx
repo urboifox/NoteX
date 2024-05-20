@@ -3,7 +3,7 @@ import SessionContent from "@/components/session/SessionContent";
 import icons from "@/lib/icons";
 import Link from "next/link";
 
-export default function SessionPage() {
+export default async function SessionPage() {
   return (
     <div className='container page flex flex-col'>
         <div className="flex gap-3 items-center">
