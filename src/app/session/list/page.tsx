@@ -14,7 +14,7 @@ export default async function SessionListPage({ searchParams: { page } }: { sear
         <div className="flex flex-col justify-between gap-5 items-end container page pb-5">
             <div className="flex flex-col gap-4 w-full">
                 <Link href={"/session"} className="w-max">
-                    <Button>{icons.arrowLeft} Back</Button>
+                    <Button>{icons.angleLeft} Back</Button>
                 </Link>
                 <ul className="flex flex-col gap-4 w-full">
                     <li className="flex gap-2 text-neutral-500 items-center justify-between">

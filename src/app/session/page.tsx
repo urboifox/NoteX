@@ -9,7 +9,7 @@ export default function SessionPage() {
         <div className="flex gap-3 items-center">
           <Link href={'/'}>
             <Button>
-              {icons.arrowLeft} Back
+              {icons.angleLeft} Back
             </Button>
           </Link>
           <Link href={'/session/list'}>

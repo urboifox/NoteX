@@ -8,7 +8,7 @@ export default function OneDiaryLoading() {
   return (
       <div className="container flex flex-col gap-5">
           <Link href="/diary">
-              <Button>{icons.arrowLeft} Back</Button>
+              <Button>{icons.angleLeft} Back</Button>
           </Link>
           <div className="flex items-end justify-between">
               <Skeleton width={300} height={30} />
