@@ -8,7 +8,7 @@ export default function EditDiaryLoading() {
   return (
     <div className="container pb-10">
       <Link className="mb-5 w-max flex" href="/diary">
-        <Button>{icons.angleLeft} Back to diary</Button>
+        <Button>{icons.angleLeft} Back</Button>
       </Link>
 
         <div className='flex flex-col gap-4'>

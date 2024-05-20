@@ -28,7 +28,7 @@ const links = [
 
 export default function Home() {
   return (
-    <div className="container flex items-center justify-center h-[calc(100vh-80px)]">
+    <div className="container flex items-center justify-center h-[calc(100vh-5rem)]">
       <div className="flex flex-col items-center gap-8 justify-center">
         <h1 className="text-4xl text-center font-light select-none">What are you looking for?</h1>
 

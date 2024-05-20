@@ -11,7 +11,7 @@ export default async function EditDiaryPage({params: {diaryId}}: {params: {diary
     return (
         <div className="container pb-10">
             <Link className="mb-5 w-max flex" href={`/diary/${diaryId}`}>
-                <Button>{icons.angleLeft} Back to diary</Button>
+                <Button>{icons.angleLeft} Back</Button>
             </Link>
 
             <DiaryForm diary={diary} />

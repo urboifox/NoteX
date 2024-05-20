@@ -7,6 +7,7 @@ import Modal from "../common/Modal";
 import { cn } from "@/helpers/cn";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
 
 export default function SessionListItem({session}: {session: SessionResponse}) {
 
@@ -44,15 +45,14 @@ export default function SessionListItem({session}: {session: SessionResponse}) {
           visible={showModal}
         />
         <li
-          key={session._id}
           className={cn(
             `flex items-center justify-between p-2 rounded-md border border-white/10 trasnition-colors duration-200 hover:border-white/50`,
             loading ? "opacity-50" : ""
           )}
         >
-          <p>{session.sessionName}</p>
+          <p>{session.sessionName ?? <Skeleton width={Math.floor(Math.random() * 100) + 100} />}</p>
           <div className="flex items-center gap-3">
-            <time className="font-number">{formatTime(session.time)}</time>
+            <time className="font-number">{session.time ? formatTime(session.time) : '00:00:00'}</time>
             <Button onClick={() => setShowModal(true)} className="text-red-600 text-xs">{icons.trash}</Button>
           </div>
         </li>
