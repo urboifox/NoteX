@@ -26,6 +26,7 @@ import {
   FaPlay,
   FaPause,
   FaStop,
+  FaBell,
 } from "react-icons/fa6";
 import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
@@ -100,7 +101,8 @@ const icons = {
     close: <IoClose />,
     click: <LuMousePointerClick />,
     musicNote: <MdMusicNote />,
-    musicNoteMuted: <MdMusicOff /> 
+    musicNoteMuted: <MdMusicOff />,
+    bell: <FaBell />
 }
 
 export default icons;

@@ -24,6 +24,8 @@ type UserResponse = {
     username: string;
     email: string;
     islamicAzkar: boolean;
+    islamicAzan: boolean;
+    islamic: boolean;
     createdAt: string;
 }
 

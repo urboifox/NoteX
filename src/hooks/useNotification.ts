@@ -1,5 +1,3 @@
-'use client';
-
 export default function useNotification() {
 
     async function notify(message: string,  options?: NotificationOptions) {

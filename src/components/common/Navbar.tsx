@@ -46,7 +46,7 @@ export default function Navbar() {
             <nav className="flex items-center gap-3">
                 <MusicButton />
                 {
-                    !session ? (
+                    session ? (
                         <UserProfileMenu links={links} />
                     ) : (
                         <Link href="/login">
