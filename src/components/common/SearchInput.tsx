@@ -3,6 +3,7 @@ import icons from "@/lib/icons";
 import Input from "./Input";
 import { useQueryString } from "@/hooks/useQueryString";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 type SearchInputProps = {
     placeholder?: string;
@@ -13,25 +14,26 @@ export default function SearchInput({ placeholder = "Search...", param = "q" }: 
 
     const { appendQueryString, deleteQueryString } = useQueryString();
     const router = useRouter();
-    let searchTimeout: NodeJS.Timeout | null = null;
+    const [value, setValue] = useState("");
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
-        if (searchTimeout) clearTimeout(searchTimeout);
-
-        if (!e.target.value) {
+    useEffect(() => {
+        if (!value) {
+            searchTimeout.current = null;
             const queryString = deleteQueryString(param);
             router.push(`?${queryString}`, { scroll: false });
         } else {
-            searchTimeout = setTimeout(() => {
-                const queryString = appendQueryString(param, e.target.value);
+            searchTimeout.current = setTimeout(() => {
+                const queryString = appendQueryString(param, value);
                 router.push(`?${queryString}`, { scroll: false });
             }, 500);
         }
-    }
+    }, [value, appendQueryString, deleteQueryString, param, router]);
 
     return (
         <Input
-            onChange={handleSearch}
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
             icon={icons.search}
             placeholder={placeholder}
         />
