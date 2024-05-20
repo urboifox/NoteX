@@ -1,43 +1,44 @@
 import { CiSearch, CiStickyNote, CiWarning } from "react-icons/ci";
-import { FaEdit, FaHome, FaInfoCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaSignOutAlt } from "react-icons/fa";
 import {
-  FaBold,
-  FaCode,
-  FaItalic,
-  FaStrikethrough,
+  FaAlignLeft,
+  FaAlignRight,
   FaAngleLeft,
   FaAngleRight,
   FaAngleUp,
   FaAnglesLeft,
   FaAnglesRight,
-  FaBars,
-  FaCircleQuestion,
-  FaEye,
-  FaEyeSlash,
-  FaTrash,
-  FaUser,
-  FaRegStar,
-  FaBan,
-  FaAlignLeft,
-  FaAlignRight,
-  FaPlus,
   FaArrowLeft,
   FaArrowRight,
-  FaPlay,
-  FaPause,
-  FaStop,
+  FaBan,
+  FaBars,
   FaBell,
+  FaBold,
+  FaCheck,
+  FaCircleQuestion,
+  FaCode,
+  FaEye,
+  FaEyeSlash,
+  FaItalic,
+  FaPause,
+  FaPlay,
+  FaPlus,
+  FaRegStar,
+  FaStop,
+  FaStrikethrough,
+  FaTrash,
+  FaUser,
 } from "react-icons/fa6";
-import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
-import { RxDashboard } from "react-icons/rx";
+import { FiLogIn } from "react-icons/fi";
 import { GoClock, GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
-import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
+import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
+import { IoClose, IoSave } from "react-icons/io5";
 import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
 import { MdFiberNew, MdMusicNote, MdMusicOff } from "react-icons/md";
-import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
-import { FiLogIn } from "react-icons/fi";
+import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
+import { RxDashboard } from "react-icons/rx";
 import { SlNotebook } from "react-icons/sl";
-import { IoClose, IoSave } from "react-icons/io5";
+import { TbArrowBarToLeft, TbEdit, TbEditOff, TbPageBreak } from "react-icons/tb";
 
 const icons = {
     user: <FaUser />,
@@ -52,7 +53,8 @@ const icons = {
     eyeSlash: <FaEyeSlash />,
     search: <CiSearch />,
     trash: <FaTrash />,
-    edit: <FaEdit />,
+    edit: <TbEdit />,
+    editOff: <TbEditOff />,
     bars: <FaBars />,
     angleRight: <FaAngleRight />,
     angleLeft: <FaAngleLeft />,
@@ -102,7 +104,8 @@ const icons = {
     click: <LuMousePointerClick />,
     musicNote: <MdMusicNote />,
     musicNoteMuted: <MdMusicOff />,
-    bell: <FaBell />
+    bell: <FaBell />,
+    check: <FaCheck />
 }
 
 export default icons;

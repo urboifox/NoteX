@@ -30,8 +30,7 @@ export default async function DiariesContent({
                 ) : count === 0 ? (
                     <div className="col-span-full w-full flex items-center justify-center flex-col gap-4">
                         <p className="select-none text-neutral-400">
-                            Looks like you haven&apos;t created any articles
-                            yet.
+                            Looks like you haven&apos;t created any diaries yet.
                         </p>
                         <Link href="/diary/create">
                             <Button>Create {icons.plus}</Button>

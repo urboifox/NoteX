@@ -1,3 +1,4 @@
+import UserProfileContent from "@/components/profile/UserProfileContent";
 import { getUser } from "@/functions/users";
 
 export default async function ProfilePage() {
@@ -6,8 +7,7 @@ export default async function ProfilePage() {
 
     return (
       <div className="container page">
-        <h1>{user?.username}</h1>
-        <p>{user?.email}</p>
+        <UserProfileContent user={JSON.parse(JSON.stringify(user))} />
       </div>
     );
 }

@@ -12,7 +12,7 @@ export default function IslamicAzkar({ visible = false }: { visible: boolean }) 
     return (
         <AnimatePresence>
             {visible && (
-                <div className="fixed bottom-5 left-1/2 -translate-x-1/2 container">
+                <div className="fixed w-max bottom-5 left-0 container">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: visible ? 1 : 0 }}

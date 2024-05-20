@@ -69,7 +69,6 @@ export default function NotificationProvider({ children }: { children: React.Rea
     useEffect(() => {
         for (const [key, value] of Object.entries(prayerTimes)) {
             if (value === currentTimeString && latestPrayer !== key && auth?.islamic && auth.islamicAzan) {
-                console.log("notification !")
                 notify(`${key} Prayer Time`, {
                   body: `لا حياة بدون صلاة، حان موعد صلاة ${ARABIC_PRAYER_NAMES[key as keyof typeof ARABIC_PRAYER_NAMES]}❤️
                   ${value}`,

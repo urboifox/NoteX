@@ -35,7 +35,7 @@ export default function Home() {
         <ul className="flex justify-center items-center flex-wrap gap-4">
           {links.map((link) => (
             <li key={link.label}>
-              <Tooltip title={link.label}>
+              <Tooltip position="bottom" title={link.label}>
                 <Link className="text-4xl" href={link.href}>
                   <Button className="p-5">
                     {link.icon}

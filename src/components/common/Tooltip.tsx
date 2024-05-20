@@ -7,15 +7,16 @@ import { useEffect, useRef, useState } from "react";
 type TooltipProps = {
     children: React.ReactElement;
     title: string;
+    position?: "top" | "bottom";
 }
 
-export default function Tooltip({ children, title }: TooltipProps) {
+export default function Tooltip({ children, title, position = 'top' }: TooltipProps) {
 
     const timeout = useRef<NodeJS.Timeout | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
-    const [position, setPosition] = useState('top');
+    const [currentPosition, setPosition] = useState(position);
 
     function handleMouseEnter() {
         if (timeout.current) clearTimeout(timeout.current);
@@ -46,12 +47,12 @@ export default function Tooltip({ children, title }: TooltipProps) {
 
                 if (containerRect.top < tooltipRect.height + 8) {
                     setPosition('bottom');
-                } else {
+                } else if (containerRect.bottom > window.innerHeight - tooltipRect.height - 8) {
                     setPosition('top');
                 }
             }
         }
-    }, [visible]);
+    }, [visible, position]);
 
     return (
         <div
@@ -70,7 +71,7 @@ export default function Tooltip({ children, title }: TooltipProps) {
                         exit={{ opacity: 0 }}
                         className={cn(
                             "p-2 absolute text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10",
-                            position === "top" ? "-top-12" : "-bottom-12"
+                            currentPosition === "top" ? "-top-12" : "-bottom-12"
                         )}
                     >
                         {title}

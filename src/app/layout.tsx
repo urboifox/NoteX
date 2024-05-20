@@ -23,14 +23,16 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <html lang="en">
-      <body className={`${main.variable} ${number.variable}`}>
-        <Providers user={JSON.parse(JSON.stringify(user))}>
-          <Navbar />
-          <IslamicAzkar visible={user?.islamicAzkar || true} />
-          {children}
-        </Providers>
-      </body>
-    </html>
+      <html lang="en">
+          <body className={`${main.variable} ${number.variable}`}>
+              <Providers user={JSON.parse(JSON.stringify(user))}>
+                  <Navbar />
+                  {user?.islamic && (
+                      <IslamicAzkar visible={user?.islamicAzkar} />
+                  )}
+                  {children}
+              </Providers>
+          </body>
+      </html>
   );
 }

@@ -9,23 +9,29 @@ type InputProps = {
     error?: string|string[];
     type?: HTMLInputTypeAttribute;
     className?: string;
+    required?: boolean;
     inputClassName?: string;
     disabled?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({label, className, inputClassName, error, icon, type = "text", disabled, ...props}: InputProps) {
+export default function Input({label, className, inputClassName, required, error, icon, type = "text", disabled, ...props}: InputProps) {
   const [inputType, setInputType] = useState(type);
   const toggleType = () => setInputType(prev => prev === 'password' ? 'text' : 'password');
 
   return (
-    <div className={cn("relative flex flex-col gap-2", disabled ? "opacity-50" : "", className)}>
+    <div className={cn("relative flex flex-col gap-2", disabled ? "cursor-not-allowed opacity-50" : "" ,className)}>
       {label && (
-        <label htmlFor={props.name} className={`font-medium`}>
+        <label htmlFor={props.name} className={`font-medium w-max relative`}>
           {label}
+          {
+            required && (
+              <span className="absolute -right-3 font-bold -top-1 text-red-500">*</span>
+            )
+          }
         </label>
       )}
 
-      <div className="relative text-white/80 flex items-center">
+      <div className={cn("relative text-white/80 flex items-center")}>
         <input
           type={inputType}
           disabled={disabled}
