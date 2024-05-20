@@ -17,6 +17,6 @@ export const ARABIC_PRAYER_NAMES = {
     Dhuhr: 'الظهر',
     Asr: 'العصر',
     Maghrib: 'المغرب',
-    Sunset: 'الغروب',
+    // Sunset: 'الغروب',
     Isha: 'العشاء',
 }

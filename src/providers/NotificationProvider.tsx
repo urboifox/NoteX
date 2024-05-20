@@ -50,7 +50,11 @@ export default function NotificationProvider({ children }: { children: React.Rea
     useEffect(() => {
         const getPrayerTimes = async () => {
             await fetch('https://api.aladhan.com/v1/timingsByCity?country=Egypt&city=Cairo').then((res) => res.json()).then((data) => {
-                setPrayerTimes(data.data.timings);
+                const newPrayerTimes: any = {};
+                for (const [key] of Object.entries(ARABIC_PRAYER_NAMES)) {
+                    newPrayerTimes[key] = data.data.timings[key];
+                }
+                setPrayerTimes(newPrayerTimes);
             })
         }
 
@@ -65,6 +69,7 @@ export default function NotificationProvider({ children }: { children: React.Rea
     useEffect(() => {
         for (const [key, value] of Object.entries(prayerTimes)) {
             if (value === currentTimeString && latestPrayer !== key && auth?.islamic && auth.islamicAzan) {
+                console.log("notification !")
                 notify(`${key} Prayer Time`, {
                   body: `لا حياة بدون صلاة، حان موعد صلاة ${ARABIC_PRAYER_NAMES[key as keyof typeof ARABIC_PRAYER_NAMES]}❤️
                   ${value}`,
@@ -82,30 +87,36 @@ export default function NotificationProvider({ children }: { children: React.Rea
     }, [])
 
     return (
-      <>
-        {mounted &&
-          createPortal(
-            <>
-                <audio
-                muted={muted}
-                className="hidden"
-                src="/assets/azan.m4a"
-                ref={azanAudioRef}
-                />
-                <AnimatePresence>
-                {
-                    showNitificationDialog && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed top-0 left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-sm flex items-center justify-center">
-                            <p className="text-center flex items-center gap-2 mb-5 px-3">{icons.bell} Allow Notifications to recieve prayer times on your desktop.</p>
-                        </motion.div>
-                    )
-                }
-                </AnimatePresence>
-            </>,
-            document.body
-          )}
+        <>
+            {mounted &&
+                createPortal(
+                    <>
+                        <audio
+                            muted={muted}
+                            className="hidden"
+                            src="/assets/azan.m4a"
+                            ref={azanAudioRef}
+                        />
+                        <AnimatePresence>
+                            {showNitificationDialog && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="fixed top-0 left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-sm flex items-center justify-center"
+                                >
+                                    <p className="text-center flex items-center gap-2 mb-5 px-3">
+                                        {icons.bell} Allow Notifications to
+                                        recieve prayer times on your desktop.
+                                    </p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </>,
+                    document.body
+                )}
 
-        {children}
-      </>
+            {children}
+        </>
     );
 }

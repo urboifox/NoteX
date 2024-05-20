@@ -8,6 +8,7 @@ export default function SessionContentLoading() {
           <div className="flex-1 pb-5 flex justify-between flex-col gap-10 items-center">
               <div className="flex-1 flex-col gap-10 flex items-center justify-center">
                 <Input
+                    disabled
                     name="sessionName"
                     placeholder="Session Name"
                     className="transition-all duration-200"
