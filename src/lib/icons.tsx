@@ -32,7 +32,7 @@ import { RxDashboard } from "react-icons/rx";
 import { GoClock, GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
 import { TbArrowBarToLeft, TbPageBreak } from "react-icons/tb";
 import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuListTodo, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
-import { MdFiberNew } from "react-icons/md";
+import { MdFiberNew, MdMusicNote, MdMusicOff } from "react-icons/md";
 import { HiOutlineCalendar, HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
 import { FiLogIn } from "react-icons/fi";
 import { SlNotebook } from "react-icons/sl";
@@ -98,7 +98,9 @@ const icons = {
     stop: <FaStop />,
     save: <IoSave />,
     close: <IoClose />,
-    click: <LuMousePointerClick />
+    click: <LuMousePointerClick />,
+    musicNote: <MdMusicNote />,
+    musicNoteMuted: <MdMusicOff /> 
 }
 
 export default icons;

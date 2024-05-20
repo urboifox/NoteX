@@ -11,3 +11,12 @@ export const AZKAR = [
     'أستغفر الله'
 ]
 
+export const ARABIC_PRAYER_NAMES = {
+    Fajr: 'الفجر',
+    Sunrise: 'الصبح',
+    Dhuhr: 'الظهر',
+    Asr: 'العصر',
+    Maghrib: 'المغرب',
+    Sunset: 'الغروب',
+    Isha: 'العشاء',
+}

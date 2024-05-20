@@ -3,6 +3,7 @@ import Button from "./Button";
 import { cookies } from "next/headers";
 import UserProfileMenu from "./UserProfileMenu";
 import icons from "@/lib/icons";
+import MusicButton from "./MusicButton";
 
 const links = [
     {
@@ -21,6 +22,11 @@ const links = [
         icon: icons.diary
     },
     {
+        label: "Todos",
+        href: "/todos",
+        icon: icons.todo
+    },
+    {
         label: "Session",
         href: "/session",
         icon: icons.clock
@@ -37,9 +43,10 @@ export default function Navbar() {
                 NoteX
             </Link>
 
-            <nav className="flex items-center gap-4">
+            <nav className="flex items-center gap-3">
+                <MusicButton />
                 {
-                    session ? (
+                    !session ? (
                         <UserProfileMenu links={links} />
                     ) : (
                         <Link href="/login">

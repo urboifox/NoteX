@@ -18,13 +18,13 @@ export default function UserProfileMenu({ links }: {links: {label: string, href:
 
   return (
     <div className="relative">
-        <Button ref={button} onClick={() => setVisible(!visible)}>
+        <Button className="text-xl p-2" ref={button} onClick={() => setVisible(!visible)}>
             {icons.user}
         </Button>
         <AnimatePresence>
             {
                 visible && (
-                    <motion.ul initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="flex overflow-hidden backdrop-blur-sm z-50 flex-col absolute right-0 top-10 bg-white/10 border border-white/10 rounded-md">
+                    <motion.ul initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="flex overflow-hidden backdrop-blur-sm z-50 flex-col absolute right-0 top-12 bg-white/10 border border-white/10 rounded-md">
                         {links && links.map((link) => (
                             <li key={link.label}>
                                 <Link href={link.href} className="px-5 py-2 flex items-center gap-2 transition-colors duration-200 hover:bg-white/10">
