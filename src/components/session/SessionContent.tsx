@@ -4,6 +4,7 @@ import { formatTime } from "@/helpers/formatTime";
 import useEventListener from "@/hooks/useEventListener";
 import icons from "@/lib/icons";
 import { SessionIntervalAtom } from "@/recoil/atoms/SessionIntervalAtom";
+import { SessionNameAtom } from "@/recoil/atoms/SessionNameAtom";
 import { SessionPlayingAtom } from "@/recoil/atoms/SessionPlayingAtom";
 import { SessionTimeAtom } from "@/recoil/atoms/SessionTimeAtom";
 import { SessionVisibilityAtom } from "@/recoil/atoms/SessionVisibilityAtom";
@@ -12,14 +13,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import Button from "../common/Button";
 import Input from "../common/Input";
-import SessionModal from "./SessionModal";
 import Tooltip from "../common/Tooltip";
+import SessionModal from "./SessionModal";
 
 export default function SessionContent() {
   const [playing, setPlaying] = useRecoilState(SessionPlayingAtom);
   const [time, setTime] = useRecoilState(SessionTimeAtom);
   const [showModal, setShowModal] = useState(false);
-  const [sessionName, setSessionName] = useState("");
+  const [sessionName, setSessionName] = useRecoilState(SessionNameAtom);
   const [typing, setTyping] = useState(false);
   const [intervalAtom, setIntervalAtom] = useRecoilState(SessionIntervalAtom);
   const [sessionVisibility, setSessionVisibility] = useRecoilState(SessionVisibilityAtom);
