@@ -18,7 +18,7 @@ export default function UserProfileMenu({ links }: {links: {label: string, href:
 
   return (
     <div className="relative">
-        <Button className="text-xl p-2" ref={button} onClick={() => setVisible(!visible)}>
+        <Button className="text-xl" ref={button} onClick={() => setVisible(!visible)}>
             {icons.user}
         </Button>
         <AnimatePresence>

@@ -4,6 +4,7 @@ import Button from './Button';
 import icons from '@/lib/icons';
 import { MutedAtom } from '@/recoil/atoms/MutedAtom';
 import { useEffect } from 'react';
+import Tooltip from './Tooltip';
 
 export default function MusicButton() {
     const [muted, setMuted] = useRecoilState(MutedAtom);
@@ -21,8 +22,10 @@ export default function MusicButton() {
     }
 
     return (
-      <Button onClick={handleToggleMute} className="p-2 text-xl">
-        {muted ? icons.musicNoteMuted : icons.musicNote}
-      </Button>
+      <Tooltip title={muted ? 'Unmute' : 'Mute'}>
+        <Button onClick={handleToggleMute} className="text-xl">
+          {muted ? icons.musicNoteMuted : icons.musicNote}
+        </Button>
+      </Tooltip>
     );
 }

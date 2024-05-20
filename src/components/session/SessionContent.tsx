@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import SessionModal from "./SessionModal";
+import Tooltip from "../common/Tooltip";
 
 export default function SessionContent() {
   const [playing, setPlaying] = useRecoilState(SessionPlayingAtom);
@@ -109,7 +110,7 @@ export default function SessionContent() {
   function handleKeyDown(e: KeyboardEvent) {
     if (!typing && !showModal) {
       if (e.key === " ") {
-        setPlaying(!playing);
+        handlePlay();
       } else if (e.key === "r" || e.key === "R") {
         handleReset();
       } else if (e.key === "s" || e.key === "S") {
@@ -151,39 +152,45 @@ export default function SessionContent() {
                       />
                   )}
 
-                  <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95, transition: { duration: .1 } }}
-                      onClick={handlePlay}
-                      onTap={handlePlay}
-                      className="rounded-full cursor-pointer relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
-                  >
-                      <span
-                          className={cn(
-                              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full transition-all duration-300 ease-in-out bg-black",
-                              playing ? "w-full h-full" : "w-0 h-0"
-                          )}
-                      />
-                      <span
-                          className={cn(
-                              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20",
-                              playing ? "text-white" : "text-black"
-                          )}
+                  <Tooltip title="'Space'">
+                      <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{
+                              scale: 0.95,
+                              transition: { duration: 0.1 },
+                          }}
+                          onClick={handlePlay}
+                          onTap={handlePlay}
+                          className="rounded-full cursor-pointer relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
                       >
-                          {playing ? icons.pause : icons.play}
-                      </span>
-                  </motion.div>
+                          <span
+                              className={cn(
+                                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full transition-all duration-300 ease-in-out bg-black",
+                                  playing ? "w-full h-full" : "w-0 h-0"
+                              )}
+                          />
+                          <span
+                              className={cn(
+                                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20",
+                                  playing ? "text-white" : "text-black"
+                              )}
+                          >
+                              {playing ? icons.pause : icons.play}
+                          </span>
+                      </motion.div>
+                  </Tooltip>
 
                   <div className="flex items-center gap-5">
-                      <Button
-                          disabled={time <= 0}
-                          onClick={handleReset}
-                      >
-                          {icons.reset}
-                      </Button>
-                      <Button disabled={time <= 0} onClick={handleStop}>
-                          {icons.stop}
-                      </Button>
+                      <Tooltip title="'R'">
+                          <Button disabled={time <= 0} onClick={handleReset}>
+                              {icons.reset}
+                          </Button>
+                      </Tooltip>
+                      <Tooltip title="'S'">
+                        <Button disabled={time <= 0} onClick={handleStop}>
+                            {icons.stop}
+                        </Button>
+                      </Tooltip>
                   </div>
               </div>
 

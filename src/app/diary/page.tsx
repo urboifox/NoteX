@@ -42,7 +42,7 @@ export default async function DiaryPage({searchParams: { page, q }}: {searchPara
           })
         ) : count === 0 ? (
           <div className="col-span-full w-full flex items-center justify-center flex-col gap-4">
-            <p className="text-neutral-400">
+            <p className="select-none text-neutral-400">
               Looks like you haven&apos;t created any articles yet.
             </p>
             <Link href="/diary/create">
