@@ -22,12 +22,15 @@ export default function Tooltip({ children, title }: TooltipProps) {
 
         timeout.current = setTimeout(() => {
             setVisible(true);
-        }, 700);
+        }, 500);
     }
 
     function handleMouseLeave() {
         if (timeout.current) clearTimeout(timeout.current);
-        setVisible(false);
+
+        timeout.current = setTimeout(() => {
+            setVisible(false);
+        }, 100);
     }
 
     useEffect(() => {
@@ -62,7 +65,10 @@ export default function Tooltip({ children, title }: TooltipProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className={cn("p-2 absolute text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10", position === 'top' ? '-top-12' : '-bottom-12')}
+                        className={cn(
+                            "p-2 absolute text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10",
+                            position === "top" ? "-top-12" : "-bottom-12"
+                        )}
                     >
                         {title}
                     </motion.div>
