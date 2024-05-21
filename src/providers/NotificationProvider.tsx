@@ -84,8 +84,9 @@ export default function NotificationProvider({
             const permission = Notification.permission;
 
             if (permission === "default") {
-                Notification.requestPermission();
-                setShowNitificationDialog(true);
+                Notification.requestPermission().then(() => {
+                    setShowNitificationDialog(true);
+                })
             } else {
                 setShowNitificationDialog(false);
             }
