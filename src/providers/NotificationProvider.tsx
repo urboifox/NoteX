@@ -40,21 +40,44 @@ export default function NotificationProvider({
             const registration = await navigator.serviceWorker.ready;
             const existingSubscription = await registration.pushManager.getSubscription();
 
-            if (!existingSubscription) {
-            const subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(
-                    "BM3_O2yOw8fagx1dXUIYYmaJ5KYnxLOOWd9CC36gzoWo9w6ko_-VR-AIEkl-o1iv4kwGIzZMw1Oxndefy5iqa40"
-                ),
-            });
+            async function subscribe() {
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(
+                        "BM3_O2yOw8fagx1dXUIYYmaJ5KYnxLOOWd9CC36gzoWo9w6ko_-VR-AIEkl-o1iv4kwGIzZMw1Oxndefy5iqa40"
+                    ),
+                });
 
-            await fetch("/api/subscribe", {
-                method: "POST",
-                body: JSON.stringify({ subscription }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+                await fetch("/api/subscribe", {
+                    method: "POST",
+                    body: JSON.stringify({ subscription }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+            }
+
+            if (existingSubscription) {
+                await fetch("/api/verify", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        endpoint: existingSubscription.endpoint,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (!res.exists) {
+                            existingSubscription.unsubscribe();
+                            subscribe();
+                        }
+                    });
+            }
+
+            if (!existingSubscription) {
+                subscribe();
             }
         }
         if (auth) {
