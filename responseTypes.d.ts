@@ -29,3 +29,15 @@ type UserResponse = {
     createdAt: string;
 }
 
+type TodoResponse = {
+    _id: string;
+    title: string;
+    completed: boolean;
+    createdAt: string;
+    updatedAt: string;
+    archived: boolean;
+    dueDate: string;
+    description: string;
+    tags: string[];
+}
+

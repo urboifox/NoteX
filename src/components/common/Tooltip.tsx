@@ -8,9 +8,10 @@ type TooltipProps = {
     children: React.ReactElement;
     title: string;
     position?: "top" | "bottom";
+    keepVisible?: boolean;
 }
 
-export default function Tooltip({ children, title, position = 'top' }: TooltipProps) {
+export default function Tooltip({ children, title, keepVisible = false, position = 'top' }: TooltipProps) {
 
     const timeout = useRef<NodeJS.Timeout | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ export default function Tooltip({ children, title, position = 'top' }: TooltipPr
 
         timeout.current = setTimeout(() => {
             setVisible(true);
-            setTimeout(() => {
+            !keepVisible && setTimeout(() => {
                 setVisible(false);
             }, 2000);
         }, 500);
@@ -70,7 +71,7 @@ export default function Tooltip({ children, title, position = 'top' }: TooltipPr
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className={cn(
-                            "p-2 absolute text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10",
+                            "p-2 absolute hidden md:flex text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10",
                             currentPosition === "top" ? "-top-12" : "-bottom-12"
                         )}
                     >

@@ -20,6 +20,11 @@ const links = [
     icon: icons.todo,
   },
   {
+    label: "Schedule",
+    href: "/schedule",
+    icon: icons.calendar,
+  },
+  {
     label: "Session",
     href: "/session",
     icon: icons.clock,
@@ -30,7 +35,7 @@ export default function Home() {
   return (
     <div className="container flex items-center justify-center h-[calc(100vh-5rem)]">
       <div className="flex flex-col items-center gap-8 justify-center">
-        <h1 className="text-4xl text-center font-light select-none">What are you looking for?</h1>
+        <h1 className="text-3xl sm:text-4xl text-center font-light select-none">What are you looking for?</h1>
 
         <ul className="flex justify-center items-center flex-wrap gap-4">
           {links.map((link) => (

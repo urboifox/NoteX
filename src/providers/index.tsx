@@ -14,7 +14,17 @@ export default function Providers({ children, user }: { children: React.ReactNod
               <AuthProvider user={user}>
                   <NotificationProvider>
                       <SkeletonTheme baseColor="#222" highlightColor="#333">
-                          <Toaster position="bottom-right" />
+                          <Toaster
+                              toastOptions={{
+                                  style: {
+                                      backgroundColor: "transparent",
+                                      color: "#fff",
+                                      border: "1px solid #ffffff20",
+                                      backdropFilter: "blur(4px)",
+                                  },
+                              }}
+                              position="bottom-right"
+                          />
                           {children}
                       </SkeletonTheme>
                   </NotificationProvider>
