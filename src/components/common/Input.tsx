@@ -12,9 +12,10 @@ type InputProps = {
     required?: boolean;
     inputClassName?: string;
     disabled?: boolean;
+    hideErrorTitle?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({label, className, inputClassName, required, error, icon, type = "text", disabled, ...props}: InputProps) {
+export default function Input({label, hideErrorTitle, className, inputClassName, required, error, icon, type = "text", disabled, ...props}: InputProps) {
   const [inputType, setInputType] = useState(type);
   const toggleType = () => setInputType(prev => prev === 'password' ? 'text' : 'password');
 
@@ -59,7 +60,7 @@ export default function Input({label, className, inputClassName, required, error
         )}
       </div>
 
-      {error && (
+      {error && !hideErrorTitle && (
         <small className={"text-red-500 flex items-center gap-1"}>
           {icons.infoCircle}
           {typeof error === "string" ? error : error[0]}

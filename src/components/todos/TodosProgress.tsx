@@ -1,11 +1,15 @@
-import { loading } from "@/functions/loading"
+'use client';
+import { TodosAtom } from "@/recoil/atoms/TodosAtom"
+import { useRecoilValue } from "recoil"
 
-export default async function TodosProgress() {
-    await loading();
+export default function TodosProgress() {
+
+    const todos = useRecoilValue(TodosAtom);
+    const completed = todos.filter((todo) => todo.completed).length
     
     return (
         <div>
-            1/3
+            {completed}/{todos.length}
         </div>
     )
 }

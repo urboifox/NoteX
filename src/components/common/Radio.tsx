@@ -12,7 +12,7 @@ export default function Radio({ label, ...props }: RadioProps) {
                 type="radio"
                 {...props}
             />
-            {label && <span className="">{label}</span>}
+            {label && <span className="select-none">{label}</span>}
         </label>
     );
 }

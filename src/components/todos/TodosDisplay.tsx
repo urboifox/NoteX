@@ -1,15 +1,21 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import Modal from '../common/Modal';
 import Radio from '../common/Radio';
 import TodoItem from './TodoItem';
+import { useRecoilState } from 'recoil';
+import { TodosAtom } from '@/recoil/atoms/TodosAtom';
 
 export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
 
-    const [data, setData] = useState(todos);
+    const [data, setData] = useRecoilState(TodosAtom);
     const [selectedTodo, setSelectedTodo] = useState<TodoResponse | null>(null);
     const [filterMethod, setFilterMethod] = useState('all');
+
+    useEffect(() => {
+        setData(todos);
+    }, [todos, setData]);
 
     function handleDeleteTodo() {
         setData(data.filter((todo) => todo._id !== selectedTodo?._id));
