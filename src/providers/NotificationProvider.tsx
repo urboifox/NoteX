@@ -81,14 +81,14 @@ export default function NotificationProvider({
             }
         }
         if (auth) {
-            const permission = Notification.permission;
+            Notification.requestPermission().then((permission) => {
+                if (permission === "default") {
+                    setShowNitificationDialog(true);
+                } else {
+                    setShowNitificationDialog(false);
+                }
+            })
 
-            if (permission === "default") {
-                Notification.requestPermission();
-                setShowNitificationDialog(true);
-            } else {
-                setShowNitificationDialog(false);
-            }
 
             if ("permissions" in navigator) {
                 navigator.permissions
