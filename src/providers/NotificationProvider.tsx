@@ -85,14 +85,15 @@ export default function NotificationProvider({
 
             if (permission === "default") {
                 setShowNitificationDialog(true);
-                Notification.requestPermission().then((permission) => {
-                    if (permission !== "granted") {
-                        console.log("Permission not granted to send notifications");
-                    }
-                })
             } else {
                 setShowNitificationDialog(false);
             }
+
+            Notification.requestPermission().then((permission) => {
+                if (permission !== "granted") {
+                    console.log("Permission not granted to send notifications");
+                }
+            })
 
             if ("permissions" in navigator) {
                 navigator.permissions
