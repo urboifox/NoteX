@@ -81,14 +81,14 @@ export default function NotificationProvider({
             }
         }
         if (auth) {
-            Notification.requestPermission().then((permission) => {
-                if (permission === "default") {
-                    setShowNitificationDialog(true);
-                } else {
-                    setShowNitificationDialog(false);
-                }
-            })
+            const permission = Notification.permission;
 
+            if (permission === "default") {
+                Notification.requestPermission();
+                setShowNitificationDialog(true);
+            } else {
+                setShowNitificationDialog(false);
+            }
 
             if ("permissions" in navigator) {
                 navigator.permissions
@@ -98,6 +98,8 @@ export default function NotificationProvider({
                             setShowNitificationDialog(false);
                         };
                     });
+            } else {
+                console.log("Notifications API not supported");
             }
 
             if ("serviceWorker" in navigator) {
@@ -112,6 +114,8 @@ export default function NotificationProvider({
                             error
                         );
                     });
+            } else {
+                console.log("Service worker not supported");
             }
 
         }
