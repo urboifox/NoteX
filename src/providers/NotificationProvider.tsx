@@ -84,8 +84,11 @@ export default function NotificationProvider({
             const permission = Notification.permission;
 
             if (permission === "default") {
-                Notification.requestPermission().then(() => {
-                    setShowNitificationDialog(true);
+                setShowNitificationDialog(true);
+                Notification.requestPermission().then((permission) => {
+                    if (permission !== "granted") {
+                        console.log("Permission not granted to send notifications");
+                    }
                 })
             } else {
                 setShowNitificationDialog(false);
@@ -146,7 +149,7 @@ export default function NotificationProvider({
                                     exit={{ opacity: 0 }}
                                     className="fixed top-0 flex-col gap-2 select-none cursor-pointer left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-md flex items-center justify-center"
                                 >
-                                    <p className="text-center flex items-center gap-2 mb-5 px-3">
+                                    <p className="text-center text-wrap px-5 flex items-center gap-2 mb-5">
                                         {icons.bell} Allow Notifications to
                                         recieve prayer times on your desktop.
                                     </p>
