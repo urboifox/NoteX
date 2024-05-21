@@ -1,9 +1,7 @@
 "use client";
 
-import icons from "@/lib/icons";
 import { AuthAtom } from "@/recoil/atoms/AuthAtom";
 import { MutedAtom } from "@/recoil/atoms/MutedAtom";
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRecoilValue } from "recoil";
@@ -14,7 +12,6 @@ export default function NotificationProvider({
     children: React.ReactNode;
 }) {
     const [mounted, setMounted] = useState(false);
-    const [showNitificationDialog, setShowNitificationDialog] = useState(false);
     const azanAudioRef = useRef<HTMLAudioElement>(null);
     const muted = useRecoilValue(MutedAtom);
     const auth = useRecoilValue(AuthAtom);
@@ -35,6 +32,15 @@ export default function NotificationProvider({
 
             return outputArray;
         }
+
+        const handleMessage = (event: MessageEvent) => {
+            console.log('hi');
+            if (event.data.type === "AZAN") {
+                if (azanAudioRef.current) {
+                    azanAudioRef.current.play();
+                }
+            }
+        };
 
         async function subscribeUserToPush() {
             const registration = await navigator.serviceWorker.ready;
@@ -81,14 +87,6 @@ export default function NotificationProvider({
             }
         }
         if (auth) {
-            const permission = Notification.permission;
-
-            if (permission === "default") {
-                setShowNitificationDialog(true);
-            } else {
-                setShowNitificationDialog(false);
-            }
-
             Notification.requestPermission().then((permission) => {
                 if (permission !== "granted") {
                     console.log("Permission not granted to send notifications");
@@ -100,7 +98,7 @@ export default function NotificationProvider({
                     .query({ name: "notifications" })
                     .then(function (notificationPerm) {
                         notificationPerm.onchange = function () {
-                            setShowNitificationDialog(false);
+                            // handle notification permission change
                         };
                     });
             } else {
@@ -119,11 +117,17 @@ export default function NotificationProvider({
                             error
                         );
                     });
+                
+                navigator.serviceWorker.addEventListener("message", handleMessage);
             } else {
                 console.log("Service worker not supported");
             }
 
         }
+
+        return () => {
+            navigator.serviceWorker.removeEventListener('message', handleMessage)
+        };
     }, [auth]);
 
     useEffect(() => {
@@ -141,25 +145,6 @@ export default function NotificationProvider({
                             src="/assets/azan.m4a"
                             ref={azanAudioRef}
                         />
-                        <AnimatePresence>
-                            {showNitificationDialog && (
-                                <motion.div
-                                    onClick={() => setShowNitificationDialog(false)}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="fixed top-0 flex-col gap-2 select-none cursor-pointer left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-md flex items-center justify-center"
-                                >
-                                    <p className="text-center text-wrap px-5 flex items-center gap-2 mb-5">
-                                        {icons.bell} Allow Notifications to
-                                        recieve prayer times on your desktop.
-                                    </p>
-                                    <p>
-                                        Click here to hide
-                                    </p>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
                     </>,
                     document.body
                 )}
