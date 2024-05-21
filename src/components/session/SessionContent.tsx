@@ -132,8 +132,8 @@ export default function SessionContent() {
               onClose={handleCloseModal}
               visible={showModal}
           />
-          <div className="flex-1 pb-5 flex justify-between flex-col gap-10 items-center">
-              <div className="flex-1 flex-col gap-10 flex items-center justify-center">
+          <div className="flex-1 pb-5 flex flex-col justify-center sm:justify-between gap-10 items-center">
+              <div className="flex-col sm:flex-1 gap-10 flex items-center justify-center">
                   {playing ? (
                       <div
                           className={`w-max p-2 rounded-md border border-white/10 text-white/50 cursor-not-allowed`}
@@ -162,7 +162,7 @@ export default function SessionContent() {
                           }}
                           onClick={handlePlay}
                           onTap={handlePlay}
-                          className="rounded-full cursor-pointer relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
+                          className="rounded-full cursor-pointer relative aspect-square w-32 sm:w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
                       >
                           <span
                               className={cn(

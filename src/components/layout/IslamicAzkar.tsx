@@ -20,7 +20,7 @@ export default function IslamicAzkar({ visible = false }: { visible: boolean }) 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setIndex((i) => (i + 1) % AZKAR.length)}
-                        className="p-3 flex items-center gap-2 select-none rounded-lg text-sm transition-colors duration-3000 cursor-pointer border border-white/10 backdrop-blur-md w-max"
+                        className="p-3 text-xs flex items-center gap-2 select-none rounded-lg sm:text-sm transition-colors duration-3000 cursor-pointer border border-white/10 backdrop-blur-md w-max"
                     >
                         {icons.click}
                         {AZKAR[index]}

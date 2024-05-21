@@ -5,8 +5,8 @@ import React from 'react'
 
 export default function SessionContentLoading() {
   return (
-          <div className="flex-1 pb-5 flex justify-between flex-col gap-10 items-center">
-              <div className="flex-1 flex-col gap-10 flex items-center justify-center">
+          <div className="flex-1 pb-5 flex justify-center sm:justify-between flex-col gap-10 items-center">
+              <div className="sm:flex-1 flex-col gap-10 flex items-center justify-center">
                 <Input
                     disabled
                     name="sessionName"
@@ -15,7 +15,7 @@ export default function SessionContentLoading() {
                 />
 
                       <div
-                          className="rounded-full opacity-50 cursor-not-allowed relative aspect-square w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
+                          className="rounded-full opacity-50 cursor-not-allowed relative aspect-square w-32 sm:w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
                       >
                         <span className='text-black'>
                             {icons.play}
