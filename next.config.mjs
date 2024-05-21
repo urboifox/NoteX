@@ -5,6 +5,7 @@ const nextConfig = {
         dest: "public",
         register: true,
         skipWaiting: true,
+        customWorkerDir: "public"
     })
 };
 
