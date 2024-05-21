@@ -20,8 +20,9 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
     function handleDeleteTodo() {
         setData(data.filter((todo) => todo._id !== selectedTodo?._id));
         
-        // TODO: implement delete
-        toast.success(`Todo Deleted`);
+        fetch(`/api/todos?todoId=${selectedTodo?._id}`, {
+            method: "DELETE"
+        }).then(() => toast.success(`Todo Deleted`));
 
         setSelectedTodo(null);
     }

@@ -13,6 +13,7 @@ const links = [
     label: "Notes",
     href: "/notes",
     icon: icons.note,
+    disabled: true,
   },
   {
     label: "Todos",
@@ -23,6 +24,7 @@ const links = [
     label: "Schedule",
     href: "/schedule",
     icon: icons.calendar,
+    disabled: true,
   },
   {
     label: "Session",
@@ -40,9 +42,9 @@ export default function Home() {
         <ul className="flex justify-center items-center flex-wrap gap-4">
           {links.map((link) => (
             <li key={link.label}>
-              <Tooltip position="bottom" title={link.label}>
-                <Link className="text-4xl" href={link.href}>
-                  <Button className="p-5">
+              <Tooltip keepVisible position="bottom" title={link.label}>
+                <Link className="text-4xl" href={link.disabled ? '' : link.href}>
+                  <Button disabled={link.disabled} className="p-5">
                     {link.icon}
                   </Button>
                 </Link>
