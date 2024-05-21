@@ -72,7 +72,8 @@ export default function Tooltip({ children, title, keepVisible = false, position
                         exit={{ opacity: 0 }}
                         className={cn(
                             "p-2 absolute w-max text-xs left-1/2 -translate-x-1/2 backdrop-blur-sm rounded-md border-white/10 border bg-white/10",
-                            currentPosition === "top" ? "-top-12" : "-bottom-12"
+                            currentPosition === "top" ? "-top-12" : "-bottom-12",
+                            !keepVisible && "hidden md:flex"
                         )}
                     >
                         {title}

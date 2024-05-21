@@ -17,8 +17,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({children, className,
       {...props}
       disabled={disabled}
       className={cn(
-        "border gap-2 bg-white/10 border-white/10 transition-colors duration-200 hover:bg-white/15 p-2 flex items-center justify-center rounded-md",
-        active ? "bg-white text-black hover:bg-white/80 hover:text-black/80" : "",
+        "border gap-2 bg-white/10 border-white/10 transition-colors duration-200 sm:hover:bg-white/15 p-2 flex items-center justify-center rounded-md",
+        active ? "bg-white text-black sm:hover:bg-white/80 sm:hover:text-black/80" : "",
         disabled ? "opacity-50 cursor-not-allowed" : "",
         className
       )}
