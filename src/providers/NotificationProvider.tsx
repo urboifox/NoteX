@@ -54,7 +54,7 @@ export default function NotificationProvider({
                     headers: {
                         "Content-Type": "application/json",
                     },
-                });
+                }).catch((e) => console.log(e));
             }
 
             if (existingSubscription) {
@@ -73,7 +73,7 @@ export default function NotificationProvider({
                             existingSubscription.unsubscribe();
                             subscribe();
                         }
-                    });
+                    }).catch((e) => console.log(e));
             }
 
             if (!existingSubscription) {
