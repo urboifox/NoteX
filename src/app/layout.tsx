@@ -11,7 +11,11 @@ const number = Roboto_Mono({ subsets: ["latin"], variable: "--font-number" });
 
 export const metadata: Metadata = {
   title: "NoteX | Focus on what matters",
-  description: "Take care of your notes, articles and more, in one place.",
+  description: "Take care of your notes, diaries and more, in one place.",
+  manifest: "/manifest.json",
+  icons: {
+    apple: "/icon.png",
+  },
 };
 
 export default async function RootLayout({
