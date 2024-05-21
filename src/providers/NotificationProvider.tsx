@@ -1,89 +1,96 @@
-'use client';
+"use client";
 
-import { ARABIC_PRAYER_NAMES } from "@/constants";
-import useNotification from "@/hooks/useNotification";
 import icons from "@/lib/icons";
 import { AuthAtom } from "@/recoil/atoms/AuthAtom";
-import { CurrentTimeAtom } from "@/recoil/atoms/CurrentTimeAtom";
 import { MutedAtom } from "@/recoil/atoms/MutedAtom";
-import { CurrentTimeStringSelector } from "@/recoil/selectors/CurrentTimeStringSelector";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
-export default function NotificationProvider({ children }: { children: React.ReactNode }) {
-
-    const [latestPrayer, setLatestPrayer] = useState('');
+export default function NotificationProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [mounted, setMounted] = useState(false);
     const [showNitificationDialog, setShowNitificationDialog] = useState(false);
-    const [prayerTimes, setPrayerTimes] = useState({} as PrayerTimesType);
-    const setCurrentTime = useSetRecoilState(CurrentTimeAtom);
-    const currentTimeString = useRecoilValue(CurrentTimeStringSelector);
     const azanAudioRef = useRef<HTMLAudioElement>(null);
     const muted = useRecoilValue(MutedAtom);
     const auth = useRecoilValue(AuthAtom);
 
-    const { notify } = useNotification();
-
     useEffect(() => {
-        const permission = Notification.permission;
+        function urlBase64ToUint8Array(base64String: string) {
+            const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, "+")
+                .replace(/_/g, "/");
 
-        if (permission === 'default') {
-            Notification.requestPermission();
-            setShowNitificationDialog(true);
-        } else {
-            setShowNitificationDialog(false);
+            const rawData = atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+
+            return outputArray;
         }
 
-        if ('permissions' in navigator) {
-          navigator.permissions
-            .query({ name: "notifications" })
-            .then(function (notificationPerm) {
-              notificationPerm.onchange = function () {
-                setShowNitificationDialog(false);
-              };
+        async function subscribeUserToPush() {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(
+                    "BM3_O2yOw8fagx1dXUIYYmaJ5KYnxLOOWd9CC36gzoWo9w6ko_-VR-AIEkl-o1iv4kwGIzZMw1Oxndefy5iqa40"
+                ),
+            });
+
+            await fetch("/api/subscribe", {
+                method: "POST",
+                body: JSON.stringify({ subscription }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
         }
-    }, [])
+        if (auth) {
+            const permission = Notification.permission;
 
-    useEffect(() => {
-        const getPrayerTimes = async () => {
-            await fetch('https://api.aladhan.com/v1/timingsByCity?country=Egypt&city=Cairo').then((res) => res.json()).then((data) => {
-                const newPrayerTimes: any = {};
-                for (const [key] of Object.entries(ARABIC_PRAYER_NAMES)) {
-                    newPrayerTimes[key] = data.data.timings[key];
-                }
-                setPrayerTimes(newPrayerTimes);
-            })
-        }
-
-        getPrayerTimes();
-
-        setInterval(() => {
-            setCurrentTime(Date.now());
-        }, 1000)
-    }, [setCurrentTime])
-
-    
-    useEffect(() => {
-        for (const [key, value] of Object.entries(prayerTimes)) {
-            if (value === currentTimeString && latestPrayer !== key && auth?.islamic && auth.islamicAzan) {
-                notify(`${key} Prayer Time`, {
-                  body: `لا حياة بدون صلاة، حان موعد صلاة ${ARABIC_PRAYER_NAMES[key as keyof typeof ARABIC_PRAYER_NAMES]}❤️
-                  ${value}`,
-                });
-                setLatestPrayer(key);
-                if (azanAudioRef.current) {
-                    azanAudioRef.current.play();
-                }
+            if (permission === "default") {
+                Notification.requestPermission();
+                setShowNitificationDialog(true);
+            } else {
+                setShowNitificationDialog(false);
             }
+
+            if ("permissions" in navigator) {
+                navigator.permissions
+                    .query({ name: "notifications" })
+                    .then(function (notificationPerm) {
+                        notificationPerm.onchange = function () {
+                            setShowNitificationDialog(false);
+                        };
+                    });
+            }
+
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/service-worker.js")
+                    .catch((error) => {
+                        console.log(
+                            "Service worker registration failed, error:",
+                            error
+                        );
+                    });
+            }
+
+            subscribeUserToPush();
         }
-    }, [currentTimeString, prayerTimes, notify, latestPrayer, auth?.islamic, auth?.islamicAzan])
+    }, [auth]);
 
     useEffect(() => {
         setMounted(true);
-    }, [])
+    }, []);
 
     return (
         <>
@@ -99,14 +106,18 @@ export default function NotificationProvider({ children }: { children: React.Rea
                         <AnimatePresence>
                             {showNitificationDialog && (
                                 <motion.div
+                                    onClick={() => setShowNitificationDialog(false)}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    className="fixed top-0 left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-sm flex items-center justify-center"
+                                    className="fixed top-0 flex-col gap-2 select-none cursor-pointer left-0 w-full h-full z-[99] bg-black/50 backdrop-blur-md flex items-center justify-center"
                                 >
                                     <p className="text-center flex items-center gap-2 mb-5 px-3">
                                         {icons.bell} Allow Notifications to
                                         recieve prayer times on your desktop.
+                                    </p>
+                                    <p>
+                                        Click here to hide
                                     </p>
                                 </motion.div>
                             )}

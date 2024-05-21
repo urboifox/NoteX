@@ -1,11 +1,10 @@
+import Navbar from "@/components/common/Navbar";
+import IslamicAzkar from "@/components/layout/IslamicAzkar";
+import { getUser } from "@/functions/users";
+import Providers from "@/providers";
 import type { Metadata } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/common/Navbar";
-import Providers from "@/providers";
-import { cookies } from "next/headers";
-import { getUser } from "@/functions/users";
-import IslamicAzkar from "@/components/layout/IslamicAzkar";
 
 const main = Inter({ subsets: ["latin"], variable: "--font-main" });
 const number = Roboto_Mono({ subsets: ["latin"], variable: "--font-number" });
