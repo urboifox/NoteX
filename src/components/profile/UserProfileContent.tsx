@@ -76,14 +76,14 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                 <Checkbox
                     name="islamicAzan"
                     label="Azan"
-                    checked={user?.islamicAzan && allChecked}
+                    checked={!allChecked ? false : allChecked || user?.islamicAzan}
                     disabled={!editMode}
                 />
 
                 <Checkbox
                     name="islamicAzkar"
                     label="Azkar"
-                    checked={user?.islamicAzkar && allChecked}
+                    checked={!allChecked ? false : allChecked || user?.islamicAzkar}
                     disabled={!editMode}
                 />
             </div>

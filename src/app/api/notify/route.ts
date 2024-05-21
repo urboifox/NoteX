@@ -1,10 +1,19 @@
-import Subscription from "@/models/SubscriptionModel";
-import webpush from "./webPush";
-import { ARABIC_PRAYER_NAMES } from "@/constants";
 import dbConnect from "@/config/db";
+import webpush from "@/lib/webPush";
+import Subscription from "@/models/SubscriptionModel";
 import User from "@/models/userModel";
+import { NextRequest, NextResponse } from "next/server";
 
-const sendPrayerNotification = async (prayer: string, time: string) => {
+export async function GET(req: NextRequest) {
+
+    const searchParams = req.nextUrl.searchParams;
+    const message = searchParams.get("message");
+    const playAudio = searchParams.get("playAudio");
+
+    if (!message) {
+        return NextResponse.json({ data: null, message: "Message not found" }, { status: 400 });
+    }
+
     await dbConnect();
     const subscriptions = await Subscription.find();
 
@@ -13,25 +22,25 @@ const sendPrayerNotification = async (prayer: string, time: string) => {
     const users = await User.find({ _id: { $in: subscribedUserIds }, islamicAzan: true });
 
     const payload = JSON.stringify({
-        title: `${prayer} Prayer Time`,
-        body: `لا حياة بدون صلاة، حان وقت صلاة ${
-            ARABIC_PRAYER_NAMES[prayer as keyof typeof ARABIC_PRAYER_NAMES]
-        }❤️ (${time})`,
+        title: "Notification from NoteX",
+        body: message,
         icon: "/icon.png",
         data: {
-            playAudio: true,
+            playAudio: playAudio === "true",
         }
     });
 
-    const sendNotificationPromises = subscriptions.map((subscription) => {
-        if (users.some((user) => user._id.toString() === subscription.userId)) {
+    const validSendNotificationPromises = subscriptions.map((subscription) => {
+        const user = users.find((user) => user._id.toString() === subscription.userId);
+        if (user) {
             return webpush.sendNotification(subscription.value, payload);
         }
-    });
+        return null; // return null for subscriptions that don't match
+    }).filter(Boolean); // filter out null values    
 
     try {
-        const responses = await Promise.allSettled(sendNotificationPromises);
-        console.log(`Notifications sent for ${prayer} prayer.`);
+        const responses = await Promise.allSettled(validSendNotificationPromises);
+        console.log(`Notifications sent. with message: ${message}. total: ${responses.length}`);
 
         // Extract endpoints that failed to send notifications
         const failedEndpoints = responses
@@ -48,6 +57,7 @@ const sendPrayerNotification = async (prayer: string, time: string) => {
     } catch (error) {
         console.error("Error sending notifications:", error);
     }
-};
 
-export { sendPrayerNotification };
+    return NextResponse.json({ data: null, message: "Notification sent" }, { status: 200 });
+
+}
