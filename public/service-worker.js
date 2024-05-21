@@ -4,7 +4,7 @@ self.addEventListener('push', (e) => {
     const title = data.title;
     const options = {
         body: data.body,
-        // icon: data.icon,
+        icon: data.icon || '/icon.png',
     }
 
     self.registration.showNotification(title, options);

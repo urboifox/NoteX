@@ -38,6 +38,9 @@ export default function NotificationProvider({
 
         async function subscribeUserToPush() {
             const registration = await navigator.serviceWorker.ready;
+            const existingSubscription = await registration.pushManager.getSubscription();
+
+            if (!existingSubscription) {
             const subscription = await registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(
@@ -52,6 +55,7 @@ export default function NotificationProvider({
                     "Content-Type": "application/json",
                 },
             });
+            }
         }
         if (auth) {
             const permission = Notification.permission;
@@ -76,6 +80,9 @@ export default function NotificationProvider({
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
                     .register("/service-worker.js")
+                    .then(() => {
+                        subscribeUserToPush();
+                    })
                     .catch((error) => {
                         console.log(
                             "Service worker registration failed, error:",
@@ -84,7 +91,6 @@ export default function NotificationProvider({
                     });
             }
 
-            subscribeUserToPush();
         }
     }, [auth]);
 
