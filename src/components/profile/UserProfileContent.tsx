@@ -14,7 +14,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
 
     const [state, formAction] = useFormState(updateUser, { success: false });
     const [editMode, setEditMode] = useState(false);
-    const [allChecked, setAllChecked] = useState(user.islamic);
+    const [allChecked, setAllChecked] = useState(user?.islamic);
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [passwordVerification, setPasswordVerification] = useState("");
@@ -48,7 +48,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                     className="flex-1 w-full"
                     label="Username"
                     name="username"
-                    defaultValue={user.username}
+                    defaultValue={user?.username}
                     disabled={!editMode}
                     error={state?.errors?.username}
                 />
@@ -56,7 +56,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                     className="flex-1 w-full"
                     label="Email"
                     name="email"
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                     disabled={!editMode}
                     error={state?.errors?.email}
                 />
@@ -66,7 +66,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                 <Checkbox
                     name="islamic"
                     label="Islamic Mode"
-                    checked={user.islamic}
+                    checked={user?.islamic}
                     onChange={(e) => {
                         setAllChecked(e.target.checked);
                     }}
@@ -76,14 +76,14 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                 <Checkbox
                     name="islamicAzan"
                     label="Azan"
-                    checked={user.islamicAzan && allChecked}
+                    checked={user?.islamicAzan && allChecked}
                     disabled={!editMode}
                 />
 
                 <Checkbox
                     name="islamicAzkar"
                     label="Azkar"
-                    checked={user.islamicAzkar && allChecked}
+                    checked={user?.islamicAzkar && allChecked}
                     disabled={!editMode}
                 />
             </div>
