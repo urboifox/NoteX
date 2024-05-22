@@ -19,7 +19,7 @@ const sendPrayerNotification = async (prayer: string, time: string) => {
         }❤️ (${time})`,
         icon: "/icon.png",
         data: {
-            playAudio: true,
+            AZAN: true,
         }
     });
 

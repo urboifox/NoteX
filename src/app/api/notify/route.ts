@@ -2,6 +2,8 @@ import dbConnect from "@/config/db";
 import webpush from "@/lib/webPush";
 import Subscription from "@/models/SubscriptionModel";
 import User from "@/models/userModel";
+import { decodeJwt } from "jose";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -15,6 +17,22 @@ export async function GET(req: NextRequest) {
     }
 
     await dbConnect();
+
+    const session = cookies().get('session')?.value;
+    
+    if (!session) {
+        return NextResponse.json({ data: null, message: "Not authorized" }, { status: 400 })
+    }
+
+    const decoded = decodeJwt(session);
+    const userId = decoded.id;
+
+    const user = await User.findById(userId);
+
+    if (!user.isAdmin) {
+        return NextResponse.json({ data: null, message: "Not authorized" }, { status: 401 })
+    }
+
     const subscriptions = await Subscription.find();
 
     const subscribedUserIds = subscriptions.map((sub) => sub.userId);
@@ -22,11 +40,11 @@ export async function GET(req: NextRequest) {
     const users = await User.find({ _id: { $in: subscribedUserIds }, islamicAzan: true });
 
     const payload = JSON.stringify({
-        title: "Notification from NoteX",
+        title: "NoteX",
         body: message,
         icon: "/icon.png",
         data: {
-            playAudio: playAudio === "true",
+            AZAN: playAudio === "true",
         }
     });
 
@@ -59,5 +77,4 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json({ data: null, message: "Notification sent" }, { status: 200 });
-
 }

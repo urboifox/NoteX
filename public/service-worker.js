@@ -1,5 +1,9 @@
+console.log('service worker registered');
+
 self.addEventListener('push', (e) => {
     const data = JSON.parse(e.data.text());
+    
+    console.log('Recieved a push message: ', data);
 
     const title = data.title || 'Notex';
     const options = {
@@ -7,9 +11,8 @@ self.addEventListener('push', (e) => {
         icon: data.icon || '/icon.png',
     }
 
-    self.registration.showNotification(title, options);
-
-    if (data.playAudio) {
+    if (data.data.AZAN) {
+        console.log('Notification has audio')
         self.clients.matchAll({ includeUncontrolled: true }).then(function(clients) {
             clients.forEach(function(client) {
                 client.postMessage({
@@ -17,10 +20,16 @@ self.addEventListener('push', (e) => {
                 });
             });
         });
+    } else {
+        console.log("Notification doesn't have audio");
     }
+
+    self.registration.showNotification(title, options);
+
 });
 
 self.addEventListener('notificationclick', function(event) {
+    console.log('User clicked notification');
     event.notification.close();
     event.waitUntil(
         clients.openWindow('/')
