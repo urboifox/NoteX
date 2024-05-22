@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export default function UserProfileContent({ user }: { user: UserResponse}) {
 
     const [state, formAction] = useFormState(updateUser, { success: false });
-    const [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState(true);
     const [allChecked, setAllChecked] = useState(user?.islamic);
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -38,9 +38,9 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                     <Button>{icons.angleLeft} Back</Button>
                 </Link>
 
-                <Button onClick={() => setEditMode(!editMode)}>
+                {/* <Button onClick={() => setEditMode(!editMode)}>
                     {editMode ? icons.editOff : icons.edit}
-                </Button>
+                </Button> */}
             </div>
 
             <div className="flex flex-col sm:flex-row w-full items-center gap-5">

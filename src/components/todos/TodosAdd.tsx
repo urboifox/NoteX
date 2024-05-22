@@ -23,17 +23,20 @@ function FormControls({ state }: any) {
     const { pending } = useFormStatus();
     const [value, setValue] = useState('');
     const router = useRouter();
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (state.success) {
             setValue('');
             router.refresh();
+            inputRef.current?.focus();
         }
     }, [state, router])
 
     return (
         <>
             <Input
+                ref={inputRef}
                 disabled={pending}
                 hideErrorTitle
                 value={value}

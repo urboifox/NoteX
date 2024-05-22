@@ -1,5 +1,5 @@
 import Button from "@/components/common/Button";
-import Input from "@/components/common/Input";
+import TodoContentLoading from "@/components/skeletons/Todo/TodoContentLoading";
 import TodosAdd from "@/components/todos/TodosAdd";
 import TodosContent from "@/components/todos/TodosContent";
 import TodosProgress from "@/components/todos/TodosProgress";
@@ -32,7 +32,7 @@ export default function TodosPage() {
 
                   <div className="flex flex-col gap-5">
                       <TodosAdd />
-                      <Suspense fallback={"loading..."}>
+                      <Suspense fallback={<TodoContentLoading />}>
                           <TodosContent />
                       </Suspense>
                   </div>

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     }
 
     const decoded = decodeJwt(session);
-    const userId = decoded.id;
+    const userId = decoded?.id;
 
     const user = await User.findById(userId);
 

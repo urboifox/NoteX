@@ -59,6 +59,7 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
                     if (error.name === "AbortError") {
                         console.log("Previous request canceled");
                     } else {
+                        toast.error("Couldn't update todo");
                         console.error("Fetch error:", error);
                     }
                 });

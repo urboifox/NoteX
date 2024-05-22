@@ -1,5 +1,5 @@
 'use client';
-import { HTMLInputTypeAttribute, useState } from 'react';
+import { HTMLInputTypeAttribute, forwardRef, useState } from 'react';
 import icons from '@/lib/icons';
 import { cn } from '@/helpers/cn';
 
@@ -15,7 +15,7 @@ type InputProps = {
     hideErrorTitle?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({label, hideErrorTitle, className, inputClassName, required, error, icon, type = "text", disabled, ...props}: InputProps) {
+const Input = forwardRef<HTMLInputElement, InputProps>(({label, hideErrorTitle, className, inputClassName, required, error, icon, type = "text", disabled, ...props}: InputProps, ref) => {
   const [inputType, setInputType] = useState(type);
   const toggleType = () => setInputType(prev => prev === 'password' ? 'text' : 'password');
 
@@ -34,6 +34,7 @@ export default function Input({label, hideErrorTitle, className, inputClassName,
 
       <div className={cn("relative text-white/80 flex items-center")}>
         <input
+          ref={ref}
           type={inputType}
           disabled={disabled}
           className={cn(
@@ -68,4 +69,8 @@ export default function Input({label, hideErrorTitle, className, inputClassName,
       )}
     </div>
   );
-}
+});
+
+Input.displayName = "Input";
+
+export default Input;
