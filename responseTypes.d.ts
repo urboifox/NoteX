@@ -4,11 +4,20 @@ type DataResponse<T> = {
     data: T;
 }
 
-type DiaryResponse = {
+type BlogResponse = {
     _id: string;
     brief: string;
     content: string;
     createdAt: string;
+    creatorId: string;
+    slug: string;
+    views: number;
+    tags: string[];
+    coverImage: string;
+    published: boolean;
+    likesIds: string[];
+    likesCount: number;
+    updatedAt: string;
 }
 
 type SessionResponse = {

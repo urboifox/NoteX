@@ -1,26 +1,26 @@
 'use server';
 
 import dbConnect from "@/config/db";
-import Diary from "@/models/diaryModel";
+import Blog from "@/models/blogModel";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as zod from 'zod';
 import * as jose from "jose";
 import { revalidatePath } from "next/cache";
 
-const createDiarySchema = zod.object({
+const createBlogSchema = zod.object({
     brief: zod.string().min(3, "Brief must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
 })
 
 
-type DiaryFormType = {
+type BlogFormType = {
     success: boolean;
     errors?: {
         brief?: string[],
     }
 }
 
-export async function createDiary(data: DiaryFormType, formData: FormData): Promise<DiaryFormType> {
+export async function createBlog(data: BlogFormType, formData: FormData): Promise<BlogFormType> {
     await dbConnect();
 
     const brief = formData.get('brief');
@@ -31,16 +31,16 @@ export async function createDiary(data: DiaryFormType, formData: FormData): Prom
         redirect('/login');
     }
 
-    const result = createDiarySchema.safeParse({ brief, content });
+    const result = createBlogSchema.safeParse({ brief, content });
 
     if (result.success) {
         const decoded = jose.decodeJwt(session);
         const userId = decoded.id;
 
-        const diary = new Diary({ brief, content, creatorId: userId });
-        await diary.save();
+        const blog = new Blog({ brief, content, creatorId: userId });
+        await blog.save();
 
-        revalidatePath('/diary');
+        revalidatePath('/blog');
 
         return { success: true }
     } else {
@@ -51,34 +51,34 @@ export async function createDiary(data: DiaryFormType, formData: FormData): Prom
     }
 }
 
-export async function updateDiary(data: DiaryFormType, formData: FormData): Promise<DiaryFormType> {
+export async function updateBlog(data: BlogFormType, formData: FormData): Promise<BlogFormType> {
     await dbConnect();
 
     const brief = formData.get("brief");
     const content = formData.get("content");
-    const diaryId = formData.get("diaryId");
+    const blogId = formData.get("blogId");
     const session = cookies().get("session")?.value;
 
     if (!session) {
         redirect("/login");
     }
 
-    const result = createDiarySchema.safeParse({ brief, content });
+    const result = createBlogSchema.safeParse({ brief, content });
 
     if (result.success) {
 
-        const diary = await Diary.findById(diaryId);
+        const blog = await Blog.findById(blogId);
 
-        if (!diary) {
-            redirect("/diary");
+        if (!blog) {
+            redirect("/blog");
         }
 
-        diary.brief = brief;
-        diary.content = content;
+        blog.brief = brief;
+        blog.content = content;
 
-        await diary.save();
+        await blog.save();
 
-        revalidatePath(`/diary/${diaryId}`);
+        revalidatePath(`/blog/${blogId}`);
 
         return { success: true };
     }

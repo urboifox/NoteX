@@ -6,7 +6,7 @@
     "start_url": "/",
     "name": "NoteX",
     "short_name": "NoteX",
-    "description": "Take care of your notes, diaries and more, in one place",
+    "description": "Take care of your notes, todos and more, in one place",
     "icons": [
         {
             "src": "/icon-192x192.png",

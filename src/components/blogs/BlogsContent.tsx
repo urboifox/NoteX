@@ -1,20 +1,20 @@
-import { getDiaries } from "@/functions/diaries";
 import React, { Suspense } from "react";
-import DiaryCard from "./DiaryCard";
 import Link from "next/link";
 import Button from "../common/Button";
 import icons from "@/lib/icons";
 import NoResult from "../common/NoResult";
 import PaginationArrows from "../common/PaginationArrows";
+import BlogCard from "./BlogCard";
+import { getBlogs } from "@/functions/blogs";
 
-export default async function DiariesContent({
+export default async function BlogsContent({
     page,
     q,
 }: {
     page: string;
     q: string;
 }) {
-    const { count, data: diaries } = await getDiaries(
+    const { count, data: blogs } = await getBlogs(
         parseInt(page),
         undefined,
         q
@@ -23,16 +23,16 @@ export default async function DiariesContent({
     return (
         <div className="flex-1 flex flex-col justify-between gap-3">
             <div className="gap-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-                {diaries.length > 0 ? (
-                    diaries.map((diary, index) => {
-                        return <DiaryCard key={index} diary={diary} />;
+                {blogs.length > 0 ? (
+                    blogs.map((blog, index) => {
+                        return <BlogCard key={index} blog={blog} />;
                     })
                 ) : count === 0 ? (
                     <div className="col-span-full w-full flex items-center justify-center flex-col gap-4">
                         <p className="select-none text-neutral-400">
-                            Looks like you haven&apos;t created any diaries yet.
+                            Looks like you haven&apos;t created any blogs yet.
                         </p>
-                        <Link href="/diary/create">
+                        <Link href="/blog/create">
                             <Button>Create {icons.plus}</Button>
                         </Link>
                     </div>

@@ -24,7 +24,8 @@ const sendPrayerNotification = async (prayer: string, time: string) => {
     });
 
     const sendNotificationPromises = subscriptions.map((subscription) => {
-        if (users.some((user) => user._id.toString() === subscription.userId)) {
+        const user = users.find((user) => user._id.toString() === subscription.userId);
+        if (user) {
             return webpush.sendNotification(subscription.value, payload);
         }
     });

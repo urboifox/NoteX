@@ -8,16 +8,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export default function DiaryActions({ diaryId }: { diaryId: string }) {
+export default function BlogActions({ blogId }: { blogId: string }) {
 
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
-    async function handleDeleteDiary() {
+    async function handleDeleteBlog() {
         setLoading(true);
-        await fetch(`/api/diaries?diaryId=${diaryId}`, {
+        await fetch(`/api/blogs?blogId=${blogId}`, {
             method: "DELETE"
         })
         .then(async (res) => {
@@ -26,7 +26,7 @@ export default function DiaryActions({ diaryId }: { diaryId: string }) {
                 toast.error(data.message);
             } else {
                 // TODO: switch to router.back(), now it doesnt refresh the page
-                router.push('/diary');
+                router.push('/blog');
                 router.refresh();
             }
         })
@@ -38,9 +38,9 @@ export default function DiaryActions({ diaryId }: { diaryId: string }) {
 
     return (
         <>
-            <Modal loading={loading} text="Are you sure you want to delete this diary?" onSubmit={handleDeleteDiary} visible={showModal} onCancel={() => setShowModal(false)} />
+            <Modal loading={loading} text="Are you sure you want to delete this blog?" onSubmit={handleDeleteBlog} visible={showModal} onCancel={() => setShowModal(false)} />
             <div className="flex items-center gap-3">
-                <Link href={`/diary/${diaryId}/edit`}>
+                <Link href={`/blog/${blogId}/edit`}>
                 <Button>
                     {icons.edit}
                 </Button>

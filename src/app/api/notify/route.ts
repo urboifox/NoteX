@@ -1,10 +1,12 @@
 import dbConnect from "@/config/db";
+import { sendPrayerNotification } from "@/lib/notificationService";
 import webpush from "@/lib/webPush";
 import Subscription from "@/models/SubscriptionModel";
 import User from "@/models/userModel";
 import { decodeJwt } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import cron from 'node-cron';
 
 export async function GET(req: NextRequest) {
 
@@ -48,10 +50,18 @@ export async function GET(req: NextRequest) {
         }
     });
 
+    // cron.schedule('40 11 * * *', async () => {
+    //     console.log('cron job executed at 11:36');
+    //     await sendPrayerNotification('Asr', '11:35');
+    // }, {
+    //     timezone: 'Africa/Cairo'
+    // })
+
     const validSendNotificationPromises = subscriptions.map((subscription) => {
         const user = users.find((user) => user._id.toString() === subscription.userId);
         if (user) {
             return webpush.sendNotification(subscription.value, payload);
+            // return sendPrayerNotification('Fajr', '11:00');
         }
         return null; // return null for subscriptions that don't match
     }).filter(Boolean); // filter out null values    

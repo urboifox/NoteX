@@ -5,9 +5,9 @@ import Link from "next/link";
 
 const links = [
   {
-    label: "Diaries",
-    href: "/diary",
-    icon: icons.diary,
+    label: "Blog",
+    href: "/blog",
+    icon: icons.pen,
   },
   {
     label: "Notes",

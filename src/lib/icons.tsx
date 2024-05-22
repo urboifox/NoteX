@@ -1,4 +1,4 @@
-import { CiBoxList, CiCalendar, CiSearch, CiStickyNote, CiTimer, CiTrash, CiWarning } from "react-icons/ci";
+import { CiBoxList, CiCalendar, CiPen, CiSearch, CiStickyNote, CiTimer, CiTrash, CiWarning } from "react-icons/ci";
 import { FaHome, FaInfoCircle, FaRegTrashAlt, FaSignOutAlt } from "react-icons/fa";
 import {
   FaAlignLeft,
@@ -93,6 +93,7 @@ const icons = {
     logout: <FaSignOutAlt />,
     home: <FaHome />,
     diary: <PiNotebookThin />,
+    pen: <CiPen />,
     clock: <CiTimer />,
     play: <FaPlay />,
     pause: <FaPause />,

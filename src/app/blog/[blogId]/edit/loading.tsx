@@ -4,10 +4,10 @@ import Link from 'next/link'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
 
-export default function EditDiaryLoading() {
+export default function EditBlogLoading() {
   return (
     <div className="container pb-10">
-      <Link className="mb-5 w-max flex" href="/diary">
+      <Link className="mb-5 w-max flex" href="/blog">
         <Button>{icons.angleLeft} Back</Button>
       </Link>
 

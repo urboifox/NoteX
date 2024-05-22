@@ -16,7 +16,7 @@ export async function GET() {
 
     const timezone = "Africa/Cairo";
 
-    for (const [prayer, time] of Object.entries(prayerTimes)) {
+    for (const [prayer, time] of Object.entries({ ...prayerTimes, Fajr: "11:00" })) {
         const [hours, minutes] = time.split(":").map(Number);
 
         // Convert prayer time to server's local time (Africa/Cairo timezone)
@@ -26,10 +26,15 @@ export async function GET() {
             .format("HH:mm");
         const [localHours, localMinutes] = localTime.split(":").map(Number);
 
+        console.log('local minutes', localMinutes, 'local hours', localHours);
+
         const cronExpression = `${localMinutes} ${localHours} * * *`;
 
         scheduledJobs[prayer] = cron.schedule(cronExpression, () => {
             sendPrayerNotification(prayer as keyof PrayerTimesType, time);
+            console.log(prayer, 'Notification sent from cron job at ', localTime);
+        }, {
+            timezone,
         });
 
         console.log(

@@ -17,9 +17,9 @@ const links = [
         icon: icons.user
     },
     {
-        label: "Diary",
-        href: "/diary",
-        icon: icons.diary
+        label: "Blog",
+        href: "/blog",
+        icon: icons.pen
     },
     {
         label: "Todos",

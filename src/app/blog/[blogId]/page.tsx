@@ -1,27 +1,27 @@
+import BlogActions from "@/components/blogs/BlogActions";
 import Button from "@/components/common/Button";
-import DiaryActions from "@/components/diaries/DiaryActions";
-import { getDiaryById } from "@/functions/diaries";
+import { getBlogById } from "@/functions/blogs";
 import icons from "@/lib/icons";
 import Link from "next/link";
 
-export default async function OneDiaryPage({ params: { diaryId } }: { params: { diaryId: string } }) {
+export default async function OneBlogPage({ params: { blogId } }: { params: { blogId: string } }) {
 
-  const diary = await getDiaryById(diaryId);
+  const blog = await getBlogById(blogId);
 
-  return diary ? (
+  return blog ? (
       <div className="container flex flex-col gap-5">
-          <Link href="/diary">
+          <Link href="/blog">
               <Button>{icons.angleLeft} Back</Button>
           </Link>
           <div className="flex items-end justify-between">
               <h1 className="text-2xl font-light text-neutral-500">
-                  {diary?.brief}
+                  {blog?.brief}
               </h1>
-              <DiaryActions diaryId={JSON.parse(JSON.stringify(diaryId))} />
+              <BlogActions blogId={JSON.parse(JSON.stringify(blogId))} />
           </div>
           <div
               className="p-5 bg-white/10 rounded-md border border-white/10"
-              dangerouslySetInnerHTML={{ __html: diary?.content || "" }}
+              dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
           />
       </div>
   ) : (

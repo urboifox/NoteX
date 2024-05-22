@@ -1,5 +1,4 @@
 "use client";
-import { createDiary, updateDiary } from "@/actions/diaryActions";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import Input from "../common/Input";
@@ -7,32 +6,33 @@ import Button from "../common/Button";
 import Tiptap from "../common/Tiptap/index";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { createBlog, updateBlog } from "@/actions/BlogActions";
 
-export default function DiaryForm({ diary }: { diary?: DiaryResponse | null }) {
+export default function BlogForm({ blog }: { blog?: BlogResponse | null }) {
   const [content, setContent] = useState("");
 
-  const [state, formAction] = useFormState(diary ? updateDiary : createDiary, { success: false });
+  const [state, formAction] = useFormState(blog ? updateBlog : createBlog, { success: false });
   const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
-      toast.success(`Diary ${!!diary ? "saved" : "created"} successfully`);
-      router.push('/diary' + (diary ? `/${diary._id}` : ""))
+      toast.success(`Blog ${!!blog ? "saved" : "created"} successfully`);
+      router.push('/Blog' + (blog ? `/${blog._id}` : ""))
     }
-  }, [state.success, router, diary])
+  }, [state.success, router, blog])
 
   useEffect(() => {
-    if (diary) {
-      setContent(diary.content);
+    if (blog) {
+      setContent(blog.content);
     }
-  }, [diary])
+  }, [blog])
 
   return (
     <form
       action={(FormData: FormData) => {
         FormData.append("content", content);
-        if (diary) {
-            FormData.append("diaryId", diary._id);
+        if (blog) {
+            FormData.append("blogId", blog._id);
         }
         formAction(FormData);
       }}
@@ -40,10 +40,10 @@ export default function DiaryForm({ diary }: { diary?: DiaryResponse | null }) {
     >
       <Input
         name="brief"
-        placeholder="Today I..."
+        placeholder="This blog is about..."
         label="Brief"
         error={state.errors?.brief}
-        defaultValue={diary?.brief}
+        defaultValue={blog?.brief}
       />
 
       <Tiptap
@@ -52,7 +52,7 @@ export default function DiaryForm({ diary }: { diary?: DiaryResponse | null }) {
         label="Content"
       />
 
-      <SubmitButton edit={!!diary} />
+      <SubmitButton edit={!!blog} />
     </form>
   );
 }
