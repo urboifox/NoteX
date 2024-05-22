@@ -58,7 +58,7 @@ export default function NotificationProvider({
                 }
 
                 // Add event listener for handling messages from service worker
-                navigator.serviceWorker.addEventListener("message", handleMessage);
+                navigator.serviceWorker.onmessage =  handleMessage;
             } catch (error) {
                 console.error("Error during notification setup:", error);
             }
@@ -108,11 +108,6 @@ export default function NotificationProvider({
         if (auth) {
             requestNotificationPermission().then(() => setMounted(true));
         }
-
-        return () => {
-            // Cleanup: remove message event listener when component unmounts
-            navigator.serviceWorker.removeEventListener("message", handleMessage);
-        };
     }, [auth]);
 
     return (

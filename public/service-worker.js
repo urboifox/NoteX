@@ -3,10 +3,10 @@ self.addEventListener('push', (e) => {
 
     const title = data.title || 'Notex';
     const options = {
-        body: 'You have a new notification',
+        body: data.body || 'You have a new notification',
         icon: data.icon || '/icon.png',
     }
-    
+
     self.registration.showNotification(title, options);
 
     if (data.playAudio) {
