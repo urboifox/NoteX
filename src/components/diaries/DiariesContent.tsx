@@ -41,7 +41,7 @@ export default async function DiariesContent({
                 )}
             </div>
 
-            <div className="flex items-center justify-end">
+            <div className="flex items-center">
                 <Suspense>
                     <PaginationArrows count={count} />
                 </Suspense>

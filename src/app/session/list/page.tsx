@@ -11,7 +11,7 @@ export default async function SessionListPage({ searchParams: { page } }: { sear
     const sessions = await getSessions(parseInt(page), limit);
 
     return (
-        <div className="flex flex-col justify-between gap-5 items-end container page pb-5">
+        <div className="flex flex-col justify-between gap-5 container page pb-5">
             <div className="flex flex-col gap-4 w-full">
                 <Link href={"/session"} className="w-max">
                     <Button>{icons.angleLeft} Back</Button>

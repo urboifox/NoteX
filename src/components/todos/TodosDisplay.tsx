@@ -1,25 +1,55 @@
 "use client";
+import icons from "@/lib/icons";
+import { TodosAtom } from "@/recoil/atoms/TodosAtom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import Modal from "../common/Modal";
-import Radio from "../common/Radio";
-import TodoItem from "./TodoItem";
 import { useRecoilState } from "recoil";
-import { TodosAtom } from "@/recoil/atoms/TodosAtom";
+import Button from "../common/Button";
+import Modal from "../common/Modal";
+import NoResult from "../common/NoResult";
+import Radio from "../common/Radio";
+import Tooltip from "../common/Tooltip";
+import TodoItem from "./TodoItem";
 
 export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
-    const [data, setData] = useRecoilState(TodosAtom);
+    const [globalTodos, setGlobalTodos] = useRecoilState(TodosAtom);
     const [selectedTodo, setSelectedTodo] = useState<TodoResponse | null>(null);
     const [filterMethod, setFilterMethod] = useState("all");
     const abortControllerMap = useRef<Map<string, AbortController>>(new Map());
     const timeoutMap = useRef<Map<string, NodeJS.Timeout>>(new Map());
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        setData(todos);
-    }, [todos, setData]);
+        setGlobalTodos(todos);
+    }, [todos, setGlobalTodos]);
+
+    useEffect(() => {
+        if (globalTodos.every((todo) => todo.completed) && globalTodos.length > 0) {
+            setLoading(true);
+            const updates = globalTodos.map((todo) => {
+                return fetch(`/api/todos?todoId=${todo._id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ archived: true }),
+                })
+            })
+
+            Promise.all(updates).then(() => {
+                router.refresh();
+                toast.success(`Todos Archived`);
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+    }, [router, globalTodos]);
 
     function handleDeleteTodo() {
-        setData(data.filter((todo) => todo._id !== selectedTodo?._id));
+        setGlobalTodos(globalTodos.filter((todo) => todo._id !== selectedTodo?._id));
 
         fetch(`/api/todos?todoId=${selectedTodo?._id}`, {
             method: "DELETE",
@@ -29,8 +59,8 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
     }
 
     function handleChangeTodoStatus(todo: TodoResponse) {
-        setData(
-            data.map((t) =>
+        setGlobalTodos(
+            globalTodos.map((t) =>
                 t._id === todo._id ? { ...t, completed: !t.completed } : t
             )
         );
@@ -68,7 +98,7 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
         timeoutMap.current.set(todo._id, newTimeout);
     }
 
-    const filteredData = data.filter((todo) => {
+    const filteredData = globalTodos.filter((todo) => {
         if (filterMethod === "todo") {
             return !todo.completed;
         } else if (filterMethod === "completed") {
@@ -86,7 +116,13 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
                 text={`Delete ${selectedTodo?.title}`}
                 onSubmit={handleDeleteTodo}
             />
+
             <div className="flex flex-wrap gap-3 mb-3">
+                <Tooltip title="Archive">
+                    <Link href="/todos/archive">
+                        <Button className="text-2xl">{icons.archive}</Button>
+                    </Link>
+                </Tooltip>
                 <Radio
                     onChange={(e) => setFilterMethod(e.target.value)}
                     value={"all"}
@@ -107,14 +143,27 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
                     name="filter"
                 />
             </div>
-            {filteredData.map((todo, i) => (
-                <TodoItem
-                    onClick={handleChangeTodoStatus}
-                    onDelete={(todo) => setSelectedTodo(todo)}
-                    todo={todo}
-                    key={i}
-                />
-            ))}
+            {filteredData.length > 0 ? (
+                filteredData.map((todo, i) => (
+                    <TodoItem
+                        loading={loading}
+                        onClick={handleChangeTodoStatus}
+                        onDelete={(todo) => setSelectedTodo(todo)}
+                        todo={todo}
+                        key={i}
+                    />
+                ))
+            ) : (
+                <div className="mt-5">
+                    {globalTodos.length === 0 ? (
+                        <p className="text-center text-neutral-500 font-sm">
+                            Looks like you don&apos;t have any todos yet
+                        </p>
+                    ) : (
+                        <NoResult />
+                    )}
+                </div>
+            )}
         </>
     );
 }

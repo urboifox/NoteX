@@ -13,9 +13,6 @@ const TodoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  updatedAt: {
-    type: Date
-  },
   archived: {
     type: Boolean,
     default: false
@@ -27,9 +24,6 @@ const TodoSchema = new mongoose.Schema({
   },
   dueDate: {
     type: Date
-  },
-  tags: {
-    type: [String]
   },
 })
 

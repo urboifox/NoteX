@@ -5,12 +5,7 @@
 body {
   background-color: #000;
   color: #fff;
-}
-
-@media screen and (max-width: 767px) {
-  body {
-    padding-bottom: 5rem;
-  }
+  padding-bottom: 5rem;
 }
 
 ::-webkit-scrollbar {

@@ -34,7 +34,7 @@ import { HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
 import { IoClose, IoSave } from "react-icons/io5";
 import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
 import { MdFiberNew, MdMusicNote, MdMusicOff } from "react-icons/md";
-import { PiNotebookThin } from "react-icons/pi";
+import { PiArchiveLight, PiNotebookThin } from "react-icons/pi";
 import { RiCodeBlock, RiFilePaper2Line, RiQuestionAnswerLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { TbArrowBarToLeft, TbEdit, TbEditOff, TbPageBreak } from "react-icons/tb";
@@ -104,7 +104,8 @@ const icons = {
     musicNote: <MdMusicNote />,
     musicNoteMuted: <MdMusicOff />,
     bell: <FaBell />,
-    check: <FaCheck />
+    check: <FaCheck />,
+    archive: <PiArchiveLight />
 }
 
 export default icons;

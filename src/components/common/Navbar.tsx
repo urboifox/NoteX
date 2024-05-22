@@ -39,7 +39,7 @@ export default function Navbar() {
 
     return (
         <header className="container h-20 flex items-center justify-between">
-            <Link href="/" className="font-extrabold flex text-2xl text-transparent w-max bg-clip-text bg-primary">
+            <Link href="/" className="font-extrabold select-none flex text-2xl text-transparent w-max bg-clip-text bg-primary">
                 NoteX
             </Link>
 
