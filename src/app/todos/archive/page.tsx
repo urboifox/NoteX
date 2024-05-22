@@ -21,7 +21,7 @@ export default async function TodosArchivePage({searchParams: {page}}: {searchPa
                     <DeleteAllTodosButton todosCount={archivedTodos.count} />
                 </div>
 
-                <ArchivedTodosContent todos={archivedTodos.data} />
+                <ArchivedTodosContent todos={JSON.parse(JSON.stringify(archivedTodos.data))} />
             </div>
 
             <PaginationArrows count={archivedTodos.count} />

@@ -25,11 +25,11 @@ export async function GET() {
             .local()
             .format("HH:mm");
         const [localHours, localMinutes] = localTime.split(":").map(Number);
+
         const cronExpression = `${localMinutes} ${localHours} * * *`;
 
         scheduledJobs[prayer] = cron.schedule(cronExpression, () => {
             sendPrayerNotification(prayer as keyof PrayerTimesType, time);
-            scheduledJobs[prayer].stop(); // Stop the job after it runs to prevent repetition
         });
 
         console.log(

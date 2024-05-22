@@ -1,4 +1,5 @@
 "use client";
+import { TODO_TAGS } from "@/constants";
 import icons from "@/lib/icons";
 import { TodosAtom } from "@/recoil/atoms/TodosAtom";
 import Link from "next/link";
@@ -98,6 +99,26 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
         timeoutMap.current.set(todo._id, newTimeout);
     }
 
+    function handleTagChange(todo: TodoResponse, tag: TagResponse) {
+        setGlobalTodos(
+            globalTodos.map((t) => {
+                if (todo._id.toString() === t._id.toString()) {
+                    return { ...t, tag };
+                } else {
+                    return t;
+                }
+            })
+        );
+
+        fetch(`/api/todos?todoId=${todo?._id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tag }),
+        })
+    }
+
     const filteredData = globalTodos.filter((todo) => {
         if (filterMethod === "todo") {
             return !todo.completed;
@@ -146,6 +167,8 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
             {filteredData.length > 0 ? (
                 filteredData.map((todo, i) => (
                     <TodoItem
+                        tags={TODO_TAGS}
+                        onTagChange={(todo, tag) => handleTagChange(todo, tag)}
                         loading={loading}
                         onClick={handleChangeTodoStatus}
                         onDelete={(todo) => setSelectedTodo(todo)}

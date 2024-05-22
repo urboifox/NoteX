@@ -1,3 +1,4 @@
+import { TODO_TAGS } from "@/constants";
 import mongoose from "mongoose";
 
 const TodoSchema = new mongoose.Schema({
@@ -25,6 +26,13 @@ const TodoSchema = new mongoose.Schema({
   dueDate: {
     type: Date
   },
+  tag: {
+    type: {
+      name: String,
+      color: String
+    },
+    default: TODO_TAGS[0]
+  }
 })
 
 const Todo = mongoose.models.Todo || mongoose.model('Todo', TodoSchema);

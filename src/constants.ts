@@ -20,3 +20,38 @@ export const ARABIC_PRAYER_NAMES = {
     // Sunset: 'الغروب',
     Isha: 'العشاء',
 }
+
+export const TODO_TAGS = [
+    {
+        name: 'General',
+        color: '#70CFF8',
+    },
+    {
+        name: 'Work',
+        color: '#FFC670',
+    },
+    {
+        name: 'Personal',
+        color: '#FF9F70',
+    },
+    {
+        name: 'Shopping',
+        color: '#70FFC8',
+    },
+    {
+        name: 'Study',
+        color: '#70FF70',
+    },
+    {
+        name: 'Travel',
+        color: '#FF70C8',
+    },
+    {
+        name: 'Gaming',
+        color: '#FF7070',
+    },
+    {
+        name: 'Other',
+        color: '#70F8FF',
+    }
+]

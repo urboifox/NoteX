@@ -29,6 +29,12 @@ type UserResponse = {
     createdAt: string;
 }
 
+type TagResponse = {
+    _id?: string;
+    name: string;
+    color: string;
+}
+
 type TodoResponse = {
     _id: string;
     title: string;
@@ -36,6 +42,7 @@ type TodoResponse = {
     createdAt: string;
     updatedAt: string;
     archived: boolean;
+    tag: TagResponse;
     dueDate: string;
     description: string;
     tags: string[];

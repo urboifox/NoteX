@@ -16,7 +16,7 @@ export default function TodosArchiveLoadingPage() {
                 <DeleteAllTodosButton todosCount={0} />
             </div>
 
-            <ArchivedTodosContent todos={Array(12).fill({})} />
+            <ArchivedTodosContent todos={Array(7).fill({})} />
 
             <PaginationArrows count={0} />
         </div>

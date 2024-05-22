@@ -31,7 +31,7 @@ import {
 import { FiLogIn } from "react-icons/fi";
 import { GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
 import { HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
-import { IoClose, IoSave } from "react-icons/io5";
+import { IoClose, IoReturnDownBackOutline, IoSave } from "react-icons/io5";
 import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
 import { MdFiberNew, MdMusicNote, MdMusicOff } from "react-icons/md";
 import { PiArchiveLight, PiNotebookThin } from "react-icons/pi";
@@ -105,7 +105,8 @@ const icons = {
     musicNoteMuted: <MdMusicOff />,
     bell: <FaBell />,
     check: <FaCheck />,
-    archive: <PiArchiveLight />
+    archive: <PiArchiveLight />,
+    return: <IoReturnDownBackOutline />
 }
 
 export default icons;
