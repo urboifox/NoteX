@@ -1,11 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("tldraw/tldraw.css");
 
 body {
   background-color: #000;
   color: #fff;
-  padding-bottom: 5rem;
 }
 
 ::-webkit-scrollbar {
@@ -31,7 +31,7 @@ body {
   }
 
   .page {
-    min-height: calc(100dvh - 5rem);
+    min-height: calc(100dvh - 4rem);
   }
 }
 

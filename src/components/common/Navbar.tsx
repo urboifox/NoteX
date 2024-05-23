@@ -38,7 +38,7 @@ export default function Navbar() {
     const session = cookies().get('session')?.value;
 
     return (
-        <header className="container h-20 flex items-center justify-between">
+        <header className="container h-16 flex items-center justify-between">
             <Link href="/" className="font-extrabold select-none flex text-2xl text-transparent w-max bg-clip-text bg-primary">
                 NoteX
             </Link>

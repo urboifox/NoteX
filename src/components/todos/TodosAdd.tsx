@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from 'react'
 import Input from '../common/Input'
 import Button from '../common/Button'
 import icons from '@/lib/icons'
@@ -21,9 +21,11 @@ export default function TodosAdd() {
 function FormControls({ state }: any) {
 
     const { pending } = useFormStatus();
-    const [value, setValue] = useState('');
     const router = useRouter();
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const [value, setValue] = useState('');
+    const [aiText, setAiText] = useState('');
+    const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (state.success) {
@@ -33,6 +35,32 @@ function FormControls({ state }: any) {
         }
     }, [state, router])
 
+    useEffect(() => {
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            fetch(`/api/ai?text=${value}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: value }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setAiText(data.data);
+                });
+        }, 1000);
+
+    }, [value])
+
+    useEffect(() => {
+        console.log(aiText);
+    }, [aiText])
+
+
     return (
         <>
             <Input
@@ -40,7 +68,10 @@ function FormControls({ state }: any) {
                 disabled={pending}
                 hideErrorTitle
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    setAiText("");
+                }}
                 error={state.errors?.title}
                 name="title"
                 placeholder="New Todo..."

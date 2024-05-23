@@ -20,10 +20,9 @@ const links = [
     icon: icons.clock,
   },
   {
-    label: "White board",
-    href: "/whiteboard",
+    label: "Board",
+    href: "/board",
     icon: icons.paint,
-    disabled: true,
   },
   {
     label: "Notes",
