@@ -14,7 +14,7 @@ export default async function EditBlogPage({params: {blogId}}: {params: {blogId:
                 <Button>{icons.angleLeft} Back</Button>
             </Link>
 
-            <BlogForm blog={blog} />
+            <BlogForm blog={blog?.data} />
         </div>
     );
 }

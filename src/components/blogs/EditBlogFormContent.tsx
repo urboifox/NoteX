@@ -8,7 +8,7 @@ export default async function EditBlogFormContent({blogId}: {blogId: string}) {
 
     return (
         <>
-            <BlogForm blog={JSON.parse(JSON.stringify(blog))} />
+            <BlogForm blog={JSON.parse(JSON.stringify(blog?.data))} />
         </>
     );
 }
