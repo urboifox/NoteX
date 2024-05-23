@@ -12,7 +12,7 @@ export default function OneBlogLoading() {
           </Link>
           <div className="flex items-end justify-between">
               <Skeleton width={300} height={30} />
-              <BlogActions blogId={""} />
+              <BlogActions creatorId={""} blogId={""} />
           </div>
           <Skeleton height={300} />
       </div>
