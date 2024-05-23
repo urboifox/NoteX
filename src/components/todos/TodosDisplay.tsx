@@ -116,7 +116,7 @@ export default function TodosDisplay({ todos }: { todos: TodoResponse[] }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ tag }),
-        })
+        }).then(() => router.refresh());
     }
 
     const filteredData = globalTodos.filter((todo) => {

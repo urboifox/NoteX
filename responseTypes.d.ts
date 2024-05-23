@@ -6,12 +6,14 @@ type DataResponse<T> = {
 
 type BlogResponse = {
     _id: string;
+    title: string;
     brief: string;
     content: string;
     createdAt: string;
     creatorId: string;
     slug: string;
-    views: number;
+    viewsCount: number;
+    viewsIds: string[];
     tags: string[];
     coverImage: string;
     published: boolean;

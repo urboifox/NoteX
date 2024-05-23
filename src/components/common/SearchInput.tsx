@@ -2,7 +2,7 @@
 import icons from "@/lib/icons";
 import Input from "./Input";
 import { useQueryString } from "@/hooks/useQueryString";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type SearchInputProps = {
@@ -14,8 +14,10 @@ export default function SearchInput({ placeholder = "Search...", param = "q" }: 
 
     const { appendQueryString, deleteQueryString } = useQueryString();
     const router = useRouter();
-    const [value, setValue] = useState("");
     const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+    const searchParams = useSearchParams();
+    const q = searchParams.get(param);
+    const [value, setValue] = useState(q || "");
 
     useEffect(() => {
         if (!value) {

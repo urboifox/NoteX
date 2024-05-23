@@ -1,6 +1,10 @@
 import mongoose, { models } from "mongoose";
 
 const blogSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
     brief: {
         type: String,
         required: true,
@@ -22,15 +26,13 @@ const blogSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    views: {
-        type: {
-            count: Number,
-            users: [mongoose.Schema.Types.ObjectId],
-        },
-        default: {
-            count: 0,
-            users: [],
-        },
+    viewsCount: {
+        type: Number,
+        default: 1,
+    },
+    viewsIds: {
+        type: [mongoose.Schema.Types.ObjectId],
+        default: [],
     },
     tags: {
         type: [String],

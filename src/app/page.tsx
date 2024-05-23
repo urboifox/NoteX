@@ -10,26 +10,32 @@ const links = [
     icon: icons.pen,
   },
   {
+    label: "Todos",
+    href: "/todos",
+    icon: icons.todo,
+  },
+  {
+    label: "Session",
+    href: "/session",
+    icon: icons.clock,
+  },
+  {
+    label: "White board",
+    href: "/whiteboard",
+    icon: icons.paint,
+    disabled: true,
+  },
+  {
     label: "Notes",
     href: "/notes",
     icon: icons.note,
     disabled: true,
   },
   {
-    label: "Todos",
-    href: "/todos",
-    icon: icons.todo,
-  },
-  {
     label: "Schedule",
     href: "/schedule",
     icon: icons.calendar,
     disabled: true,
-  },
-  {
-    label: "Session",
-    href: "/session",
-    icon: icons.clock,
   },
 ];
 

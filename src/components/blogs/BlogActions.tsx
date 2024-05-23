@@ -7,11 +7,14 @@ import Modal from "../common/Modal";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useRecoilValue } from "recoil";
+import { AuthAtom } from "@/recoil/atoms/AuthAtom";
 
-export default function BlogActions({ blogId }: { blogId: string }) {
+export default function BlogActions({ blogId, creatorId }: { blogId: string, creatorId: string }) {
 
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const auth = useRecoilValue(AuthAtom);
 
     const router = useRouter();
 
@@ -36,19 +39,26 @@ export default function BlogActions({ blogId }: { blogId: string }) {
         });
     }
 
-    return (
+    return auth?._id === creatorId && (
         <>
-            <Modal loading={loading} text="Are you sure you want to delete this blog?" onSubmit={handleDeleteBlog} visible={showModal} onCancel={() => setShowModal(false)} />
+            <Modal
+                loading={loading}
+                text="Are you sure you want to delete this blog?"
+                onSubmit={handleDeleteBlog}
+                visible={showModal}
+                onCancel={() => setShowModal(false)}
+            />
             <div className="flex items-center gap-3">
                 <Link href={`/blog/${blogId}/edit`}>
-                <Button>
-                    {icons.edit}
-                </Button>
+                    <Button className="p-3">{icons.edit}</Button>
                 </Link>
-                <Button onClick={() => setShowModal(true)} className="text-red-600">
-                {icons.trash}
+                <Button
+                    onClick={() => setShowModal(true)}
+                    className="p-3 text-red-600"
+                >
+                    {icons.trash}
                 </Button>
             </div>
         </>
-    )
+    );
 }

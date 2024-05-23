@@ -9,7 +9,8 @@ import * as jose from "jose";
 import { revalidatePath } from "next/cache";
 
 const createBlogSchema = zod.object({
-    brief: zod.string().min(3, "Brief must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
+    title: zod.string().min(10, "Title must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
+    brief: zod.string().min(10, "Brief must be at least 10 characters").max(150, "Brief must be at most 150 characters"),
 })
 
 
@@ -17,27 +18,52 @@ type BlogFormType = {
     success: boolean;
     errors?: {
         brief?: string[],
+        title?: string[];
     }
 }
 
 export async function createBlog(data: BlogFormType, formData: FormData): Promise<BlogFormType> {
     await dbConnect();
 
-    const brief = formData.get('brief');
-    const content = formData.get('content');
+    const published = formData.get('published') as string;
+    const title = formData.get('title') as string;
+    const brief = formData.get('brief') as string;
+    const content = formData.get('content') as string;
+    const tags = formData.getAll('tags[]') as string[];
     const session = cookies().get('session')?.value;
 
     if (!session) {
         redirect('/login');
     }
 
-    const result = createBlogSchema.safeParse({ brief, content });
+    const result = createBlogSchema.safeParse({ brief, content, title });
 
     if (result.success) {
+
+        const existingBlog = await Blog.findOne({ title });
+
+        if (existingBlog) {
+            return {
+                success: false,
+                errors: {
+                    title: ["Title already exists"],
+                },
+            };
+        }
+
+
         const decoded = jose.decodeJwt(session);
         const userId = decoded.id;
 
-        const blog = new Blog({ brief, content, creatorId: userId });
+        const blog = new Blog({
+            title,
+            brief,
+            content,
+            tags: tags || [],
+            published: published === 'true',
+            creatorId: userId,
+            slug: title.replace(/\s+/g, "-").toLowerCase(),
+        });
         await blog.save();
 
         revalidatePath('/blog');
@@ -54,8 +80,11 @@ export async function createBlog(data: BlogFormType, formData: FormData): Promis
 export async function updateBlog(data: BlogFormType, formData: FormData): Promise<BlogFormType> {
     await dbConnect();
 
-    const brief = formData.get("brief");
-    const content = formData.get("content");
+    const published = formData.get("published") as string;
+    const tags = formData.getAll("tags[]") as string[];
+    const title = formData.get("title") as string;
+    const brief = formData.get("brief") as string;
+    const content = formData.get("content") as string;
     const blogId = formData.get("blogId");
     const session = cookies().get("session")?.value;
 
@@ -73,8 +102,24 @@ export async function updateBlog(data: BlogFormType, formData: FormData): Promis
             redirect("/blog");
         }
 
+        const existingBlog = await Blog.findOne({ title });
+
+        if (existingBlog && existingBlog._id.toString() !== blogId) {
+            return {
+                success: false,
+                errors: {
+                    title: ["Title already exists"],
+                },
+            };
+        }
+
+        blog.published = published === "true";
+        blog.tags = tags || [];
+        blog.title = title;
         blog.brief = brief;
         blog.content = content;
+        blog.slug = title.replace(/\s+/g, '-').toLowerCase();
+        blog.updatedAt = new Date();
 
         await blog.save();
 

@@ -1,5 +1,5 @@
-import { CiBoxList, CiCalendar, CiPen, CiSearch, CiStickyNote, CiTimer, CiTrash, CiWarning } from "react-icons/ci";
-import { FaHome, FaInfoCircle, FaRegTrashAlt, FaSignOutAlt } from "react-icons/fa";
+import { CiBoxList, CiCalendar, CiGlobe, CiLock, CiPen, CiSearch, CiStickyNote, CiTimer, CiTrash, CiWarning } from "react-icons/ci";
+import { FaHeart, FaHome, FaInfoCircle, FaRegTrashAlt, FaSignOutAlt } from "react-icons/fa";
 import {
   FaAlignLeft,
   FaAlignRight,
@@ -23,6 +23,7 @@ import {
   FaPause,
   FaPlay,
   FaPlus,
+  FaRegHeart,
   FaRegStar,
   FaStop,
   FaStrikethrough,
@@ -31,6 +32,7 @@ import {
 import { FiLogIn } from "react-icons/fi";
 import { GoGear, GoHorizontalRule, GoListOrdered, GoListUnordered } from "react-icons/go";
 import { HiOutlineMail, HiOutlineStatusOnline } from "react-icons/hi";
+import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { IoClose, IoReturnDownBackOutline, IoSave } from "react-icons/io5";
 import { LuHeading1, LuHeading2, LuHeading3, LuHeading4, LuHeading5, LuHeading6, LuMousePointerClick, LuRotateCcw } from "react-icons/lu";
 import { MdFiberNew, MdMusicNote, MdMusicOff } from "react-icons/md";
@@ -94,7 +96,12 @@ const icons = {
     home: <FaHome />,
     diary: <PiNotebookThin />,
     pen: <CiPen />,
+    globe: <CiGlobe />,
+    lock: <CiLock />,
     clock: <CiTimer />,
+    paint: <HiOutlinePaintBrush />,
+    heartFill: <FaHeart />,
+    heart: <FaRegHeart />,
     play: <FaPlay />,
     pause: <FaPause />,
     reset: <LuRotateCcw />,

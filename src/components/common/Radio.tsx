@@ -1,9 +1,9 @@
-
 type RadioProps = {
     label?: string;
+    icon?: React.ReactNode;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function Radio({ label, ...props }: RadioProps) {
+export default function Radio({ label, icon, ...props }: RadioProps) {
     return (
         <label htmlFor={props.id || label} className="flex cursor-pointer items-center gap-2 p-2 bg-white/5 hover:bg-white/10 transition-colors duration-200 border border-white/10 hover:border-white/50 rounded-md">
             <input
@@ -12,7 +12,7 @@ export default function Radio({ label, ...props }: RadioProps) {
                 type="radio"
                 {...props}
             />
-            {label && <span className="select-none">{label}</span>}
+            {label && <span className="select-none flex items-center gap-1">{icon && icon} {label}</span>}
         </label>
     );
 }
