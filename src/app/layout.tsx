@@ -5,6 +5,7 @@ import Providers from "@/providers";
 import type { Metadata } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { cookies } from "next/headers";
 
 const main = Inter({ subsets: ["latin"], variable: "--font-main" });
 const number = Roboto_Mono({ subsets: ["latin"], variable: "--font-number" });
@@ -24,12 +25,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getUser();
+  const session = cookies().get('session')?.value;
 
   return (
       <html lang="en">
           <body className={`${main.variable} ${number.variable}`}>
               <Providers user={JSON.parse(JSON.stringify(user))}>
-                  <Navbar />
+                  <Navbar session={session as string} />
                   {user?.islamic && (
                       <IslamicAzkar visible={user?.islamicAzkar} />
                   )}

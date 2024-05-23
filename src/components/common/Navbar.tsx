@@ -1,9 +1,10 @@
-import Link from "next/link";
-import Button from "./Button";
-import { cookies } from "next/headers";
-import UserProfileMenu from "./UserProfileMenu";
+'use client';
 import icons from "@/lib/icons";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Button from "./Button";
 import MusicButton from "./MusicButton";
+import UserProfileMenu from "./UserProfileMenu";
 
 const links = [
     {
@@ -33,30 +34,36 @@ const links = [
     }
 ]
 
-export default function Navbar() {
+export default function Navbar({ session }: { session: string }) {
 
-    const session = cookies().get('session')?.value;
+    const pathname = usePathname();
 
     return (
         <header className="container h-16 flex items-center justify-between">
-            <Link href="/" className="font-extrabold select-none flex text-2xl text-transparent w-max bg-clip-text bg-primary">
-                NoteX
-            </Link>
+            <div className="flex items-center gap-3">
+                {pathname === "/board" && (
+                    <Link href={"/"}>
+                        <Button className="text-sm">{icons.angleLeft}</Button>
+                    </Link>
+                )}
+                <Link
+                    href="/"
+                    className="font-extrabold select-none flex text-2xl text-transparent w-max bg-clip-text bg-primary"
+                >
+                    NoteX
+                </Link>
+            </div>
 
             <nav className="flex items-center gap-3">
                 <MusicButton />
-                {
-                    session ? (
-                        <UserProfileMenu links={links} />
-                    ) : (
-                        <Link href="/login">
-                            <Button>
-                                Get Started
-                            </Button>
-                        </Link>
-                    )
-                }
+                {session ? (
+                    <UserProfileMenu links={links} />
+                ) : (
+                    <Link href="/login">
+                        <Button>Get Started</Button>
+                    </Link>
+                )}
             </nav>
         </header>
-    )
+    );
 }
