@@ -1,10 +1,10 @@
 import React from 'react'
 import BlogForm from '../forms/BlogForm';
-import { getBlogById } from '@/functions/blogs';
+import { getBlogBySlug } from '@/functions/blogs';
 
-export default async function EditBlogFormContent({blogId}: {blogId: string}) {
+export default async function EditBlogFormContent({slug}: {slug: string}) {
     
-    const blog = await getBlogById(blogId);
+    const blog = await getBlogBySlug(slug);
 
     return (
         <>

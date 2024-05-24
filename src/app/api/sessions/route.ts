@@ -15,9 +15,7 @@ export async function DELETE(req: NextRequest) {
     const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
     
     if (!validSession) {
-        return {
-            success: false,
-        };
+       return NextResponse.json({ data: null, message: "Not authorized" }, { status: 401 });
     }
 
     await dbConnect();

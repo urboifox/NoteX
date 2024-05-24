@@ -25,13 +25,13 @@ export default function BlogCard({ blog}: {blog: BlogResponse}) {
               </time>
             </div>
               <Link
-                  href={`/blog/${blog._id ?? ""}`}
+                  href={`/blog/${blog.slug ?? ""}`}
                   className="text-white/50 transition-all duration-200 hover:text-white hover:translate-x-1 hover:-translate-y-1 cursor-pointer -rotate-45"
               >
                   {icons.arrowRight}
               </Link>
           </div>
-          <Link href={`/blog/${blog._id}`}>
+          <Link href={`/blog/${blog.slug}`}>
               <h2 className="text-xl font-bold line-clamp-1">
                   {blog.title || <Skeleton height={20} width={200} />}
               </h2>

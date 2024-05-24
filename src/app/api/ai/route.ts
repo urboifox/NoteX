@@ -14,8 +14,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ data: null }, { status: 400 });
     }
 
-    console.log(text);
-
     const completion = await groq.chat.completions.create({
         messages: [
             {
@@ -38,8 +36,6 @@ Do not add any names. Do Not add full stops in the end.`,
         model: "llama3-8b-8192",
     });
 
-    console.log(completion.choices);
-
     return NextResponse.json({ data: completion.choices[0].message.content || "" }, { status: 200 });
 }
 
@@ -50,8 +46,6 @@ export async function POST(req: NextRequest) {
     if (!text) {
         return NextResponse.json({ data: null }, { status: 400 });
     }
-
-    console.log(text);
 
     const completion = await groq.chat.completions.create({
         messages: [
@@ -74,8 +68,6 @@ Do not add any names. Do Not add full stops in the end.`,
         ],
         model: "llama3-8b-8192",
     });
-
-    console.log(completion);
 
     return NextResponse.json({ data: completion.choices[0].message.content || "" }, { status: 200 });
 }

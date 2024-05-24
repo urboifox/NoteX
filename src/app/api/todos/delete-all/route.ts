@@ -15,9 +15,7 @@ export async function DELETE() {
     const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
     
     if (!validSession) {
-        return {
-            success: false,
-        };
+        return NextResponse.json({ data: null }, { status: 401 });
     }
 
     const decoded = decodeJwt(session);

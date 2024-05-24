@@ -1,15 +1,15 @@
 import BlogActions from "@/components/blogs/BlogActions";
 import BlogStats from "@/components/blogs/BlogStats";
 import Button from "@/components/common/Button";
-import { addView, getBlogById } from "@/functions/blogs";
+import { addView, getBlogBySlug } from "@/functions/blogs";
 import icons from "@/lib/icons";
 import Link from "next/link";
 
-export default async function OneBlogPage({ params: { blogId } }: { params: { blogId: string } }) {
+export default async function OneBlogPage({ params: { slug } }: { params: { slug: string } }) {
 
-    await addView(blogId);
-    const res = await getBlogById(blogId);
+    const res = await getBlogBySlug(slug);
     const blog = res?.data;
+    await addView(blog?._id.toString() as string);
 
     return blog ? (
         <div className="container flex flex-col gap-5">
@@ -22,7 +22,7 @@ export default async function OneBlogPage({ params: { blogId } }: { params: { bl
                     <BlogStats blog={JSON.parse(JSON.stringify(blog))} />
                     <BlogActions
                         creatorId={JSON.parse(JSON.stringify(blog?.creatorId))}
-                        blogId={JSON.parse(JSON.stringify(blogId))}
+                        blogId={JSON.parse(JSON.stringify(blog?._id.toString()))}
                     />
                 </div>
             </div>

@@ -34,10 +34,10 @@ export async function getBlogs(page: number = 1, limit: number = PER_PAGE, query
     return { data: blogs, count, status: 200 };
 }
 
-export async function getBlogById(blogId: string): Promise<DataResponse<BlogResponse | null> | null> {
+export async function getBlogBySlug(slug: string): Promise<DataResponse<BlogResponse | null> | null> {
     await dbConnect();
 
-    const blog = await Blog.findById(blogId);
+    const blog = await Blog.findOne({ slug });
     const session = cookies().get('session')?.value;
 
     if (!blog) {
