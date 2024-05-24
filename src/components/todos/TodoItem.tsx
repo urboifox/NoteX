@@ -29,7 +29,7 @@ export default function TodoItem({ todo, loading, tags, archived, onDelete, onCl
     })
 
     return (
-        <div onMouseLeave={() => setVisible(false)} className="group relative w-full rounded-md sm:hover:bg-white/5 p-2 border border-white/10 transition-colors duration-200 sm:hover:border-white/20 flex items-center justify-between">
+        <div className="group relative w-full rounded-md sm:hover:bg-white/5 p-2 border border-white/10 transition-colors duration-200 sm:hover:border-white/20 flex items-center justify-between">
             <label htmlFor={todo._id} className={cn("flex gap-2 items-center transition-all duration-200", todo.completed && "opacity-50", !archived && "cursor-pointer")}>
                 <Checkbox id={todo._id} disabled={archived || loading} onClick={() => onClick && !archived && onClick(todo)} checked={todo.completed} className="p-0 bg-none" />
                 <p className={cn("select-none", todo.completed && "line-through")}>{todo.title || <Skeleton width={Math.floor(Math.random() * 100) + 100} />}</p>

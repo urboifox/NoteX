@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { useRecoilValue } from "recoil";
 import { AuthAtom } from "@/recoil/atoms/AuthAtom";
 
-export default function BlogActions({ blogId, creatorId }: { blogId: string, creatorId: string }) {
+export default function BlogActions({ blogId, creatorId, blogSlug }: { blogId: string, creatorId: string, blogSlug: string }) {
 
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ export default function BlogActions({ blogId, creatorId }: { blogId: string, cre
                 onCancel={() => setShowModal(false)}
             />
             <div className="flex items-center gap-3">
-                <Link href={`/blog/${blogId}/edit`}>
+                <Link href={`/blog/${blogSlug}/edit`}>
                     <Button className="p-3">{icons.edit}</Button>
                 </Link>
                 <Button

@@ -21,6 +21,7 @@ export default async function OneBlogPage({ params: { slug } }: { params: { slug
                 <div className="flex items-center gap-3">
                     <BlogStats blog={JSON.parse(JSON.stringify(blog))} />
                     <BlogActions
+                        blogSlug={blog?.slug}
                         creatorId={JSON.parse(JSON.stringify(blog?.creatorId))}
                         blogId={JSON.parse(JSON.stringify(blog?._id.toString()))}
                     />

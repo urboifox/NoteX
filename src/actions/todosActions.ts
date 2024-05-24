@@ -22,6 +22,7 @@ type CreateTodoType = {
 export async function createTodo(data: CreateTodoType, formData: FormData) {
     const title = formData.get('title') as string;
     const session = cookies().get('session')?.value;
+    const tag = formData.get('tag') as string;
 
     if (!session) {
         redirect('/login');
@@ -42,7 +43,7 @@ export async function createTodo(data: CreateTodoType, formData: FormData) {
         const userId = decoded?.id;
 
         await dbConnect();
-        const todo = new Todo({ title, creatorId: userId });
+        const todo = new Todo({ title, creatorId: userId, tag: JSON.parse(tag) });
         await todo.save();
         revalidatePath('/todos');
         return { success: true };

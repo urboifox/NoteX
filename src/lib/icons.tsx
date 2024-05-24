@@ -95,7 +95,7 @@ const icons = {
     logout: <FaSignOutAlt />,
     home: <FaHome />,
     diary: <PiNotebookThin />,
-    pen: <CiPen />,
+    pen: <CiPen style={{ transform: "rotate(-90deg)" }} />,
     globe: <CiGlobe />,
     lock: <CiLock />,
     clock: <CiTimer />,
