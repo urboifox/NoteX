@@ -1,6 +1,6 @@
 import dbConnect from "@/config/db";
 import Subscription from "@/models/SubscriptionModel";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,6 +18,14 @@ export async function POST(req: NextRequest) {
 
     if (!session) {
         return NextResponse.json({ message: "Not authorized" }, { status: 401 });
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     const decoded = decodeJwt(session);

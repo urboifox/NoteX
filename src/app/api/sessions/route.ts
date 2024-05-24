@@ -1,7 +1,6 @@
 import dbConnect from "@/config/db";
 import Session from "@/models/sessionModel";
-import { decodeJwt } from "jose";
-import { revalidatePath } from "next/cache";
+import { decodeJwt, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
@@ -11,6 +10,14 @@ export async function DELETE(req: NextRequest) {
 
     if (!sessionId || !session) {
         return NextResponse.json({ data: null, message: "Not authorized" }, { status: 401 });
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     await dbConnect();

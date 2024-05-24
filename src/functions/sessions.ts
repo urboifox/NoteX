@@ -12,6 +12,16 @@ export async function getSessions(page: number = 1, limit: number = 8): Promise<
         redirect("/login");
     }
 
+    const validSession = jose.jwtVerify(authSession, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            data: [],
+            count: 0,
+            status: 401
+        }
+    }
+
     const decoded = jose.decodeJwt(authSession);
     const userId = decoded?.id;
 

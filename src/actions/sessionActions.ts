@@ -21,6 +21,15 @@ export async function saveSession(data: SessionType, formData: FormData): Promis
         redirect('/login');
     }
 
+    const valid = jose.jwtVerify(authSession, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!valid) {
+        return {
+            success: false,
+            error: 'Not authenticated'
+        };
+    }
+
     const decoded = jose.decodeJwt(authSession);
     const userId = decoded?.id;
     

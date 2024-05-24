@@ -6,6 +6,10 @@ export default async function refreshAuth(oldSession: string|undefined) {
 
     const decoded = jose.decodeJwt(oldSession);
     const userId = decoded?.id;
+    
+    const validSession = jose.jwtVerify(oldSession, new TextEncoder().encode(process.env.JWT_SECRET!));
+
+    if (!validSession) return;
 
     const session = await new jose.SignJWT({ id: userId })
         .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })

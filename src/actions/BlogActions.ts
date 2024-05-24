@@ -36,6 +36,14 @@ export async function createBlog(data: BlogFormType, formData: FormData): Promis
         redirect('/login');
     }
 
+    const valid = jose.jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!valid) {
+        return {
+            success: false,
+        };
+    }
+
     const result = createBlogSchema.safeParse({ brief, content, title });
 
     if (result.success) {
@@ -92,6 +100,13 @@ export async function updateBlog(data: BlogFormType, formData: FormData): Promis
         redirect("/login");
     }
 
+    const valid = jose.jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!valid) {
+        return {
+            success: false,
+        };
+    }
     const result = createBlogSchema.safeParse({ brief, content });
 
     if (result.success) {

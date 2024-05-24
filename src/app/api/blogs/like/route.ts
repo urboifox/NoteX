@@ -1,6 +1,6 @@
 import dbConnect from "@/config/db";
 import Blog from "@/models/blogModel";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -17,12 +17,21 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ data: null }, { status: 401 });
     }
 
+
     await dbConnect();
 
     const blog = await Blog.findById(blogId);
 
     if (!blog) {
         return NextResponse.json({ data: null }, { status: 404 });
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     const decoded = decodeJwt(session);

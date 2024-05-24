@@ -13,6 +13,16 @@ export async function getBlogs(page: number = 1, limit: number = PER_PAGE, query
         return { data: [], count: 0, status: 401 };
     }
 
+    const validSession = jose.jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            data: [],
+            count: 0,
+            status: 401
+        };
+    }
+
     const decoded = jose.decodeJwt(session);
     const userId = decoded.id;
 

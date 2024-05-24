@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import * as zod from 'zod';
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 
 const createTodoSchema = zod.object({
     title: zod.string().min(2, "Title must be at least 2 characters").max(100, "Title must be at most 100 characters"),
@@ -25,6 +25,14 @@ export async function createTodo(data: CreateTodoType, formData: FormData) {
 
     if (!session) {
         redirect('/login');
+    }
+
+    const valid = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!valid) {
+        return {
+            success: false,
+        };
     }
 
     const result = createTodoSchema.safeParse({ title });

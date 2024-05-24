@@ -22,6 +22,11 @@ type BlogResponse = {
     updatedAt: string;
 }
 
+type BoardResponse = {
+    _id: string;
+    snapshot: string;
+}
+
 type SessionResponse = {
     _id: string;
     time: number;

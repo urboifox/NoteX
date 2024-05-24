@@ -1,6 +1,6 @@
 import dbConnect from "@/config/db";
 import Todo from "@/models/TodoModel";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -9,6 +9,16 @@ export async function getTodos(): Promise<DataResponse<TodoResponse[]>> {
     
     if (!session) {
         redirect('/login');
+    }
+    
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+
+    if (!validSession) {
+        return {
+            data: [],
+            count: 0,
+            status: 401
+        }
     }
     
     const decoded = decodeJwt(session);

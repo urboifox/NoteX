@@ -3,7 +3,7 @@
 import dbConnect from "@/config/db";
 import User from "@/models/userModel";
 import { compare, hash } from "bcrypt";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as zod from "zod";
@@ -75,6 +75,14 @@ export async function updateUser(data: UserActionResponse, formData: FormData): 
 
     if (!session) {
         redirect('/login');
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     await dbConnect();

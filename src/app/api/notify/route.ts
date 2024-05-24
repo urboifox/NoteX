@@ -3,7 +3,7 @@ import { sendPrayerNotification } from "@/lib/notificationService";
 import webpush from "@/lib/webPush";
 import Subscription from "@/models/SubscriptionModel";
 import User from "@/models/userModel";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import cron from 'node-cron';
@@ -24,6 +24,14 @@ export async function GET(req: NextRequest) {
     
     if (!session) {
         return NextResponse.json({ data: null, message: "Not authorized" }, { status: 400 })
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     const decoded = decodeJwt(session);

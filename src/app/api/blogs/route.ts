@@ -1,6 +1,6 @@
 import dbConnect from "@/config/db";
 import Blog from "@/models/blogModel";
-import { decodeJwt } from "jose";
+import { decodeJwt, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
@@ -10,6 +10,14 @@ export async function DELETE(req: NextRequest) {
 
     if (!blogId || !session) {
         return NextResponse.json({ data: null, message: "Not authorized" }, { status: 401 });
+    }
+
+    const validSession = jwtVerify(session, new TextEncoder().encode(process.env.JWT_SECRET!));
+    
+    if (!validSession) {
+        return {
+            success: false,
+        };
     }
 
     await dbConnect();
