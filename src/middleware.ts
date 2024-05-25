@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import refreshAuth from "./lib/refreshAuth";
-import { PUBLIC_ROUTES } from "./constants";
+import { LOGGED_OUT_ROUTES } from "./constants";
 
 export default async function middleware(req: NextRequest) {
     const session = req.cookies.get('session')?.value;
     
-    if (!PUBLIC_ROUTES.includes(req.nextUrl.pathname) && !session && req.nextUrl.pathname !== "/login") {
+    if (!LOGGED_OUT_ROUTES.includes(req.nextUrl.pathname) && !session && req.nextUrl.pathname !== "/login") {
         const res = NextResponse.redirect(req.nextUrl.origin + "/login");
         return res;
-    } else if (PUBLIC_ROUTES.includes(req.nextUrl.pathname) && session) {
+    } else if (LOGGED_OUT_ROUTES.includes(req.nextUrl.pathname) && session) {
         const res = NextResponse.redirect(req.nextUrl.origin);
         return res;
     }

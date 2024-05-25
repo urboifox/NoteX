@@ -1,15 +1,15 @@
 'use client';
 import { createTodo } from '@/actions/todosActions';
 import { TODO_TAGS } from '@/constants';
+import { cn } from '@/helpers/cn';
+import useOutsideClick from '@/hooks/useOutsideClick';
 import icons from '@/lib/icons';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import Button from '../common/Button';
 import Input from '../common/Input';
-import { AnimatePresence, motion } from 'framer-motion';
-import { cn } from '@/helpers/cn';
-import useOutsideClick from '@/hooks/useOutsideClick';
 
 export default function TodosAdd() {
 
@@ -33,6 +33,7 @@ function FormControls({ state }: any) {
     const [activeTag, setActiveTag] = useState(TODO_TAGS[0]);
     const [visible, setVisible] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const [lastValueFromAI, setLastValueFromAI] = useState(false);
 
     useOutsideClick({
         ref: buttonRef,
@@ -42,54 +43,95 @@ function FormControls({ state }: any) {
     useEffect(() => {
         if (state.success) {
             setValue('');
+            setAiText('');
             router.refresh();
             inputRef.current?.focus();
         }
     }, [state, router])
 
     useEffect(() => {
-        if (debounceRef.current) {
-            clearTimeout(debounceRef.current);
-        }
-
+        const controller = new AbortController();
         debounceRef.current = setTimeout(() => {
-            fetch(`/api/ai?text=${value}`, {
+            value.trim() && !lastValueFromAI && value.length < 20 && fetch(`/api/ai`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
                 body: JSON.stringify({ text: value }),
+                signal: controller.signal
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setAiText(data.data);
+                    setAiText(data.data.replace(/\n/g, ''));
+                    setLastValueFromAI(true);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setLastValueFromAI(true);
+                    setAiText('');
                 });
         }, 1000);
 
-    }, [value])
+        return () => {
+            if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
+                controller.abort();
+            }
+        }
 
-    useEffect(() => {
-        console.log(aiText);
-    }, [aiText])
+    }, [value, lastValueFromAI])
 
+    function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            setAiText("");
+            setValue(prev => (prev + aiText).replace(/'  '/g, ' '));
+        } else {
+            setLastValueFromAI(false);
+        }
+
+        // handle arrows
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            setLastValueFromAI(true);
+        }
+
+        if (e.key === 'Backspace') {
+            setLastValueFromAI(true);
+            setAiText('');
+        }
+    }
 
     return (
         <>
-            <Input
-                ref={inputRef}
-                disabled={pending}
-                hideErrorTitle
-                value={value}
-                onChange={(e) => {
-                    setValue(e.target.value);
-                    setAiText("");
-                }}
-                error={state.errors?.title}
-                name="title"
-                placeholder="New Todo..."
-                className="w-full"
-                inputClassName="bg-transparent placeholder:font-normal"
-            />
+            <div className="relative w-full overflow-hidden">
+                <Input
+                    ref={inputRef}
+                    disabled={pending}
+                    hideErrorTitle
+                    value={value}
+                    onKeyDown={handleKeyPress}
+                    onChange={(e) => {
+                        setValue(e.target.value);
+                        setAiText("");
+                    }}
+                    error={state.errors?.title}
+                    name="title"
+                    placeholder="New Todo..."
+                    className="w-full"
+                    inputClassName="bg-transparent placeholder:font-normal"
+                />
+                <AnimatePresence>
+                    {aiText && (
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0, transition: { duration: 0 } }}
+                            onClick={() => inputRef.current?.focus()}
+                            className="gap-1 absolute top-1/2 select-none w-max cursor-text -translate-y-1/2 left-[8.8px] flex items-center"
+                        >
+                            <span className='text-transparent w-max'>{value}</span>
+                            <span className='text-neutral-500 w-max'>{aiText}</span>
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </div>
 
             <div className="flex items-center gap-3">
                 <AnimatePresence>
@@ -141,7 +183,11 @@ function FormControls({ state }: any) {
                 >
                     {activeTag.name}
                 </Button>
-                <input type='hidden' name='tag' value={JSON.stringify(activeTag)} />
+                <input
+                    type="hidden"
+                    name="tag"
+                    value={JSON.stringify(activeTag)}
+                />
             </div>
 
             <Button className="h-full" disabled={pending} type="submit">
