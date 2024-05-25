@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import useScreenSize from '@/hooks/useScreenSize';
 
 export default function TodosAdd() {
 
@@ -49,10 +50,12 @@ function FormControls({ state }: any) {
         }
     }, [state, router])
 
+    const { width } = useScreenSize()
+
     useEffect(() => {
         const controller = new AbortController();
         debounceRef.current = setTimeout(() => {
-            value.trim() && !lastValueFromAI && value.length < 20 && fetch(`/api/ai`, {
+            width > 1200 && value.trim() && !lastValueFromAI && value.length < 20 && fetch(`/api/ai`, {
                 method: 'POST',
                 body: JSON.stringify({ text: value }),
                 signal: controller.signal
@@ -76,7 +79,7 @@ function FormControls({ state }: any) {
             }
         }
 
-    }, [value, lastValueFromAI])
+    }, [value, lastValueFromAI, width])
 
     function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Tab') {
