@@ -31,6 +31,7 @@ export default async function OneBlogPage({ params: { slug } }: { params: { slug
             </div>
             <p className="text-neutral-400">{blog?.brief}</p>
             <div
+                id="fox-blog"
                 className="p-5 bg-white/10 rounded-md border border-white/10"
                 dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
             />

@@ -23,13 +23,12 @@ const config: Config = {
     },
     plugins: [
         function ({ addBase }: any) {
+            // Custom styles to override normalization
             addBase({
                 "#fox-editor *": {
-                    // Custom styles to override normalization
                     all: "revert",
                 },
-                "pre *": {
-                    // Additional styles specific to pre tags inside #fox-editor
+                "#fox-blog *": {
                     all: "revert",
                 },
             });
