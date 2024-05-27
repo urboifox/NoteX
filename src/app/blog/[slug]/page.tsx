@@ -23,7 +23,9 @@ export default async function OneBlogPage({ params: { slug } }: { params: { slug
                     <BlogActions
                         blogSlug={blog?.slug}
                         creatorId={JSON.parse(JSON.stringify(blog?.creatorId))}
-                        blogId={JSON.parse(JSON.stringify(blog?._id.toString()))}
+                        blogId={JSON.parse(
+                            JSON.stringify(blog?._id.toString())
+                        )}
                     />
                 </div>
             </div>
@@ -34,8 +36,11 @@ export default async function OneBlogPage({ params: { slug } }: { params: { slug
             />
         </div>
     ) : (
-        <div className="container">
-            <h1>404</h1>
+        <div className="container flex-col gap-3 page flex items-center justify-center text-center">
+            <h1>The blog you are looking for does not exist, or private.</h1>
+            <Link className="w-max" href="/blog">
+                <Button>{icons.angleLeft} Back</Button>
+            </Link>
         </div>
     );
 }

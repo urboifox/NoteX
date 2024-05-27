@@ -1,4 +1,4 @@
-import { CiBoxList, CiCalendar, CiGlobe, CiLock, CiPen, CiSearch, CiStickyNote, CiTimer, CiTrash, CiWarning } from "react-icons/ci";
+import { CiBoxList, CiCalendar, CiGlobe, CiLock, CiPen, CiSearch, CiShare2, CiStickyNote, CiTimer, CiWarning } from "react-icons/ci";
 import { FaHeart, FaHome, FaInfoCircle, FaRegTrashAlt, FaSignOutAlt } from "react-icons/fa";
 import {
   FaAlignLeft,
@@ -20,6 +20,7 @@ import {
   FaEye,
   FaEyeSlash,
   FaItalic,
+  FaLink,
   FaPause,
   FaPlay,
   FaPlus,
@@ -102,6 +103,8 @@ const icons = {
     paint: <HiOutlinePaintBrush />,
     heartFill: <FaHeart />,
     heart: <FaRegHeart />,
+    link: <FaLink />,
+    share: <CiShare2 />,
     play: <FaPlay />,
     pause: <FaPause />,
     reset: <LuRotateCcw />,

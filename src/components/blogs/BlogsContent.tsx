@@ -25,7 +25,7 @@ export default async function BlogsContent({
             <div className="gap-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
                 {blogs.length > 0 ? (
                     blogs.map((blog, index) => {
-                        return <BlogCard key={index} blog={blog} />;
+                        return <BlogCard key={index} blog={JSON.parse(JSON.stringify(blog))} />;
                     })
                 ) : count === 0 ? (
                     <div className="col-span-full w-full flex items-center justify-center flex-col gap-4">

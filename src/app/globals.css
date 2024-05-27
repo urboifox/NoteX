@@ -71,6 +71,20 @@ pre {
 
 }
 
+pre ol {
+    padding-left: 1rem;
+    margin-top: 1rem;
+    list-style: unset;
+    margin-bottom: 1rem;
+}
+
+pre ul {
+    padding-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    list-style: unset;
+}
+
 pre code {
 
   color: inherit;
