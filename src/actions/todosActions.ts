@@ -38,7 +38,7 @@ export async function createTodo(data: CreateTodoType, formData: FormData) {
 
     const result = createTodoSchema.safeParse({ title });
 
-    if (result.success) {
+    if (result?.success) {
         const decoded = decodeJwt(session);
         const userId = decoded?.id;
 

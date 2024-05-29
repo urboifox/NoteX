@@ -46,7 +46,7 @@ export async function createBlog(data: BlogFormType, formData: FormData): Promis
 
     const result = createBlogSchema.safeParse({ brief, content, title });
 
-    if (result.success) {
+    if (result?.success) {
 
         const existingBlog = await Blog.findOne({ title });
 
@@ -109,7 +109,7 @@ export async function updateBlog(data: BlogFormType, formData: FormData): Promis
     }
     const result = createBlogSchema.safeParse({ brief, content });
 
-    if (result.success) {
+    if (result?.success) {
 
         const blog = await Blog.findById(blogId);
 

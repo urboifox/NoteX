@@ -21,7 +21,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
     const router = useRouter();
 
     useEffect(() => {
-        if (state.success) {
+        if (state?.success) {
             toast.success("Profile updated successfully");
             setEditMode(false);
             setPassword("");

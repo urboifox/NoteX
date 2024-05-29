@@ -16,11 +16,11 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.success) {
+    if (state?.success) {
       setAuth(state.data as unknown as UserResponse)
       router.push('/')
     }
-  }, [state.success, state.data, setAuth, router])
+  }, [state?.success, state.data, setAuth, router])
 
   return (
       <form action={formAction} className="flex flex-col gap-4">

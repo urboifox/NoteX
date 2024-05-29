@@ -42,7 +42,7 @@ function FormControls({ state }: any) {
     })
 
     useEffect(() => {
-        if (state.success) {
+        if (state?.success) {
             setValue('');
             setAiText('');
             router.refresh();

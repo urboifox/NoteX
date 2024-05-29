@@ -14,11 +14,11 @@ export default function Register() {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.success) {
+    if (state?.success) {
       toast.success('Account created successfully');
       router.push('/login');
     }
-  }, [state.success, router])
+  }, [state?.success, router])
 
   return (
       <form action={formAction} className="flex flex-col gap-4">

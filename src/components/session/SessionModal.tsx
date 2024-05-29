@@ -25,13 +25,13 @@ export default function SessionModal({ visible, onClose, time, sessionName }: Se
   const [state, formAction] = useFormState(saveSession, { success: false })
 
   useEffect(() => {
-    if (state.success) {
+    if (state?.success) {
         onClose().then(() => {
           toast.success('Session saved');
         });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.success])
+  }, [state?.success])
 
   return (
     mounted &&

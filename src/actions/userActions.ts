@@ -64,7 +64,7 @@ export async function updateUser(data: UserActionResponse, formData: FormData): 
 
     const result = updateUserSchema.safeParse(payload);
 
-    if (!result.success) {
+    if (!result?.success) {
         return {
             success: false,
             errors: result.error.flatten().fieldErrors as UserActionResponse['errors'],
