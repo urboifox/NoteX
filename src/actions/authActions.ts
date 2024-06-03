@@ -26,6 +26,14 @@ const loginSchema = zod.object({
     password: zod.string().min(1, "Password is required")
 })
 
+// validation schema
+const otpSchema = zod.object({
+    otp: zod.string().min(3, {
+        message: 'OTP is required'
+    }),
+})
+
+
 
 // register action
 type registerActionType = {
@@ -102,12 +110,20 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
     if (result?.success) {
         await dbConnect();
 
-        const user = await User.findOne({ username: { $regex: username, $options: 'i' } });
+        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+
+        let user;
+
+        if (isEmail) {
+            user = await User.findOne({ email: { $regex: username, $options: 'i' }});
+        } else {
+            user = await User.findOne({ username: { $regex: username, $options: 'i' }});
+        }
 
         if (!user) {
             return {
                 success: false,
-                error: 'Username or password is incorrect'
+                error: 'Credentials are incorrect'
             };
         }
 
@@ -116,7 +132,7 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
         if (!isPasswordCorrect) {
             return {
                 success: false,
-                error: 'Username or password is incorrect'
+                error: 'Credentials are incorrect'
             };
         }
 
@@ -139,4 +155,47 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
         success: false,
         errors: result.error.flatten().fieldErrors,
     };
+}
+
+
+
+// register action
+type verifyOtpActionType = {
+    success: boolean,
+    errors?: {
+        otp?: string[]
+    }
+}
+
+export async function verifyOtpAction(data: { otp: string, email: string }, state: verifyOtpActionType, formData: FormData): Promise<verifyOtpActionType> {
+    const otp = formData.get('otp') as string;
+    const email = data.email;
+    const originalOtp = data.otp;
+
+    const result = otpSchema.safeParse({ otp });
+
+    if (result?.success) {
+        
+        if (otp !== originalOtp || !originalOtp || !email) {
+            return {
+                success: false,
+                errors: {
+                    otp: ['OTP is incorrect']
+                }
+            };
+        }
+
+        await dbConnect();
+
+        await User.findOneAndUpdate({ email }, { emailConfirmed: true });
+
+        return {
+            success: true,
+        };
+    } else {
+        return {
+            success: false,
+            errors: result.error.flatten().fieldErrors
+        };
+    }
 }

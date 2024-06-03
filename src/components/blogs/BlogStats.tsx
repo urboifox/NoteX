@@ -17,7 +17,7 @@ export default function BlogStats({ blog }: { blog: BlogResponse }) {
     const { username } = useParams();
 
     async function handleToggleLike() {
-        if (auth) {
+        if (auth?.username) {
             if (stateBlog.likesIds.includes(auth._id)) {
                 setStateBlog((prev) => ({
                     ...prev,
@@ -31,6 +31,8 @@ export default function BlogStats({ blog }: { blog: BlogResponse }) {
                     likesCount: prev.likesCount + 1
                 }))
             }
+        } else {
+            router.push('/login');
         }
     }
 
@@ -57,7 +59,7 @@ export default function BlogStats({ blog }: { blog: BlogResponse }) {
     }, [stateBlog, router]);
 
     async function togglePublish() {
-        if (auth) {
+        if (auth?.username) {
             setStateBlog((prev) => ({
                 ...prev,
                 published: !prev.published

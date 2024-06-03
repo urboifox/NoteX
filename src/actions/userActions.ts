@@ -112,6 +112,10 @@ export async function updateUser(data: UserActionResponse, formData: FormData): 
         user.password = await hash(payload.newPassword, 10);
     }
 
+    if (user.email !== payload.email) {
+        user.emailConfirmed = false;
+    }
+
     user.username = payload.username;
     user.email = payload.email;
     user.islamic = payload.islamic;

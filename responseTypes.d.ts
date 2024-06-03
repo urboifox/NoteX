@@ -39,6 +39,7 @@ type UserResponse = {
     _id: string;
     username: string;
     email: string;
+    emailConfirmed: boolean;
     islamicAzkar: boolean;
     islamicAzan: boolean;
     islamic: boolean;

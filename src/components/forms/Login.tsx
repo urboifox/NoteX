@@ -1,34 +1,35 @@
 'use client';
+import { loginAction } from "@/actions/authActions";
+import { AuthAtom } from "@/recoil/atoms/AuthAtom";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { useSetRecoilState } from "recoil";
 import Button from "../common/Button";
 import ErrorDisplay from "../common/ErrorDisplay";
 import Input from "../common/Input";
-import { loginAction } from "@/actions/authActions";
-import { useFormState, useFormStatus } from "react-dom";
-import { useSetRecoilState } from "recoil";
-import { AuthAtom } from "@/recoil/atoms/AuthAtom";
-import { useRouter } from "next/navigation";
 
 export default function Login() {
-
   const [state, formAction] = useFormState(loginAction, { success: false })
   const setAuth = useSetRecoilState(AuthAtom);
   const router = useRouter();
 
   useEffect(() => {
     if (state?.success) {
-      setAuth(state.data as unknown as UserResponse)
+      const authData = state.data as unknown as UserResponse;
+      setAuth(authData)
+
       router.push('/')
     }
-  }, [state?.success, state.data, setAuth, router])
+  }, [state, setAuth, router])
 
   return (
       <form action={formAction} className="flex flex-col gap-4">
         <Input
-          label="Username"
+          label="Username / Email"
           name="username"
           type="text"
-          placeholder="john"
+          placeholder="john / john@doe.com"
           error={state.errors?.username}
         />
         <Input

@@ -105,7 +105,7 @@ export default function NotificationProvider({
         };
 
         // Main effect logic
-        if (auth) {
+        if (auth?.username) {
             requestNotificationPermission().then(() => setMounted(true));
         }
     }, [auth]);

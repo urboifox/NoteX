@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import refreshAuth from "./lib/refreshAuth";
-import { LOGGED_OUT_ROUTES } from "./constants";
+import { LOGGED_OUT_ROUTES, PUBLIC_ROUTES } from "./constants";
 
 export default async function middleware(req: NextRequest) {
     const session = req.cookies.get('session')?.value;
     
-    if (!LOGGED_OUT_ROUTES.includes(req.nextUrl.pathname) && !session && req.nextUrl.pathname !== "/login") {
+    if (
+        !LOGGED_OUT_ROUTES.includes(req.nextUrl.pathname) &&
+        !session &&
+        req.nextUrl.pathname !== "/login" &&
+        !req.nextUrl.pathname.match('/(.*)/blogs/(.*)') &&
+        !PUBLIC_ROUTES.includes(req.nextUrl.pathname)
+    ) {
         const res = NextResponse.redirect(req.nextUrl.origin + "/login");
         return res;
     } else if (LOGGED_OUT_ROUTES.includes(req.nextUrl.pathname) && session) {

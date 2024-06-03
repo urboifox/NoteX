@@ -2,13 +2,13 @@
 import { updateUser } from "@/actions/userActions";
 import icons from "@/lib/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import toast from "react-hot-toast";
 import Button from "../common/Button";
 import Checkbox from "../common/Checkbox";
 import Input from "../common/Input";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 export default function UserProfileContent({ user }: { user: UserResponse}) {
 
@@ -52,14 +52,24 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                     disabled={!editMode}
                     error={state?.errors?.username}
                 />
-                <Input
-                    className="flex-1 w-full"
-                    label="Email"
-                    name="email"
-                    defaultValue={user?.email}
-                    disabled={!editMode}
-                    error={state?.errors?.email}
-                />
+                <div className="flex-1 relative">
+                    <Input
+                        className="flex-1 w-full"
+                        label="Email"
+                        name="email"
+                        defaultValue={user?.email}
+                        disabled={!editMode}
+                        error={state?.errors?.email}
+                    />
+
+                    {
+                        !user?.emailConfirmed && (
+                            <div className="absolute text-red-500 underline transition-colors duration-200 hover:text-white -bottom-6 text-xs left-0">
+                                <Link href={`/otp?email=${user?.email}`}>Confirm Email</Link>
+                            </div>
+                        )
+                    }
+                </div>
             </div>
 
             <div className="flex flex-wrap gap-5">
