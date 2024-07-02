@@ -161,7 +161,7 @@ export default function SessionContent() {
                               transition: { duration: 0.1 },
                           }}
                           onClick={handlePlay}
-                          onTap={handlePlay}
+                          // onTap={handlePlay}
                           className="rounded-full cursor-pointer relative aspect-square w-32 sm:w-40 flex items-center justify-center bg-white overflow-hidden border-white border text-4xl"
                       >
                           <span
