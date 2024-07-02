@@ -22,11 +22,11 @@ const links = [
         href: "/blog",
         icon: icons.pen
     },
-    {
-        label: "Todos",
-        href: "/todos",
-        icon: icons.todo
-    },
+    // {
+    //     label: "Todos",
+    //     href: "/todos",
+    //     icon: icons.todo
+    // },
     {
         label: "Session",
         href: "/session",

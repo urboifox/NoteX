@@ -24,10 +24,10 @@ const config: Config = {
         function ({ addBase }: any) {
             // Custom styles to override normalization
             addBase({
-                "#fox-editor *": {
+                "#fox-editor *:not(pre *):not(pre):not(code)": {
                     all: "revert",
                 },
-                "#fox-blog *": {
+                "#fox-blog *:not(pre *):not(pre):not(code)": {
                     all: "revert",
                 },
             });

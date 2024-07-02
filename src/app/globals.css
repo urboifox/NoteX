@@ -66,9 +66,6 @@ pre {
   margin-top: .5rem;
   margin-bottom: .5rem;
   border-radius: 0.5rem;
-
-
-
 }
 
 pre ol {
@@ -86,7 +83,6 @@ pre ul {
 }
 
 pre code {
-
   color: inherit;
   padding: 0;
   background: none;

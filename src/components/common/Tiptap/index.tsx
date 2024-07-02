@@ -16,39 +16,39 @@ type TiptapProps = {
 }
 
 const extensions = [
-  StarterKit.configure({
-    codeBlock: false,
-  }),
-  CodeBlockLowlight.configure({
-    lowlight: createLowlight(common),
-    defaultLanguage: "javascript",
-  }),
-  TextDirection.configure({
-    types: ["heading", "paragraph"],
-  }),
-  Extension.create({
-    addKeyboardShortcuts() {
-      return {
-        // make sure Tab button doesnt blur the editor
-        Tab: () => {
-          this.editor
-            .chain()
-            .sinkListItem("listItem")
-            .command(({ tr }) => {
-              tr.insertText("   ");
-              return true;
-            })
-            .run();
+    StarterKit.configure({
+        codeBlock: false,
+    }),
+    CodeBlockLowlight.configure({
+        lowlight: createLowlight(common),
+        defaultLanguage: "javascript",
+    }),
+    TextDirection.configure({
+        types: ["heading", "paragraph"],
+    }),
+    Extension.create({
+        addKeyboardShortcuts() {
+            return {
+                // make sure Tab button doesnt blur the editor
+                Tab: () => {
+                    this.editor
+                        .chain()
+                        .sinkListItem("listItem")
+                        .command(({ tr }) => {
+                            tr.insertText("   ");
+                            return true;
+                        })
+                        .run();
 
-          return true; // <- make sure to return true to prevent the tab from blurring.
+                    return true; // <- make sure to return true to prevent the tab from blurring.
+                },
+            };
         },
-      };
-    },
-  }),
+    }),
 ];
 
 
-export default function Tiptap({content, onChange, label, className}: TiptapProps) {
+export default function Tiptap({ content, onChange, label, className }: TiptapProps) {
 
     const editor = useEditor({
         extensions,
@@ -62,9 +62,9 @@ export default function Tiptap({content, onChange, label, className}: TiptapProp
         },
         onUpdate: ({ editor }) => {
             const syntaxHighlightedContent =
-              document
-                ?.getElementById("fox-editor")
-                ?.innerHTML || editor.getHTML();
+                document
+                    ?.getElementById("fox-editor")
+                    ?.innerHTML || editor.getHTML();
             onChange?.(syntaxHighlightedContent)
         },
     })
@@ -72,9 +72,9 @@ export default function Tiptap({content, onChange, label, className}: TiptapProp
     // Update editor content when `content` prop changes initially
     useEffect(() => {
 
-      if (editor?.isEmpty) {
-        editor?.commands.setContent(content || "");
-      }
+        if (editor?.isEmpty) {
+            editor?.commands.setContent(content || "");
+        }
 
     }, [content, editor]);
 

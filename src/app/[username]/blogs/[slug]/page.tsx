@@ -15,7 +15,7 @@ export default async function PublishedBlogPage({ params: { slug, username } }: 
 
     return blog && (!isOwner ? blog.published : true) ? (
         <div className="page container">
-            <div className="container flex flex-col gap-5">
+            <div className="container flex flex-col gap-5 pb-5">
                 <Link className="w-max" href="/blog">
                     <Button>{icons.angleLeft} Back</Button>
                 </Link>

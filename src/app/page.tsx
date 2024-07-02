@@ -3,7 +3,12 @@ import Tooltip from "@/components/common/Tooltip";
 import icons from "@/lib/icons";
 import Link from "next/link";
 
-const links = [
+const links: {
+    label: string,
+    href: string,
+    icon: React.ReactNode,
+    disabled?: boolean,
+}[] = [
   {
     label: "Blog",
     href: "/blog",
@@ -24,18 +29,18 @@ const links = [
     href: "/board",
     icon: icons.paint,
   },
-  {
-    label: "Notes",
-    href: "/notes",
-    icon: icons.note,
-    disabled: true,
-  },
-  {
-    label: "Schedule",
-    href: "/schedule",
-    icon: icons.calendar,
-    disabled: true,
-  },
+  // {
+  //   label: "Notes",
+  //   href: "/notes",
+  //   icon: icons.note,
+  //   disabled: true,
+  // },
+  // {
+  //   label: "Schedule",
+  //   href: "/schedule",
+  //   icon: icons.calendar,
+  //   disabled: true,
+  // },
 ];
 
 export default function Home() {
@@ -48,8 +53,8 @@ export default function Home() {
           {links.map((link) => (
             <li key={link.label}>
               <Tooltip keepVisible position="bottom" title={link.label}>
-                <Link className="text-4xl" href={link.disabled ? '' : link.href}>
-                  <Button disabled={link.disabled} className="p-5">
+                <Link className="text-4xl" href={link?.disabled ? '' : link.href}>
+                  <Button disabled={link?.disabled} className="p-5">
                     {link.icon}
                   </Button>
                 </Link>

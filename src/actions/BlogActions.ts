@@ -70,7 +70,7 @@ export async function createBlog(data: BlogFormType, formData: FormData): Promis
             tags: tags || [],
             published: published === 'true',
             creatorId: userId,
-            slug: title.replace(/\s+/g, "-").toLowerCase(),
+            slug: title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "")
         });
         await blog.save();
 
@@ -133,7 +133,7 @@ export async function updateBlog(data: BlogFormType, formData: FormData): Promis
         blog.title = title;
         blog.brief = brief;
         blog.content = content;
-        blog.slug = title.replace(/\s+/g, '-').toLowerCase();
+        blog.slug = title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "");
         blog.updatedAt = new Date();
 
         await blog.save();
