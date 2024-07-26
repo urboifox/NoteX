@@ -21,9 +21,9 @@ export default function BlogForm({ blog }: { blog?: BlogResponse | null }) {
   useEffect(() => {
     if (state?.success) {
       toast.success(`Blog ${!!blog ? "saved" : "created"} successfully`);
-      router.push('/blog' + (blog ? `/${blog._id}` : ""))
+      router.push('/blog' + (blog ? `/${blog.slug}` : ""))
     }
-  }, [state?.success, router, blog])
+  }, [state, router, blog])
 
   useEffect(() => {
     if (blog) {

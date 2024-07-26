@@ -9,8 +9,8 @@ import * as jose from "jose";
 import { revalidatePath } from "next/cache";
 
 const createBlogSchema = zod.object({
-    title: zod.string().min(10, "Title must be at least 10 characters").max(100, "Brief must be at most 100 characters"),
-    brief: zod.string().min(10, "Brief must be at least 10 characters").max(150, "Brief must be at most 150 characters"),
+    title: zod.string().min(1, "Title is required").max(100, "Brief must be at most 100 characters"),
+    brief: zod.string().min(1, "Brief is required").max(150, "Brief must be at most 150 characters"),
 })
 
 
@@ -46,43 +46,41 @@ export async function createBlog(data: BlogFormType, formData: FormData): Promis
 
     const result = createBlogSchema.safeParse({ brief, content, title });
 
-    if (result?.success) {
-
-        const existingBlog = await Blog.findOne({ title });
-
-        if (existingBlog) {
-            return {
-                success: false,
-                errors: {
-                    title: ["Title already exists"],
-                },
-            };
-        }
-
-
-        const decoded = jose.decodeJwt(session);
-        const userId = decoded.id;
-
-        const blog = new Blog({
-            title,
-            brief,
-            content,
-            tags: tags || [],
-            published: published === 'true',
-            creatorId: userId,
-            slug: title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "")
-        });
-        await blog.save();
-
-        revalidatePath('/blog');
-
-        return { success: true }
-    } else {
+    if (!result?.success) {
         return {
             success: false,
             errors: result.error.flatten().fieldErrors
         }
     }
+
+    const existingBlog = await Blog.findOne({ title });
+
+    if (existingBlog) {
+        return {
+            success: false,
+            errors: {
+                title: ["Title already exists"],
+            },
+        };
+    }
+
+    const decoded = jose.decodeJwt(session);
+    const userId = decoded.id;
+
+    const blog = new Blog({
+        title,
+        brief,
+        content,
+        tags: tags || [],
+        published: published === 'true',
+        creatorId: userId,
+        slug: title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "")
+    });
+    await blog.save();
+
+    revalidatePath('/blog');
+
+    return { success: true }
 }
 
 export async function updateBlog(data: BlogFormType, formData: FormData): Promise<BlogFormType> {
@@ -107,44 +105,46 @@ export async function updateBlog(data: BlogFormType, formData: FormData): Promis
             success: false,
         };
     }
-    const result = createBlogSchema.safeParse({ brief, content });
 
-    if (result?.success) {
+    const result = createBlogSchema.safeParse({ brief, content, title });
 
-        const blog = await Blog.findById(blogId);
+    
+    if (!result?.success) {
+        return {
+            success: false,
+            errors: result.error.flatten().fieldErrors,
+        };
+    }
+    
+    const blog = await Blog.findById(blogId);
 
-        if (!blog) {
-            redirect("/blog");
-        }
-
-        const existingBlog = await Blog.findOne({ title });
-
-        if (existingBlog && existingBlog._id.toString() !== blogId) {
-            return {
-                success: false,
-                errors: {
-                    title: ["Title already exists"],
-                },
-            };
-        }
-
-        blog.published = published === "true";
-        blog.tags = tags || [];
-        blog.title = title;
-        blog.brief = brief;
-        blog.content = content;
-        blog.slug = title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "");
-        blog.updatedAt = new Date();
-
-        await blog.save();
-
-        revalidatePath(`/blog/${blogId}`);
-
-        return { success: true };
+    if (!blog) {
+        redirect("/blog");
     }
 
-    return {
-        success: false,
-        errors: result.error.flatten().fieldErrors,
-    };
+    const existingBlog = await Blog.findOne({ title });
+
+    if (existingBlog && existingBlog._id.toString() !== blogId) {
+        return {
+            success: false,
+            errors: {
+                title: ["Title already exists"],
+            },
+        };
+    }
+
+
+    blog.published = published === "true";
+    blog.tags = tags || [];
+    blog.title = title;
+    blog.brief = brief;
+    blog.content = content;
+    blog.slug = title.trim().replace(/\s+/g, "-").toLowerCase().replace(/[^a-z0-9-]/g, "");
+    blog.updatedAt = new Date();
+
+    await blog.save();
+
+    revalidatePath(`/blog/${blogId}`);
+
+    return { success: true };
 }

@@ -12,7 +12,7 @@ export default async function OneBlogPage({ params: { slug } }: { params: { slug
     await addView(blog?._id.toString() as string);
 
     return blog ? (
-        <div className="container flex flex-col gap-5">
+        <div className="container flex flex-col gap-5 pb-10">
             <Link className="w-max" href="/blog">
                 <Button>{icons.angleLeft} Back</Button>
             </Link>
