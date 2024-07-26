@@ -29,9 +29,11 @@ export default function SessionModal({ visible, onClose, time, sessionName }: Se
         onClose().then(() => {
           toast.success('Session saved');
         });
+    } else if (state.error) {
+        toast.error(state.error);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.success])
+  }, [state])
 
   return (
     mounted &&

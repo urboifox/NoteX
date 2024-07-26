@@ -6,6 +6,7 @@ import AuthProvider from "./AuthProvider";
 import NotificationProvider from "./NotificationProvider";
 import { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
+import NextTopLoader from "nextjs-toploader";
 
 export default function Providers({ children, user }: { children: React.ReactNode, user: UserResponse }) {
   return (
@@ -25,6 +26,7 @@ export default function Providers({ children, user }: { children: React.ReactNod
                               }}
                               position="bottom-right"
                           />
+                          <NextTopLoader color="#fff" showSpinner={false} />
                           {children}
                       </SkeletonTheme>
                   </NotificationProvider>

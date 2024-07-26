@@ -51,7 +51,7 @@ export async function getArchivedTodos(page: number = 1): Promise<DataResponse<T
 
     return {
         data: todos,
-        count: count,
+        count,
         status: 200
     };
 }

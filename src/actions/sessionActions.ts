@@ -45,7 +45,7 @@ export async function saveSession(data: SessionType, formData: FormData): Promis
 
     await newSession.save();
 
-    revalidatePath('/session/list')
+    revalidatePath('/session/list');
 
     return { success: true }
 }

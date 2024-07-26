@@ -26,6 +26,6 @@ export async function getSessions(page: number = 1, limit: number = 8): Promise<
     const userId = decoded?.id;
 
     const count = await Session.countDocuments({ creatorId: userId });
-    const sessions = await Session.find({ creatorId: userId }).limit(limit).skip((page - 1) * limit);
+    const sessions = await Session.find({ creatorId: userId }).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit);
     return { data: sessions, count: count, status: 200 };
 }
