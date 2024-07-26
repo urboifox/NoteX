@@ -8,6 +8,7 @@ import { cn } from "@/helpers/cn";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
+import { dateFormat } from "@/helpers/dateFormat";
 
 export default function SessionListItem({session}: {session: SessionResponse}) {
 
@@ -52,7 +53,10 @@ export default function SessionListItem({session}: {session: SessionResponse}) {
         >
           <p>{session.sessionName ?? <Skeleton width={Math.floor(Math.random() * 100) + 100} />}</p>
           <div className="flex items-center gap-3">
-            <time className="font-number">{session.time ? formatTime(session.time) : '00:00:00'}</time>
+            <div className="flex flex-col gap-1 items-end">
+              <time className="font-number">{session.time ? formatTime(session.time) : '00:00:00'}</time>
+              <time className="font-number text-xs text-[#9CA3AF]">{dateFormat(session.createdAt, "date")}</time>
+            </div>
             <Button onClick={() => setShowModal(true)} className="text-red-600 text-xs">{icons.trash}</Button>
           </div>
         </li>
