@@ -11,7 +11,6 @@ import Checkbox from "../common/Checkbox";
 import Input from "../common/Input";
 
 export default function UserProfileContent({ user }: { user: UserResponse}) {
-
     const [state, formAction] = useFormState(updateUser, { success: false });
     const [editMode, setEditMode] = useState(true);
     const [allChecked, setAllChecked] = useState(user?.islamic);
@@ -23,7 +22,6 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
     useEffect(() => {
         if (state?.success) {
             toast.success("Profile updated successfully");
-            setEditMode(false);
             setPassword("");
             setNewPassword("");
             setPasswordVerification("")

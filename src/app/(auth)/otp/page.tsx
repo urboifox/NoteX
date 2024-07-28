@@ -1,25 +1,41 @@
+import Button from "@/components/common/Button";
+import ResendButton from "@/components/common/ResendButton";
 import Otp from "@/components/forms/Otp";
 import dbConnect from "@/config/db";
 import { sendOtpEmail } from "@/lib/sendOtpEmail";
 import User from "@/models/userModel";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import crypto from "crypto";
 
-export default async function OtpPage({ searchParams: { email } }: { searchParams: { email: string } }) {
-
+export default async function OtpPage({ searchParams: { email, state } }: { searchParams: { email: string, state: string } }) {
     const otp = Array(6).fill(0).map(() => Math.floor(Math.random() * 10)).join('');
+    const token = crypto.randomBytes(32).toString('hex');
+    const forgetPassword = parseInt(state) === 1;
 
     if (email) {
         await dbConnect();
         const user = await User.findOne({ email });
-        
-        if (!user || user.emailConfirmed) {
+
+        if (!user) {
+            redirect('/register');
+        }
+
+        if (user.emailConfirmed && !forgetPassword) {
             redirect('/');
         }
-        
+
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000;
+
+        await user.save();
         await sendOtpEmail(email, otp);
     } else {
         redirect('/register');
+    }
+
+    const handleResend = async () => {
+        "use server"
+        await sendOtpEmail(email, otp);
     }
 
     return (
@@ -31,14 +47,12 @@ export default async function OtpPage({ searchParams: { email } }: { searchParam
                 </p>
             </div>
 
-            <Otp email={email} otp={otp} />
+            <Otp email={email} otp={otp} forgetPassword={forgetPassword} token={token} />
 
             <div className="flex flex-col gap-2">
                 <p className="text-sm font-light text-white/50">
                     Didn&apos;t recieve an email?{" "}
-                    <Link href={"/register"} className="text-white underline">
-                        Resend
-                    </Link>
+                    <ResendButton handleResend={handleResend} />
                 </p>
             </div>
         </div>

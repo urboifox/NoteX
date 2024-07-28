@@ -7,14 +7,18 @@ import Button from "../common/Button";
 import Input from "../common/Input";
 import toast from "react-hot-toast";
 
-export default function Otp({ otp, email }: { otp: string, email: string }) {
+export default function Otp({ otp, email, forgetPassword, token }: { otp: string, email: string, forgetPassword?: boolean, token?: string }) {
   const [state, formAction] = useFormState(verifyOtpAction.bind(null, { otp, email }), { success: false  })
   const router = useRouter();
 
   useEffect(() => {
     if (state?.success) {
-      toast.success('Email verified successfully');
-      router.push('/');
+      if (forgetPassword) {
+        router.push('/new-password?token=' + token);
+      } else {
+        toast.success('Email verified successfully');
+        router.push('/');
+      }
     }
   }, [state, router])
 

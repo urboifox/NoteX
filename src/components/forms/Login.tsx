@@ -8,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import Button from "../common/Button";
 import ErrorDisplay from "../common/ErrorDisplay";
 import Input from "../common/Input";
+import Link from "next/link";
 
 export default function Login() {
   const [state, formAction] = useFormState(loginAction, { success: false })
@@ -40,6 +41,7 @@ export default function Login() {
           error={state.errors?.password}
         />
         <ErrorDisplay error={state?.error} />
+        <Link href={"/forgot-password"} className="text-sm text-[#ddd] transition-colors hover:text-white">Forgot your password?</Link>
 
         <SubmitButton />
       </form>

@@ -1,7 +1,7 @@
 export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api' : 'https://notex.urboifox.dev/api';
 export const PER_PAGE = 12;
 
-export const LOGGED_OUT_ROUTES = ['/login', '/register'];
+export const LOGGED_OUT_ROUTES = ['/login', '/register', '/forgot-password', '/otp', '/new-password'];
 export const PUBLIC_ROUTES = ['/']
 
 export const AZKAR = [

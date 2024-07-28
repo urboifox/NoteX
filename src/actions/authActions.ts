@@ -26,6 +26,32 @@ const loginSchema = zod.object({
     password: zod.string().min(1, "Password is required")
 })
 
+const forgotPasswordEmailSchema = zod.object({
+    email: zod.string().email({
+        message: 'Username must be at least 3 characters'
+    }),
+})
+
+const resetPasswordSchema = zod.object({
+    newPassword: zod.string().min(1, "Password is required"),
+    passwordVerification: zod.string()
+}).refine(
+        (data) => {
+            if (!data.newPassword) {
+                return true;
+            }
+            return data.newPassword.length >= 8;
+        },
+        {
+            message: "New password must be at least 8 characters",
+            path: ["newPassword"],
+        }
+    )
+    .refine((data) => data.newPassword === data.passwordVerification, {
+        message: "Passwords don't match",
+        path: ["passwordVerification"],
+    });
+
 // validation schema
 const otpSchema = zod.object({
     otp: zod.string().min(3, {
@@ -159,7 +185,7 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
 
 
 
-// register action
+// verify otp action
 type verifyOtpActionType = {
     success: boolean,
     errors?: {
@@ -198,4 +224,86 @@ export async function verifyOtpAction(data: { otp: string, email: string }, stat
             errors: result.error.flatten().fieldErrors
         };
     }
+}
+
+// forgot password email action
+type ForgotPasswordEmailActionType = {
+    success: boolean,
+    errors?: {
+        email?: string[]
+    }
+    error?: string,
+    data?: string,
+}
+
+export async function forgotPasswordEmailAction(data: ForgotPasswordEmailActionType, formData: FormData): Promise<ForgotPasswordEmailActionType> {
+    const email = formData.get('email') as string;
+
+    const result = forgotPasswordEmailSchema.safeParse({ email });
+
+    if (!result?.success) {
+        return {
+            success: false,
+            errors: result.error.flatten().fieldErrors,
+        };
+    }
+
+    await dbConnect();
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return {
+            success: false,
+            error: 'Email Does Not Exist'
+        };
+    }
+
+    return {
+        success: true,
+        data: email
+    };
+}
+
+// reset password action
+type ResetPasswordActionType = {
+    success: boolean,
+    errors?: {
+        newPassword?: string[],
+        passwordVerification?: string[]
+    }
+    error?: string,
+    data?: string,
+}
+
+export async function ResetPasswordAction(data: ResetPasswordActionType, formData: FormData): Promise<ResetPasswordActionType> {
+    const email = formData.get('email') as string;
+    const newPassword = formData.get('newPassword') as string;
+    const passwordVerification = formData.get('passwordVerification') as string;
+
+    const result = resetPasswordSchema.safeParse({ newPassword, passwordVerification });
+
+    if (!result?.success) {
+        return {
+            success: false,
+            errors: result.error.flatten().fieldErrors,
+        };
+    }
+
+    await dbConnect();
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return {
+            success: false,
+            error: 'Email Does Not Exist'
+        };
+    }
+
+    await User.findOneAndUpdate({ email }, { password: await bcrypt.hash(newPassword, 10) });
+
+    return {
+        success: true,
+    };
 }
