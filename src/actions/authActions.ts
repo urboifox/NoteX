@@ -28,7 +28,7 @@ const loginSchema = zod.object({
 
 const forgotPasswordEmailSchema = zod.object({
     email: zod.string().email({
-        message: 'Username must be at least 3 characters'
+        message: 'This is not a valid email'
     }),
 })
 
