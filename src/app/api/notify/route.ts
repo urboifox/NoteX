@@ -6,7 +6,6 @@ import User from "@/models/userModel";
 import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import cron from 'node-cron';
 
 export async function GET(req: NextRequest) {
 

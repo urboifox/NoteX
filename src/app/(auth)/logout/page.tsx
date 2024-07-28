@@ -10,8 +10,15 @@ export default function LogoutPage() {
 
     useEffect(() => {
         setAuth(null);
-        router.push("/login/clear");
+        fetch("/api/logout", { credentials: "include" })
+            .then(() => {
+                router.push("/login");
+            })
     }, [setAuth, router])
 
-    return null;
+    return (
+        <div className="w-full h-screen flex justify-center items-center">
+            Logging out...
+        </div>
+    );
 }
