@@ -84,13 +84,20 @@ export default function SessionContent() {
         if (playing) {
           clearInterval(intervalAtom as NodeJS.Timeout);
           setSessionVisibility((prev) => ({ ...prev, leave: Date.now() }))
+          localStorage.setItem("sessionLeaveTime", JSON.stringify(Date.now()));
         }
       }
 
       function handleUserReturn() {
         if (playing) {
           startTimer();
-          setSessionVisibility((prev) => ({ ...prev, return: Date.now() }))
+          const leaveTime = localStorage.getItem("sessionLeaveTime");
+          if (leaveTime) {
+            setSessionVisibility((prev) => ({ ...prev, return: Date.now(), leave: Number(leaveTime) }))
+            localStorage.removeItem("sessionLeaveTime");
+          } else {
+            setSessionVisibility((prev) => ({ ...prev, return: Date.now()}))
+          }
         }
       }
       document.addEventListener("visibilitychange", handleVisibilityChange);

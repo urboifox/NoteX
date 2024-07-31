@@ -20,7 +20,7 @@ export default function Otp({ otp, email, forgetPassword, token }: { otp: string
         router.push('/');
       }
     }
-  }, [state, router])
+  }, [state, router, token, forgetPassword])
 
   return (
       <form action={formAction} className="flex flex-col gap-4">
