@@ -50,7 +50,7 @@ export default function UserProfileContent({ user }: { user: UserResponse}) {
                     disabled={!editMode}
                     error={state?.errors?.username}
                 />
-                <div className="flex-1 relative">
+                <div className="flex-1 relative w-full max-sm:mb-4">
                     <Input
                         className="flex-1 w-full"
                         label="Email"
