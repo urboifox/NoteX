@@ -13,7 +13,7 @@ export default async function refreshAuth(oldSession: string|undefined) {
 
     const session = await new jose.SignJWT({ id: userId })
         .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-        .setExpirationTime('1h')
+        .setExpirationTime('12h')
         .sign(new TextEncoder().encode(process.env.JWT_SECRET!))
 
     const res = NextResponse.next();

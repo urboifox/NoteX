@@ -166,7 +166,7 @@ export async function loginAction(data: loginActionType, formData: FormData): Pr
         // const session = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
         const session = await new jose.SignJWT({ id: user._id })
             .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-            .setExpirationTime('1h')
+            .setExpirationTime('12h')
             .sign(new TextEncoder().encode(process.env.JWT_SECRET!))
 
         cookies().set('session', session, { path: '/', httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 });

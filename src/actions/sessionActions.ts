@@ -12,22 +12,13 @@ type SessionType = {
     error?: string;
 }
 
-export async function saveSession(data: SessionType, formData: FormData): Promise<SessionType> {
+export async function saveSession(_: SessionType, formData: FormData): Promise<SessionType> {
     await dbConnect();
 
     const authSession = cookies().get('session')?.value;
 
     if (!authSession) {
         redirect('/login');
-    }
-
-    const valid = jose.jwtVerify(authSession, new TextEncoder().encode(process.env.JWT_SECRET!));
-    
-    if (!valid) {
-        return {
-            success: false,
-            error: 'Not authenticated'
-        };
     }
 
     const decoded = jose.decodeJwt(authSession);

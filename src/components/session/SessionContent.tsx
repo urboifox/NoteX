@@ -72,7 +72,7 @@ export default function SessionContent() {
   }, [playing, intervalAtom, startTimer]);
 
   useEffect(() => {
-      function handleVisibilityChange(e: Event) {
+      function handleVisibilityChange() {
         if (document.visibilityState === "hidden") {
           handleUserLeave();
         } else if (document.visibilityState === "visible") {
